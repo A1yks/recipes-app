@@ -1,4 +1,12 @@
-import { Model, ForeignKey, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional } from 'sequelize';
+import {
+    Model,
+    ForeignKey,
+    InferAttributes,
+    InferCreationAttributes,
+    DataTypes,
+    CreationOptional,
+    HasOneGetAssociationMixin,
+} from 'sequelize';
 import User from './User';
 import db from 'backend/db';
 
@@ -9,6 +17,8 @@ class RefreshToken extends Model<RefreshTokenAttrs, InferCreationAttributes<Refr
     declare token: CreationOptional<string>;
     declare expirityDate: Date;
     declare userId: ForeignKey<User['id']>;
+
+    declare getUser: HasOneGetAssociationMixin<User>;
 
     static expiresIn = 60 * 60 * 24 * 7; // 7 days (in seconds)
 

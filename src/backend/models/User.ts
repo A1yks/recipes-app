@@ -1,5 +1,15 @@
 import db from 'backend/db';
-import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import {
+    CreationOptional,
+    DataTypes,
+    HasOneCreateAssociationMixin,
+    HasOneGetAssociationMixin,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+} from 'sequelize';
+import RefreshToken from './RefreshToken';
+import UserInfo from './UserInfo';
 
 export type UserAttrs = InferAttributes<User>;
 
@@ -7,8 +17,10 @@ class User extends Model<UserAttrs, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
     declare login: string;
     declare password: string;
-    declare name: CreationOptional<string>;
-    declare surname: CreationOptional<string>;
+
+    declare getRefreshToken: HasOneGetAssociationMixin<RefreshToken>;
+    declare getInfo: HasOneGetAssociationMixin<UserInfo>;
+    declare createInfo: HasOneCreateAssociationMixin<UserInfo>;
 }
 
 User.init(
@@ -27,8 +39,6 @@ User.init(
             type: DataTypes.STRING(72),
             allowNull: false,
         },
-        name: DataTypes.STRING,
-        surname: DataTypes.STRING,
     },
     {
         sequelize: db,

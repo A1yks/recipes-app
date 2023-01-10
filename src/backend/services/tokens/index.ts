@@ -1,5 +1,5 @@
-import RefreshToken from 'backend/models/RefreshToken';
-import { UserAttrs } from 'backend/models/User';
+import RefreshToken, { RefreshTokenAttrs } from 'backend/models/RefreshToken';
+import User, { UserAttrs } from 'backend/models/User';
 import jwt from 'jsonwebtoken';
 
 namespace TokensService {
@@ -38,6 +38,18 @@ namespace TokensService {
                 }
             });
         });
+    }
+
+    export async function getRefreshToken(refreshTokenString: RefreshTokenAttrs['token']) {
+        return await RefreshToken.findOne({ where: { token: refreshTokenString } });
+    }
+
+    export async function getRefreshTokenOwner(refreshToken: RefreshToken) {
+        return await refreshToken.getUser();
+    }
+
+    export function verifyRefreshToken(refreshToken: RefreshToken) {
+        return RefreshToken.verifyToken(refreshToken);
     }
 }
 

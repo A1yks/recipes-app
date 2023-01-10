@@ -14,7 +14,20 @@ namespace AuthController {
             if (user === null) {
                 return res.status(404).json({ error: "The user with this login doesn't exist" });
             }
-        } catch (err) {}
+
+            const tokens = await AuthService.login(user, password);
+
+            if (tokens === null) {
+                return res.status(401).json({ error: "Login and/or password doesn't match" });
+            }
+
+            const userInfo = await UserService.getUserInfo({ userId: user.id });
+
+            setRefreshTokenCookie(res, tokens.refreshToken);
+            res.status(200).json({ data: { user: userInfo, accessToken: tokens.accessToken } });
+        } catch (err) {
+            res.status(500).json({ error: 'An unexpected error occurred while trying to logging into account' });
+        }
     }
 
     export async function register(req: Server.Request<RegisterReq>, res: Server.Response) {

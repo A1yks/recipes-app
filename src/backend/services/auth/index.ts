@@ -41,8 +41,9 @@ namespace AuthService {
         return await db.transaction(async () => {
             const user = await UserService.createUser(userData);
             const tokens = await TokensService.issueTokens(user.id);
+            const userInfo = await UserService.getUserInfo(user);
 
-            return { user, tokens };
+            return { user: userInfo, tokens };
         });
     }
 }

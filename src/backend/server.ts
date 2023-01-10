@@ -2,10 +2,10 @@ import express from 'express';
 import next from 'next';
 import cookieParser from 'cookie-parser';
 import db, { connectToDB } from './db';
-import authRouter from './routes/auth';
 import buildRelations from './db/buildRelations';
 import logger from './utils/logger';
-import User from './models/User';
+import authRouter from './routes/auth';
+import tokensRouter from './routes/tokens';
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -30,6 +30,7 @@ const port = process.env.PORT || 3000;
             app.use(cookieParser());
 
             app.use('/api/auth', authRouter);
+            app.use('/api/tokens', tokensRouter);
 
             app.all('*', (req, res) => {
                 return handle(req, res);
