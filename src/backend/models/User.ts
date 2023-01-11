@@ -2,12 +2,14 @@ import db from 'backend/db';
 import {
     CreationOptional,
     DataTypes,
+    HasManyGetAssociationsMixin,
     HasOneCreateAssociationMixin,
     HasOneGetAssociationMixin,
     InferAttributes,
     InferCreationAttributes,
     Model,
 } from 'sequelize';
+import Recipe from './Recipe';
 import RefreshToken from './RefreshToken';
 import UserInfo from './UserInfo';
 
@@ -21,6 +23,7 @@ class User extends Model<UserAttrs, InferCreationAttributes<User>> {
     declare getRefreshToken: HasOneGetAssociationMixin<RefreshToken>;
     declare getInfo: HasOneGetAssociationMixin<UserInfo>;
     declare createInfo: HasOneCreateAssociationMixin<UserInfo>;
+    declare getRecipes: HasManyGetAssociationsMixin<Recipe>;
 }
 
 User.init(

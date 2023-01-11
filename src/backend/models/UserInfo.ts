@@ -34,6 +34,7 @@ UserInfo.init(
         avatar: DataTypes.TEXT,
         userId: {
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: User,
                 key: 'id',
