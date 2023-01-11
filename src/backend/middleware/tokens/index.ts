@@ -4,7 +4,6 @@ import { TokenPayload } from '../../types/tokens';
 import logger from '../../utils/logger';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokenCookies } from './types';
-import RefreshToken from 'backend/models/RefreshToken';
 
 namespace TokensMiddleware {
     function extractAcessToken(req: Server.Request) {

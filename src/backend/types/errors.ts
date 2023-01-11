@@ -1,0 +1,4 @@
+export enum ErrorCause {
+    UNKNOWN = 'UNKNOWN',
+    PERMISSIONS_CALLBACK = 'PERMISSIONS_CALLBACK',
+}
