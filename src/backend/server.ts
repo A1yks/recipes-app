@@ -6,6 +6,10 @@ import buildRelations from './db/buildRelations';
 import logger from './utils/logger';
 import authRouter from './routes/auth';
 import tokensRouter from './routes/tokens';
+import recipesRouter from './routes/recipes';
+import categoriesRouter from './routes/categories';
+import instructionsRouter from './routes/instructions';
+import nutritionRouter from './routes/nutrition';
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -31,6 +35,10 @@ const port = process.env.PORT || 3000;
 
             app.use('/api/auth', authRouter);
             app.use('/api/tokens', tokensRouter);
+            app.use('/api/recipes', recipesRouter);
+            app.use('/api/categories', categoriesRouter);
+            app.use('/api/instructions', instructionsRouter);
+            app.use('/api/nutrition', nutritionRouter);
 
             app.all('*', (req, res) => {
                 return handle(req, res);

@@ -36,6 +36,7 @@ function buildRelations() {
         through: RecipeCategory,
         foreignKey: 'recipeId',
         otherKey: 'categoryId',
+        as: 'categories',
     });
 
     Category.belongsToMany(Recipe, {
@@ -48,6 +49,7 @@ function buildRelations() {
         foreignKey: 'recipeId',
         sourceKey: 'id',
         onDelete: 'CASCADE',
+        as: 'instructions',
     });
 
     Instruction.belongsTo(Recipe, {
@@ -64,6 +66,7 @@ function buildRelations() {
         foreignKey: 'recipeId',
         sourceKey: 'id',
         onDelete: 'CASCADE',
+        as: 'rating',
     });
 
     Rating.belongsTo(User, {
@@ -80,6 +83,7 @@ function buildRelations() {
         foreignKey: 'recipeId',
         sourceKey: 'id',
         onDelete: 'CASCADE',
+        as: 'nutrition',
     });
 
     Nutrition.belongsTo(Recipe, {

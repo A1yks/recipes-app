@@ -1,41 +1,31 @@
-import { ErrorCause } from 'backend/types/errors';
+import { ErrorTypes } from 'backend/types/errors';
 import logger from './logger';
 
 type Configuration = {
     /**
-     * Expected error message. If not specified, `err.message` is used.
-     *
-     * Error is considered to be expected in two cases:
-     * 1. If `configuration.cause` is specified and it equals to `err.cause`;
-     * 2. If `configuration.cause` is not specified, but `ErrorCauses` enum contains `err.cause` value (except `ErrorCauses.UNKNOWN`).
-     */
-    expectedErrMsg?: string;
-    /**
      * Unexpected error message.
      *
-     * Error is considered to be unexpected in two cases:
-     * 1. If `configuration.cause` is specified and it doesn't equal to `err.cause`;
-     * 2. If `configuration.cause` is not specified and `ErrorCauses` enum doesn't contain the `err.cause` value.
+     * Error is considered to be unexpected if `configuration.expectedErrors` is not specified
+     * (it means that all errors are unexpected).
      */
     unexpectedErrMsg?: string;
-    /**
-     * Expected error http status code. Default code is 500.
-     */
-    expectedErrStatusCode?: number;
     /**
      * Unexpected error http status code. Default code is 500.
      */
     unexpectedErrStatusCode?: number;
     /**
-     * Common http status code for both types oi errors. Default code is 500.
+     * Common http status code for both types of errors. Default code is 500.
      */
     statusCode?: number;
     /**
-     * Error cause. Used to determine whether the error is expected or not.
+     * Arrays of expected errors. Each element of this array contains another array with following elements:
+     * 1. Error type;
+     * 2. Status code. If not specified, `configuration.statusCode` is used;
+     * 3. Error message. If not specified, `err.message` is used.
      */
-    cause?: ErrorCause;
+    expectedErrors?: [type: ErrorTypes, statusCode?: number, errMsg?: string][];
     /**
-     * Determines whether errors should be outputed to the logger.
+     * Determines whether errors should be outputed to the logger. Default is true.
      */
     log?: boolean;
     /**
@@ -48,10 +38,8 @@ const DEFAULT_ERR_MSG = 'An error occured while perfoming the operation';
 const defaultConfig: Partial<Configuration> = {
     statusCode: 500,
     unexpectedErrMsg: DEFAULT_ERR_MSG,
-    cause: ErrorCause.UNKNOWN,
-    log: false,
+    log: true,
 };
-const possibleErrorCauses = Object.values(ErrorCause).filter((cause) => cause !== ErrorCause.UNKNOWN);
 
 /**
  * Handles errors
@@ -66,32 +54,20 @@ function errorsHandler(err: unknown, configuration: Configuration) {
     }
 
     if (err instanceof Error) {
-        if (config.expectedErrMsg === undefined) {
-            config.expectedErrMsg = err.message;
-        }
-
-        if (config.expectedErrStatusCode === undefined) {
-            config.expectedErrStatusCode = config.statusCode;
-        }
-
         if (config.unexpectedErrStatusCode === undefined) {
             config.unexpectedErrStatusCode = config.statusCode;
         }
 
-        if (config.cause !== ErrorCause.UNKNOWN) {
-            if (err.cause === config.cause) {
-                config.res.status(config.expectedErrStatusCode).json({ error: config.expectedErrMsg });
-            } else {
-                config.res.status(config.unexpectedErrStatusCode).json({ error: config.unexpectedErrMsg });
-            }
-
+        if (config.expectedErrors === undefined) {
+            config.res.status(config.unexpectedErrStatusCode).json({ error: config.unexpectedErrMsg });
             return;
         }
 
-        if (possibleErrorCauses.includes(err.cause as ErrorCause)) {
-            config.res.status(config.expectedErrStatusCode).json({ error: config.expectedErrMsg });
-        } else {
-            config.res.status(config.unexpectedErrStatusCode).json({ error: config.unexpectedErrMsg });
+        for (const [type, statusCode = config.statusCode, errMsg = err.message] of config.expectedErrors) {
+            if (type === (err.cause as ErrorTypes)) {
+                config.res.status(statusCode).json({ error: errMsg });
+                return;
+            }
         }
     }
 }

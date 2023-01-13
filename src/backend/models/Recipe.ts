@@ -1,10 +1,14 @@
 import db from 'backend/db';
 import {
+    BelongsToManyAddAssociationMixin,
     BelongsToManyGetAssociationsMixin,
+    BelongsToManySetAssociationsMixin,
     CreationOptional,
     DataTypes,
     ForeignKey,
+    HasManyAddAssociationsMixin,
     HasManyGetAssociationsMixin,
+    HasOneCreateAssociationMixin,
     HasOneGetAssociationMixin,
     InferAttributes,
     InferCreationAttributes,
@@ -17,23 +21,28 @@ import Nutrition from './Nutrition';
 import User from './User';
 
 export type RecipeAttrs = InferAttributes<Recipe>;
+export type RecipeCreationAttrs = InferCreationAttributes<Recipe>;
 
-class Recipe extends Model<RecipeAttrs, InferCreationAttributes<Recipe>> {
+class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare id: CreationOptional<number>;
     declare title: string;
-    declare pictureUrl: string;
-    declare description: string;
-    declare prepTime: number;
-    declare servings: number;
+    declare pictureUrl: CreationOptional<string>;
+    declare description: CreationOptional<string>;
+    declare prepTime: CreationOptional<number>;
+    declare servings: CreationOptional<number>;
     declare authorId: ForeignKey<User['id']>;
     declare categories?: NonAttribute<Category[]>;
     declare instructions?: NonAttribute<Instruction[]>;
-    declare nutrition?: NonAttribute<Nutrition>;
+    declare nutrition?: NonAttribute<Nutrition | null>;
 
     declare getCategories: BelongsToManyGetAssociationsMixin<Category>;
     declare getInstructions: HasManyGetAssociationsMixin<Instruction>;
     declare getNutrition: HasOneGetAssociationMixin<Nutrition>;
     declare getAuthor: HasOneGetAssociationMixin<User>;
+    declare createNutrition: HasOneCreateAssociationMixin<Nutrition>;
+    declare addInstructions: HasManyAddAssociationsMixin<Instruction, Instruction['id']>;
+    declare addCategory: BelongsToManyAddAssociationMixin<Category, Category['id']>;
+    declare setCategories: BelongsToManySetAssociationsMixin<Category, Category['id']>;
 }
 
 export const MAX_TITLE_LENGTH = 72;
@@ -52,20 +61,15 @@ Recipe.init(
             allowNull: false,
         },
         pictureUrl: DataTypes.TEXT,
-        description: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
+        description: DataTypes.TEXT,
         prepTime: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             validate: {
                 min: MIN_PREP_TIME,
             },
         },
         servings: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             validate: {
                 min: MIN_SERVINGS,
             },

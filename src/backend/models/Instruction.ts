@@ -35,10 +35,12 @@ Instruction.init(
         stepNumber: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            unique: 'compositeIndex',
         },
         recipeId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            unique: 'compositeIndex',
             references: {
                 model: Recipe,
                 key: 'id',

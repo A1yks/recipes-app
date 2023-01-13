@@ -1,4 +1,5 @@
 import { UserAttrs } from 'backend/models/User';
+import { ErrorTypes } from 'backend/types/errors';
 import errorsHandler from 'backend/utils/errorsHander';
 import { NextFunction } from 'express';
 
@@ -26,7 +27,7 @@ namespace PermissionsMiddleware {
                     errorsHandler(err, {
                         res,
                         unexpectedErrMsg: 'An unexpected error occured while checking user permissions',
-                        expectedErrStatusCode: 404,
+                        expectedErrors: [[ErrorTypes.PERMISSIONS_CALLBACK, 404]],
                     });
                 }
             }

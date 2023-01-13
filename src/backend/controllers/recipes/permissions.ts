@@ -1,6 +1,6 @@
 import { UserAttrs } from 'backend/models/User';
 import RecipesService from 'backend/services/recipes';
-import { ErrorCause } from 'backend/types/errors';
+import { ErrorTypes } from 'backend/types/errors';
 import { DeleteRecipeReq, EditRecipeReq } from './types';
 
 export async function checkUserPermissionsForOperationsWithRecipe(
@@ -11,7 +11,7 @@ export async function checkUserPermissionsForOperationsWithRecipe(
     const recipe = await RecipesService.getRecipe(recipeId);
 
     if (recipe === null) {
-        throw new Error('Recipe with given id does not exist', { cause: ErrorCause.PERMISSIONS_CALLBACK });
+        throw new Error('Recipe with given id does not exist', { cause: ErrorTypes.PERMISSIONS_CALLBACK });
     }
 
     return recipe.authorId === userId;
