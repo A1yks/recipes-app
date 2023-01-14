@@ -16,6 +16,9 @@ const db = new Sequelize({
     define: {
         timestamps: false,
     },
+    dialectOptions: {
+        decimalNumbers: true,
+    },
 });
 
 export async function connectToDB() {

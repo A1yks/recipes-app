@@ -58,17 +58,16 @@ function errorsHandler(err: unknown, configuration: Configuration) {
             config.unexpectedErrStatusCode = config.statusCode;
         }
 
-        if (config.expectedErrors === undefined) {
-            config.res.status(config.unexpectedErrStatusCode).json({ error: config.unexpectedErrMsg });
-            return;
-        }
-
-        for (const [type, statusCode = config.statusCode, errMsg = err.message] of config.expectedErrors) {
-            if (type === (err.cause as ErrorTypes)) {
-                config.res.status(statusCode).json({ error: errMsg });
-                return;
+        if (config.expectedErrors !== undefined) {
+            for (const [type, statusCode = config.statusCode, errMsg = err.message] of config.expectedErrors) {
+                if (type === (err.cause as ErrorTypes)) {
+                    config.res.status(statusCode).json({ error: errMsg });
+                    return;
+                }
             }
         }
+
+        config.res.status(config.unexpectedErrStatusCode).json({ error: config.unexpectedErrMsg });
     }
 }
 

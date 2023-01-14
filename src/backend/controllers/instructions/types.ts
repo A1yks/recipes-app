@@ -20,5 +20,5 @@ export type EditInstructionReq = {
 
 export type DeleteInstructionReq = {
     recipeId: RecipeAttrs['id'];
-    insturctionId: InstructionAttrs['id'];
+    instructionId: InstructionAttrs['id'];
 };

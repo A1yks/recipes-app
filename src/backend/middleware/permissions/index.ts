@@ -27,7 +27,7 @@ namespace PermissionsMiddleware {
                     errorsHandler(err, {
                         res,
                         unexpectedErrMsg: 'An unexpected error occured while checking user permissions',
-                        expectedErrors: [[ErrorTypes.PERMISSIONS_CALLBACK, 404]],
+                        expectedErrors: [[ErrorTypes.NO_PERMISSIONS, 404]],
                     });
                 }
             }

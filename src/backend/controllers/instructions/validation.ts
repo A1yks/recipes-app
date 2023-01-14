@@ -25,5 +25,5 @@ export const editInstructionSchema = Joi.object<EditInstructionReq>()
 
 export const deleteInstructionSchema = Joi.object<DeleteInstructionReq>().keys({
     recipeId: idSchema,
-    insturctionId: idSchema,
+    instructionId: idSchema,
 });

@@ -14,7 +14,7 @@ namespace NutritionController {
         } catch (err) {
             errorsHandler(err, {
                 res,
-                unexpectedErrMsg: 'An unexpecte error occured while creating nutrition data',
+                unexpectedErrMsg: 'An unexpected error occured while creating nutrition data',
             });
         }
     }
@@ -27,7 +27,7 @@ namespace NutritionController {
 
             if (nutrition === null) {
                 throw new Error('Nutrition with provided recipeId does not exist', {
-                    cause: ErrorTypes.NUTRITION_NOT_FOUND,
+                    cause: ErrorTypes.NOT_FOUND,
                 });
             }
 
@@ -36,7 +36,7 @@ namespace NutritionController {
             errorsHandler(err, {
                 res,
                 unexpectedErrMsg: 'An unexpecte error occured while obtaining the nutrition data',
-                expectedErrors: [[ErrorTypes.NUTRITION_NOT_FOUND, 404]],
+                expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
             });
         }
     }
@@ -49,7 +49,7 @@ namespace NutritionController {
 
             if (updatedNutrition === null) {
                 throw new Error('Nutrition with provided id does not exist', {
-                    cause: ErrorTypes.NUTRITION_NOT_FOUND,
+                    cause: ErrorTypes.NOT_FOUND,
                 });
             }
 
@@ -58,7 +58,7 @@ namespace NutritionController {
             errorsHandler(err, {
                 res,
                 unexpectedErrMsg: 'An unexpected error occured while editing the nutrition data',
-                expectedErrors: [[ErrorTypes.NUTRITION_NOT_FOUND, 404]],
+                expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
             });
         }
     }

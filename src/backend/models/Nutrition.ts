@@ -7,6 +7,7 @@ import {
     InferAttributes,
     InferCreationAttributes,
     Model,
+    ModelAttributeColumnOptions,
 } from 'sequelize';
 import Recipe from './Recipe';
 
@@ -28,7 +29,19 @@ class Nutrition extends Model<NutritionAttrs, InferCreationAttributes<Nutrition>
     declare getRecipe: HasOneGetAssociationMixin<Recipe>;
 }
 
-const decimalType = DataTypes.DECIMAL(8, 2);
+// Decimal values are returned as strings. Here strings are converted to numbers.
+const decimalType = (key: keyof NutritionAttrs): ModelAttributeColumnOptions<Nutrition> => ({
+    type: DataTypes.DECIMAL(8, 2),
+    get() {
+        const value = this.getDataValue(key);
+
+        if (typeof value === 'string') {
+            return parseFloat(value);
+        }
+
+        return value;
+    },
+});
 
 Nutrition.init(
     {
@@ -38,20 +51,21 @@ Nutrition.init(
             autoIncrement: true,
         },
         calories: {
-            type: decimalType,
+            ...decimalType('calories'),
             allowNull: false,
         },
-        totalFat: decimalType,
-        saturatedFat: decimalType,
-        cholesterol: decimalType,
-        sodium: decimalType,
-        potassium: decimalType,
-        totalCarbohydrate: decimalType,
-        sugars: decimalType,
-        protein: decimalType,
+        totalFat: decimalType('totalFat'),
+        saturatedFat: decimalType('saturatedFat'),
+        cholesterol: decimalType('cholesterol'),
+        sodium: decimalType('sodium'),
+        potassium: decimalType('potassium'),
+        totalCarbohydrate: decimalType('totalCarbohydrate'),
+        sugars: decimalType('sugars'),
+        protein: decimalType('protein'),
         recipeId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            unique: true,
             references: {
                 model: Recipe,
                 key: 'id',

@@ -23,7 +23,7 @@ namespace InstructionsController {
         const { recipeId } = req.params;
 
         try {
-            const instructions = InstructionsService.getInstructions(recipeId);
+            const instructions = await InstructionsService.getInstructions(recipeId);
 
             res.status(200).json({ data: instructions });
         } catch (err) {
@@ -43,37 +43,28 @@ namespace InstructionsController {
                 instructionId
             );
 
-            if (updatedInstruction === null) {
-                throw new Error('Instruction with provided id does not exist', {
-                    cause: ErrorTypes.INSTRUCTION_NOT_FOUND,
-                });
-            }
-
             res.status(200).json({ data: updatedInstruction });
         } catch (err) {
             errorsHandler(err, {
                 res,
                 unexpectedErrMsg: 'An unexpected error occured while editing the instruction',
-                expectedErrors: [[ErrorTypes.INSTRUCTION_NOT_FOUND, 404]],
+                expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
             });
         }
     }
 
     export async function deleteInstruction(req: Server.Request<DeleteInstructionReq>, res: Server.Response) {
-        const { insturctionId } = req.body;
+        const { instructionId } = req.body;
 
         try {
-            const deleted = await InstructionsService.deleteInstruction(insturctionId);
-
-            if (!deleted) {
-                throw new Error();
-            }
+            await InstructionsService.deleteInstruction(instructionId);
 
             res.status(204).send();
         } catch (err) {
             errorsHandler(err, {
                 res,
                 unexpectedErrMsg: 'An unexpecte error occured while deleting the instruction',
+                expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
             });
         }
     }

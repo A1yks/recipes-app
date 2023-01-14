@@ -28,6 +28,7 @@ Category.init(
         name: {
             type: DataTypes.STRING(32),
             allowNull: false,
+            unique: true,
         },
     },
     {

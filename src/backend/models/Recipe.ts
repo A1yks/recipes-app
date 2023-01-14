@@ -2,6 +2,7 @@ import db from 'backend/db';
 import {
     BelongsToManyAddAssociationMixin,
     BelongsToManyGetAssociationsMixin,
+    BelongsToManyRemoveAssociationMixin,
     BelongsToManySetAssociationsMixin,
     CreationOptional,
     DataTypes,
@@ -26,10 +27,10 @@ export type RecipeCreationAttrs = InferCreationAttributes<Recipe>;
 class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare id: CreationOptional<number>;
     declare title: string;
-    declare pictureUrl: CreationOptional<string>;
-    declare description: CreationOptional<string>;
-    declare prepTime: CreationOptional<number>;
-    declare servings: CreationOptional<number>;
+    declare pictureUrl: CreationOptional<string | null>;
+    declare description: CreationOptional<string | null>;
+    declare prepTime: CreationOptional<number | null>;
+    declare servings: CreationOptional<number | null>;
     declare authorId: ForeignKey<User['id']>;
     declare categories?: NonAttribute<Category[]>;
     declare instructions?: NonAttribute<Instruction[]>;
@@ -42,6 +43,7 @@ class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare createNutrition: HasOneCreateAssociationMixin<Nutrition>;
     declare addInstructions: HasManyAddAssociationsMixin<Instruction, Instruction['id']>;
     declare addCategory: BelongsToManyAddAssociationMixin<Category, Category['id']>;
+    declare removeCategory: BelongsToManyRemoveAssociationMixin<Category, Category['id']>;
     declare setCategories: BelongsToManySetAssociationsMixin<Category, Category['id']>;
 }
 

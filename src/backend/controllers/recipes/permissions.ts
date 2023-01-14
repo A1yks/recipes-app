@@ -11,7 +11,7 @@ export async function checkUserPermissionsForOperationsWithRecipe(
     const recipe = await RecipesService.getRecipe(recipeId);
 
     if (recipe === null) {
-        throw new Error('Recipe with given id does not exist', { cause: ErrorTypes.PERMISSIONS_CALLBACK });
+        throw new Error('Recipe with provided id does not exist', { cause: ErrorTypes.NO_PERMISSIONS });
     }
 
     return recipe.authorId === userId;

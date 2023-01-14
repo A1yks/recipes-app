@@ -20,10 +20,11 @@ namespace CategoriesController {
     }
 
     export async function getCategories(req: Server.Request<never, never, GetCategoriesReq>, res: Server.Response) {
-        const { categoryIds } = req.query;
+        const { categoryIds: categoryIdsString } = req.query;
 
         try {
-            const categories = await CategoriesService.getCaterories(categoryIds);
+            const categoryIds = categoryIdsString?.split(',').map((categoryId) => +categoryId);
+            const categories = await CategoriesService.getCategories(categoryIds);
 
             res.status(200).json({ data: categories });
         } catch (err) {
@@ -59,7 +60,7 @@ namespace CategoriesController {
             const updatedCategory = await CategoriesService.editCategoryName(categoryName, categoryId);
 
             if (updatedCategory === null) {
-                throw new Error('Category with provided id does not exist', { cause: ErrorTypes.CATEGORY_NOT_FOUND });
+                throw new Error('Category with provided id does not exist', { cause: ErrorTypes.NOT_FOUND });
             }
 
             res.status(200).json({ data: updatedCategory });
@@ -67,7 +68,7 @@ namespace CategoriesController {
             errorsHandler(err, {
                 res,
                 unexpectedErrMsg: 'An unexpected error occucred while editing the category',
-                expectedErrors: [[ErrorTypes.CATEGORY_NOT_FOUND, 404]],
+                expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
             });
         }
     }
@@ -79,7 +80,7 @@ namespace CategoriesController {
             const deleted = await CategoriesService.deleteCategory(categoryId);
 
             if (!deleted) {
-                throw new Error();
+                throw new Error('Category with provided id does not exist', { cause: ErrorTypes.DELETION_ERROR });
             }
 
             res.status(204).send();
@@ -87,6 +88,7 @@ namespace CategoriesController {
             errorsHandler(err, {
                 res,
                 unexpectedErrMsg: 'An unexpected error occured while deleting the category',
+                expectedErrors: [[ErrorTypes.DELETION_ERROR, 404]],
             });
         }
     }

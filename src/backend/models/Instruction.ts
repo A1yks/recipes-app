@@ -1,4 +1,5 @@
 import db from 'backend/db';
+import createUniqueDeferrable from 'backend/utils/createUniqueDeferrable';
 import {
     CreationOptional,
     DataTypes,
@@ -35,12 +36,10 @@ Instruction.init(
         stepNumber: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            unique: 'compositeIndex',
         },
         recipeId: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            unique: 'compositeIndex',
             references: {
                 model: Recipe,
                 key: 'id',
@@ -52,5 +51,7 @@ Instruction.init(
         tableName: 'instructions',
     }
 );
+
+createUniqueDeferrable(Instruction, ['recipeId', 'stepNumber']);
 
 export default Instruction;

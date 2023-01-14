@@ -1,7 +1,9 @@
 import RecipesController from 'backend/controllers/recipes';
 import { checkUserPermissionsForOperationsWithRecipe } from 'backend/controllers/recipes/permissions';
 import {
+    addCategoryToRecipeSchema,
     createRecipeSchema,
+    deleteCategoryFromRecipeSchema,
     deleteRecipeSchema,
     editRecipeSchema,
     getRecipeSchema,
@@ -27,7 +29,7 @@ router.get(
     RecipesController.getRecipe
 );
 
-router.get('/', ValidationMiddleware.validate(getRecipesSchema, { validateQuery: true }), RecipesController.getRecipe);
+router.get('/', ValidationMiddleware.validate(getRecipesSchema, { validateQuery: true }), RecipesController.getRecipes);
 
 router.delete(
     '/delete',
@@ -43,6 +45,22 @@ router.patch(
     ValidationMiddleware.validate(editRecipeSchema),
     PermissionsMiddleware.check(checkUserPermissionsForOperationsWithRecipe),
     RecipesController.editRecipe
+);
+
+router.post(
+    '/categories/add',
+    TokensMiddleware.verifyAcessToken,
+    ValidationMiddleware.validate(addCategoryToRecipeSchema),
+    PermissionsMiddleware.check(checkUserPermissionsForOperationsWithRecipe),
+    RecipesController.addCategoryToRecipe
+);
+
+router.delete(
+    '/categories/delete',
+    TokensMiddleware.verifyAcessToken,
+    ValidationMiddleware.validate(deleteCategoryFromRecipeSchema),
+    PermissionsMiddleware.check(checkUserPermissionsForOperationsWithRecipe),
+    RecipesController.deleteCategoryFromRecipe
 );
 
 export default router;

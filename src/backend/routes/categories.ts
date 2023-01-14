@@ -26,7 +26,7 @@ router.get(
 );
 
 router.get(
-    '/',
+    '/search',
     ValidationMiddleware.validate(searchCategoriesSchema, { validateQuery: true }),
     CategoriesController.searchCategories
 );

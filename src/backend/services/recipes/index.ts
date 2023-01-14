@@ -1,9 +1,12 @@
-import Category from 'backend/models/Category';
+import Category, { CategoryAttrs } from 'backend/models/Category';
 import Instruction from 'backend/models/Instruction';
 import Nutrition from 'backend/models/Nutrition';
 import Recipe from 'backend/models/Recipe';
+import RecipeCategory from 'backend/models/RecipeCategory';
 import { UserAttrs } from 'backend/models/User';
-import { IncludeOptions } from 'sequelize';
+import { ErrorTypes } from 'backend/types/errors';
+import { IncludeOptions, Op } from 'sequelize';
+import CategoriesService from '../categories';
 import { RecipeData } from './types';
 
 const includeArray: IncludeOptions[] = [
@@ -14,12 +17,15 @@ const includeArray: IncludeOptions[] = [
     {
         model: Instruction,
         as: 'instructions',
+        separate: true,
+        order: [['stepNumber', 'ASC']],
     },
     {
         model: Nutrition,
         as: 'nutrition',
     },
 ];
+const includeArrayRequired = includeArray.map((o) => ({ ...o, required: true }));
 
 namespace RecipesService {
     export async function createRecipe(recipeData: RecipeData, authorId: UserAttrs['id']) {
@@ -32,19 +38,44 @@ namespace RecipesService {
         });
     }
 
-    export async function getRecipes(limit: number, offset: number, findCompletedRecipes = true) {
-        const include: IncludeOptions[] = findCompletedRecipes
-            ? includeArray.map((o) => {
-                  o.required = true;
-                  return o;
-              })
-            : includeArray;
+    export async function getRecipes(limit?: number, offset?: number, findCompletedRecipes = true) {
+        if (findCompletedRecipes) {
+            return await Recipe.findAll({
+                where: {
+                    description: {
+                        [Op.not]: null,
+                    },
+                    pictureUrl: {
+                        [Op.not]: null,
+                    },
+                    prepTime: {
+                        [Op.not]: null,
+                    },
+                    servings: {
+                        [Op.not]: null,
+                    },
+                },
+                offset,
+                limit,
+                include: includeArrayRequired,
+            });
+        }
 
         return await Recipe.findAll({
             offset,
             limit,
-            include,
+            include: includeArray,
         });
+    }
+
+    export async function editRecipe(recipeData: Partial<RecipeData>, recipeId: Recipe['id']) {
+        const recipe = await Recipe.findByPk(recipeId);
+
+        if (recipe === null) {
+            return null;
+        }
+
+        return await recipe.update(recipeData);
     }
 
     export async function deleteRecipe(recipeId: Recipe['id']) {
@@ -53,14 +84,45 @@ namespace RecipesService {
         return deletedRows > 0;
     }
 
-    export async function editRecipe(recipeData: RecipeData, recipeId: Recipe['id']) {
-        const recipe = await Recipe.findByPk(recipeId);
+    export async function addCategoryToRecipe(categoryId: CategoryAttrs['id'], recipeId: Recipe['id']) {
+        const { category, recipe } = await getRecipeAndCategory(categoryId, recipeId);
+        const pairValue = await RecipeCategory.findOne({
+            where: {
+                categoryId: category.id,
+                recipeId: recipe.id,
+            },
+        });
 
-        if (recipe === null) {
-            return null;
+        if (pairValue !== null) {
+            throw new Error('Category with provided id has already been added to the recipe', {
+                cause: ErrorTypes.ALREADY_EXISTS,
+            });
         }
 
-        return await recipe.update(recipeData);
+        await recipe.addCategory(category);
+    }
+
+    export async function deleteCategoryFromRecipe(categoryId: CategoryAttrs['id'], recipeId: Recipe['id']) {
+        const { category, recipe } = await getRecipeAndCategory(categoryId, recipeId);
+
+        await recipe.removeCategory(category);
+    }
+
+    async function getRecipeAndCategory(categoryId: CategoryAttrs['id'], recipeId: Recipe['id']) {
+        const [category, recipe] = await Promise.all([
+            await CategoriesService.getCategory(categoryId),
+            await Recipe.findByPk(recipeId),
+        ]);
+
+        if (recipe === null) {
+            throw new Error('Recipe with provided id does not exist', { cause: ErrorTypes.NOT_FOUND });
+        }
+
+        if (category === null) {
+            throw new Error('Category with provided id does not exist', { cause: ErrorTypes.NOT_FOUND });
+        }
+
+        return { category, recipe };
     }
 }
 

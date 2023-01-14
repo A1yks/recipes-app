@@ -9,7 +9,7 @@ export const createCategorySchema = Joi.object<CreateCategoryReq>().keys({
 });
 
 export const getCategoriesSchema = Joi.object<GetCategoriesReq>().keys({
-    categoryIds: Joi.array().items(idSchema),
+    categoryIds: Joi.string().pattern(/(\d+,)*?(\d+)$/),
 });
 
 export const searchCategoriesSchema: Joi.ObjectSchema<SearchCategoriesReq> = createCategorySchema;

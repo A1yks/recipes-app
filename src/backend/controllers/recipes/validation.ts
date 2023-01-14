@@ -1,6 +1,7 @@
+import { idSchema } from 'backend/common/schemas';
 import { MAX_TITLE_LENGTH, MIN_PREP_TIME, MIN_SERVINGS } from 'backend/models/Recipe';
 import Joi from 'joi';
-import { CreateRecipeReq, GetRecipeReq, GetRecipesReq } from './types';
+import { AddCategoryToRecipeReq, CreateRecipeReq, EditRecipeReq, GetRecipeReq, GetRecipesReq } from './types';
 
 export const createRecipeSchema = Joi.object<CreateRecipeReq>().keys({
     title: Joi.string().min(3).max(MAX_TITLE_LENGTH),
@@ -13,7 +14,7 @@ export const createRecipeSchema = Joi.object<CreateRecipeReq>().keys({
 });
 
 export const getRecipeSchema = Joi.object<GetRecipeReq>().keys({
-    recipeId: Joi.number().required(),
+    recipeId: idSchema,
 });
 
 export const getRecipesSchema = Joi.object<GetRecipesReq>().keys({
@@ -23,4 +24,13 @@ export const getRecipesSchema = Joi.object<GetRecipesReq>().keys({
 
 export const deleteRecipeSchema = getRecipeSchema;
 
-export const editRecipeSchema = createRecipeSchema;
+export const editRecipeSchema = createRecipeSchema.append<EditRecipeReq>({
+    recipeId: idSchema,
+});
+
+export const addCategoryToRecipeSchema = Joi.object<AddCategoryToRecipeReq>().keys({
+    categoryId: idSchema,
+    recipeId: idSchema,
+});
+
+export const deleteCategoryFromRecipeSchema = addCategoryToRecipeSchema;

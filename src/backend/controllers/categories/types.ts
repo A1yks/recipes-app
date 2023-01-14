@@ -5,7 +5,7 @@ export type CreateCategoryReq = {
 };
 
 export type GetCategoriesReq = {
-    categoryIds?: CategoryAttrs['id'][];
+    categoryIds?: string;
 };
 
 export type SearchCategoriesReq = {
