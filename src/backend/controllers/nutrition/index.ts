@@ -23,7 +23,7 @@ namespace NutritionController {
         const { recipeId } = req.params;
 
         try {
-            const nutrition = await NutritionService.getNutrition(recipeId);
+            const nutrition = await NutritionService.getNutrition({ recipeId });
 
             if (nutrition === null) {
                 throw new Error('Nutrition with provided recipeId does not exist', {
@@ -35,7 +35,7 @@ namespace NutritionController {
         } catch (err) {
             errorsHandler(err, {
                 res,
-                unexpectedErrMsg: 'An unexpecte error occured while obtaining the nutrition data',
+                unexpectedErrMsg: 'An unexpected error occured while obtaining the nutrition data',
                 expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
             });
         }

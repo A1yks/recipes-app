@@ -3,10 +3,13 @@ import { ErrorTypes } from 'backend/types/errors';
 import errorsHandler from 'backend/utils/errorsHander';
 import { NextFunction } from 'express';
 
-type ValidationCallback = (userId: UserAttrs['id'], req: Server.Request) => boolean | Promise<boolean>;
+export type PermissionsValidationCallback = (
+    userId: UserAttrs['id'],
+    req: Server.Request
+) => boolean | Promise<boolean>;
 
 namespace PermissionsMiddleware {
-    export function check(callback: ValidationCallback) {
+    export function check(callback: PermissionsValidationCallback) {
         return function (req: Server.Request, res: Server.Response, next: NextFunction) {
             async function handler() {
                 const userId = req.userId;
@@ -27,7 +30,7 @@ namespace PermissionsMiddleware {
                     errorsHandler(err, {
                         res,
                         unexpectedErrMsg: 'An unexpected error occured while checking user permissions',
-                        expectedErrors: [[ErrorTypes.NO_PERMISSIONS, 404]],
+                        expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
                     });
                 }
             }

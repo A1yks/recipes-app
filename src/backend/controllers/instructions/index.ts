@@ -14,7 +14,7 @@ namespace InstructionsController {
         } catch (err) {
             errorsHandler(err, {
                 res,
-                unexpectedErrMsg: 'An unexpecte error occured while creating new instruction',
+                unexpectedErrMsg: 'An unexpected error occured while creating new instruction',
             });
         }
     }
@@ -35,13 +35,10 @@ namespace InstructionsController {
     }
 
     export async function editInstruction(req: Server.Request<EditInstructionReq>, res: Server.Response) {
-        const { instructionText, stepNumber, instructionId } = req.body;
+        const { text, stepNumber, instructionId } = req.body;
 
         try {
-            const updatedInstruction = await InstructionsService.editInstruction(
-                { text: instructionText, stepNumber },
-                instructionId
-            );
+            const updatedInstruction = await InstructionsService.editInstruction({ text, stepNumber }, instructionId);
 
             res.status(200).json({ data: updatedInstruction });
         } catch (err) {
@@ -54,16 +51,16 @@ namespace InstructionsController {
     }
 
     export async function deleteInstruction(req: Server.Request<DeleteInstructionReq>, res: Server.Response) {
-        const { instructionId } = req.body;
+        const { instructionId, recipeId } = req.body;
 
         try {
-            await InstructionsService.deleteInstruction(instructionId);
+            await InstructionsService.deleteInstruction(instructionId, recipeId);
 
             res.status(204).send();
         } catch (err) {
             errorsHandler(err, {
                 res,
-                unexpectedErrMsg: 'An unexpecte error occured while deleting the instruction',
+                unexpectedErrMsg: 'An unexpected error occured while deleting the instruction',
                 expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
             });
         }

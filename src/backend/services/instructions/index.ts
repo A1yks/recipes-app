@@ -1,5 +1,5 @@
 import db from 'backend/db';
-import Instruction from 'backend/models/Instruction';
+import Instruction, { InstructionAttrs } from 'backend/models/Instruction';
 import { RecipeAttrs } from 'backend/models/Recipe';
 import { ErrorTypes } from 'backend/types/errors';
 import { Deferrable, Op } from 'sequelize';
@@ -23,7 +23,7 @@ namespace InstructionsService {
     }
 
     export async function editInstruction(instructionData: EditInstructionData, instructionId: Instruction['id']) {
-        const { stepNumber } = instructionData;
+        const { stepNumber, text } = instructionData;
         const instruction = await Instruction.findByPk(instructionId);
         let anotherInstruction: Instruction | null = null;
 
@@ -44,6 +44,10 @@ namespace InstructionsService {
             instruction.stepNumber = stepNumber;
         }
 
+        if (text !== undefined) {
+            instruction.text = text;
+        }
+
         return await db.transaction({ deferrable: new Deferrable.SET_DEFERRED() }, async () => {
             const [updatedInstruction] = await Promise.all([instruction.save(), anotherInstruction?.save()]);
 
@@ -60,7 +64,11 @@ namespace InstructionsService {
         });
     }
 
-    export async function deleteInstruction(instructionId: Instruction['id']) {
+    export async function getInstruction(instructionData: Partial<InstructionAttrs>) {
+        return await Instruction.findOne({ where: instructionData });
+    }
+
+    export async function deleteInstruction(instructionId: Instruction['id'], recipeId: RecipeAttrs['id']) {
         const instruction = await Instruction.findByPk(instructionId);
 
         if (instruction === null) {
@@ -78,6 +86,7 @@ namespace InstructionsService {
                     },
                     {
                         where: {
+                            recipeId,
                             stepNumber: {
                                 [Op.gt]: stepNumberToDelete,
                             },

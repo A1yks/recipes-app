@@ -18,10 +18,10 @@ export const editInstructionSchema = Joi.object<EditInstructionReq>()
     .keys({
         recipeId: idSchema,
         instructionId: idSchema,
-        instructionText: instructionTextSchema,
+        text: instructionTextSchema,
         stepNumber: Joi.number().min(1),
     })
-    .or('instructionText', 'stepNumber');
+    .or('text', 'stepNumber');
 
 export const deleteInstructionSchema = Joi.object<DeleteInstructionReq>().keys({
     recipeId: idSchema,

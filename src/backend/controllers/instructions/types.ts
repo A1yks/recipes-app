@@ -14,7 +14,7 @@ export type GetInstructionsReq = {
 export type EditInstructionReq = {
     recipeId: RecipeAttrs['id'];
     instructionId: InstructionAttrs['id'];
-    instructionText?: InstructionAttrs['text'];
+    text?: InstructionAttrs['text'];
     stepNumber?: InstructionAttrs['stepNumber'];
 };
 

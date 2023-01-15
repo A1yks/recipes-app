@@ -110,7 +110,6 @@ namespace RecipesController {
                 unexpectedErrMsg: 'An unexpected error occured while adding the category to the recipe',
                 expectedErrors: [
                     [ErrorTypes.NOT_FOUND, 404],
-                    [ErrorTypes.NOT_FOUND, 404],
                     [ErrorTypes.ALREADY_EXISTS, 409],
                 ],
             });
@@ -124,7 +123,12 @@ namespace RecipesController {
         const { categoryId, recipeId } = req.body;
 
         try {
-            await RecipesService.deleteCategoryFromRecipe(categoryId, recipeId);
+            const deleted = await RecipesService.deleteCategoryFromRecipe(categoryId, recipeId);
+
+            if (!deleted) {
+                return res.status(400).json({ error: 'Category was not deleted' });
+            }
+
             res.status(204).send();
         } catch (err) {
             errorsHandler(err, {
@@ -132,8 +136,8 @@ namespace RecipesController {
                 unexpectedErrMsg: 'An unexpected error occured while adding the category to the recipe',
                 expectedErrors: [
                     [ErrorTypes.NOT_FOUND, 404],
-                    [ErrorTypes.NOT_FOUND, 404],
                     [ErrorTypes.ALREADY_EXISTS, 409],
+                    [ErrorTypes.DELETION_ERROR, 400],
                 ],
             });
         }

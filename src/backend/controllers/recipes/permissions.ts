@@ -3,7 +3,7 @@ import RecipesService from 'backend/services/recipes';
 import { ErrorTypes } from 'backend/types/errors';
 import { DeleteRecipeReq, EditRecipeReq } from './types';
 
-export async function checkUserPermissionsForOperationsWithRecipe(
+async function checkUserPermissionsForOperationsWithRecipe(
     userId: UserAttrs['id'],
     req: Server.Request<DeleteRecipeReq | EditRecipeReq>
 ) {
@@ -11,8 +11,10 @@ export async function checkUserPermissionsForOperationsWithRecipe(
     const recipe = await RecipesService.getRecipe(recipeId);
 
     if (recipe === null) {
-        throw new Error('Recipe with provided id does not exist', { cause: ErrorTypes.NO_PERMISSIONS });
+        throw new Error('Recipe with provided id does not exist', { cause: ErrorTypes.NOT_FOUND });
     }
 
     return recipe.authorId === userId;
 }
+
+export default checkUserPermissionsForOperationsWithRecipe;

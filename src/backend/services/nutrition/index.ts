@@ -1,4 +1,4 @@
-import Nutrition from 'backend/models/Nutrition';
+import Nutrition, { NutritionAttrs } from 'backend/models/Nutrition';
 import { RecipeAttrs } from 'backend/models/Recipe';
 import { NutritionData } from './types';
 
@@ -10,8 +10,8 @@ namespace NutritionService {
         });
     }
 
-    export async function getNutrition(recipeId: RecipeAttrs['id']) {
-        return await Nutrition.findOne({ where: { recipeId } });
+    export async function getNutrition(nutritionData: Partial<NutritionAttrs>) {
+        return await Nutrition.findOne({ where: nutritionData });
     }
 
     export async function editNutrition(nutritionData: Partial<NutritionData>, nutritionId: Nutrition['id']) {

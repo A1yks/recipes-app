@@ -5,7 +5,7 @@ import Recipe from 'backend/models/Recipe';
 import RecipeCategory from 'backend/models/RecipeCategory';
 import { UserAttrs } from 'backend/models/User';
 import { ErrorTypes } from 'backend/types/errors';
-import { IncludeOptions, Op } from 'sequelize';
+import { IncludeOptions, Op, UniqueConstraintError } from 'sequelize';
 import CategoriesService from '../categories';
 import { RecipeData } from './types';
 
@@ -85,44 +85,55 @@ namespace RecipesService {
     }
 
     export async function addCategoryToRecipe(categoryId: CategoryAttrs['id'], recipeId: Recipe['id']) {
-        const { category, recipe } = await getRecipeAndCategory(categoryId, recipeId);
-        const pairValue = await RecipeCategory.findOne({
-            where: {
-                categoryId: category.id,
-                recipeId: recipe.id,
-            },
-        });
+        try {
+            await checkRecipeAndCategoryExist(categoryId, recipeId);
+            await RecipeCategory.create({ categoryId, recipeId });
+        } catch (err) {
+            if (err instanceof UniqueConstraintError) {
+                throw new Error('Category with provided id has already been added to the recipe', {
+                    cause: ErrorTypes.ALREADY_EXISTS,
+                });
+            }
 
-        if (pairValue !== null) {
-            throw new Error('Category with provided id has already been added to the recipe', {
-                cause: ErrorTypes.ALREADY_EXISTS,
-            });
+            throw err;
         }
-
-        await recipe.addCategory(category);
     }
 
     export async function deleteCategoryFromRecipe(categoryId: CategoryAttrs['id'], recipeId: Recipe['id']) {
-        const { category, recipe } = await getRecipeAndCategory(categoryId, recipeId);
+        await checkRecipeAndCategoryExist(categoryId, recipeId);
 
-        await recipe.removeCategory(category);
+        const recipeCategory = await RecipeCategory.findOne({ where: { categoryId, recipeId } });
+
+        if (recipeCategory === null) {
+            throw new Error('Category with provided id does not belong to the recipe', {
+                cause: ErrorTypes.DELETION_ERROR,
+            });
+        }
+
+        const deletedRows = await RecipeCategory.destroy({ where: { categoryId, recipeId } });
+
+        return deletedRows > 0;
     }
 
-    async function getRecipeAndCategory(categoryId: CategoryAttrs['id'], recipeId: Recipe['id']) {
-        const [category, recipe] = await Promise.all([
-            await CategoriesService.getCategory(categoryId),
-            await Recipe.findByPk(recipeId),
+    export async function recipeExists(recipeId: Recipe['id']) {
+        const recipe = await getRecipe(recipeId);
+
+        return recipe !== null;
+    }
+
+    async function checkRecipeAndCategoryExist(categoryId: CategoryAttrs['id'], recipeId: Recipe['id']) {
+        const [categoryExists, recipeExists] = await Promise.all([
+            await CategoriesService.categoryExists(categoryId),
+            await RecipesService.recipeExists(recipeId),
         ]);
 
-        if (recipe === null) {
+        if (!recipeExists) {
             throw new Error('Recipe with provided id does not exist', { cause: ErrorTypes.NOT_FOUND });
         }
 
-        if (category === null) {
+        if (!categoryExists) {
             throw new Error('Category with provided id does not exist', { cause: ErrorTypes.NOT_FOUND });
         }
-
-        return { category, recipe };
     }
 }
 

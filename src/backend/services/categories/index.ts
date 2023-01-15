@@ -22,6 +22,12 @@ namespace CategoriesService {
         });
     }
 
+    export async function categoryExists(categoryId: Category['id']) {
+        const category = await getCategory(categoryId);
+
+        return category;
+    }
+
     export async function searchCategories(categoryName: Category['name']) {
         return await Category.findAll({
             where: {
