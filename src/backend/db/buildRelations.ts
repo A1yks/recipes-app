@@ -1,9 +1,11 @@
 import Category from 'backend/models/Category';
+import Ingridient from 'backend/models/Ingridient';
 import Instruction from 'backend/models/Instruction';
 import Nutrition from 'backend/models/Nutrition';
 import Rating from 'backend/models/Rating';
 import Recipe from 'backend/models/Recipe';
 import RecipeCategory from 'backend/models/RecipeCategory';
+import RecipePart from 'backend/models/RecipePart';
 import RecipePhoto from 'backend/models/RecipePhoto';
 import RefreshToken from 'backend/models/RefreshToken';
 import User from 'backend/models/User';
@@ -112,6 +114,28 @@ function buildRelations() {
 
     RecipePhoto.belongsTo(Recipe, {
         foreignKey: 'recipeId',
+        targetKey: 'id',
+    });
+
+    Recipe.hasMany(RecipePart, {
+        foreignKey: 'recipeId',
+        sourceKey: 'id',
+        as: 'parts',
+    });
+
+    RecipePart.belongsTo(Recipe, {
+        foreignKey: 'recipeId',
+        targetKey: 'id',
+    });
+
+    RecipePart.hasMany(Ingridient, {
+        foreignKey: 'partId',
+        sourceKey: 'id',
+        as: 'ingridients',
+    });
+
+    Ingridient.belongsTo(RecipePart, {
+        foreignKey: 'partId',
         targetKey: 'id',
     });
 }

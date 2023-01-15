@@ -87,6 +87,7 @@ Recipe.init(
     {
         sequelize: db,
         tableName: 'recipes',
+        timestamps: true,
     }
 );
 
