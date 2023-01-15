@@ -4,6 +4,7 @@ import Nutrition from 'backend/models/Nutrition';
 import Rating from 'backend/models/Rating';
 import Recipe from 'backend/models/Recipe';
 import RecipeCategory from 'backend/models/RecipeCategory';
+import RecipePhoto from 'backend/models/RecipePhoto';
 import RefreshToken from 'backend/models/RefreshToken';
 import User from 'backend/models/User';
 import UserInfo from 'backend/models/UserInfo';
@@ -100,6 +101,18 @@ function buildRelations() {
         foreignKey: 'authorId',
         targetKey: 'id',
         as: 'author',
+    });
+
+    Recipe.hasMany(RecipePhoto, {
+        foreignKey: 'recipeId',
+        sourceKey: 'id',
+        onDelete: 'CASCADE',
+        as: 'photos',
+    });
+
+    RecipePhoto.belongsTo(Recipe, {
+        foreignKey: 'recipeId',
+        targetKey: 'id',
     });
 }
 
