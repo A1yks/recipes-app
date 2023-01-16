@@ -30,7 +30,7 @@ RecipePhoto.init(
             },
         },
     },
-    { sequelize: db, tableName: 'recipe_photos' }
+    { sequelize: db, tableName: 'recipe_photos', timestamps: true }
 );
 
 export default RecipePhoto;

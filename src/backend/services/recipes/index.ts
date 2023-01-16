@@ -30,6 +30,7 @@ const includeArray: IncludeOptions[] = [
     {
         model: RecipePhoto,
         as: 'photos',
+        order: [['createdAt', 'ASC']],
     },
     {
         model: RecipePart,
