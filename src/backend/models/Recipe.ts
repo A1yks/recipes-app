@@ -20,6 +20,7 @@ import Category, { CategoryAttrs } from './Category';
 import Instruction, { InstructionAttrs } from './Instruction';
 import Nutrition, { NutritionAttrs } from './Nutrition';
 import { RecipePartAttrs } from './RecipePart';
+import { RecipePhotoAttrs } from './RecipePhoto';
 import User from './User';
 
 export type RecipeAttrs = InferAttributes<Recipe>;
@@ -37,6 +38,7 @@ class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare instructions?: NonAttribute<InstructionAttrs[]>;
     declare nutrition?: NonAttribute<NutritionAttrs | null>;
     declare parts?: NonAttribute<RecipePartAttrs[]>;
+    declare photos?: NonAttribute<RecipePhotoAttrs[]>;
 
     declare getCategories: BelongsToManyGetAssociationsMixin<Category>;
     declare getInstructions: HasManyGetAssociationsMixin<Instruction>;

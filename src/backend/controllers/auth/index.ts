@@ -12,7 +12,7 @@ namespace AuthController {
             const user = await UserService.getUser({ login });
 
             if (user === null) {
-                return res.status(404).json({ error: "The user with this login doesn't exist" });
+                return res.status(404).json({ error: "User with provided login doesn't exist" });
             }
 
             const tokens = await AuthService.login(user, password);

@@ -13,6 +13,8 @@ import PermissionsMiddleware from 'backend/middleware/permissions';
 import ValidationMiddleware from 'backend/middleware/schema-validation';
 import TokensMiddleware from 'backend/middleware/tokens';
 import { Router } from 'express';
+import recipePhotosRouter from './recipePhotos';
+import recipePartsRouter from './recipeParts';
 
 const router = Router();
 

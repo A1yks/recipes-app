@@ -1,6 +1,10 @@
 import { ErrorTypes } from 'backend/types/errors';
 import logger from './logger';
 
+type ErrorConstructor = Partial<typeof Error> & {
+    [x: string]: any;
+};
+
 type Configuration = {
     /**
      * Unexpected error message.
@@ -19,11 +23,11 @@ type Configuration = {
     statusCode?: number;
     /**
      * Arrays of expected errors. Each element of this array contains another array with following elements:
-     * 1. Error type;
+     * 1. Error type or error class;
      * 2. Status code. If not specified, `configuration.statusCode` is used;
      * 3. Error message. If not specified, `err.message` is used.
      */
-    expectedErrors?: [type: ErrorTypes, statusCode?: number, errMsg?: string][];
+    expectedErrors?: [type: ErrorTypes | ErrorConstructor, statusCode?: number, errMsg?: string][];
     /**
      * Determines whether errors should be outputed to the logger. Default is true.
      */
@@ -60,7 +64,7 @@ function errorsHandler(err: unknown, configuration: Configuration) {
 
         if (config.expectedErrors !== undefined) {
             for (const [type, statusCode = config.statusCode, errMsg = err.message] of config.expectedErrors) {
-                if (type === (err.cause as ErrorTypes)) {
+                if (type === (err.cause as ErrorTypes) || err instanceof (type as typeof Error)) {
                     config.res.status(statusCode).json({ error: errMsg });
                     return;
                 }

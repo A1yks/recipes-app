@@ -2,11 +2,11 @@ import db from 'backend/db';
 import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import Recipe from './Recipe';
 
-export type PhotoAttrs = InferAttributes<RecipePhoto>;
+export type RecipePhotoAttrs = InferAttributes<RecipePhoto>;
 
-class RecipePhoto extends Model<PhotoAttrs, InferCreationAttributes<RecipePhoto>> {
+class RecipePhoto extends Model<RecipePhotoAttrs, InferCreationAttributes<RecipePhoto>> {
     declare id: CreationOptional<number>;
-    declare url: string;
+    declare fileName: string;
     declare recipeId: ForeignKey<Recipe['id']>;
 }
 
@@ -17,7 +17,7 @@ RecipePhoto.init(
             primaryKey: true,
             autoIncrement: true,
         },
-        url: {
+        fileName: {
             type: DataTypes.TEXT,
             allowNull: false,
         },

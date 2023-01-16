@@ -5,6 +5,7 @@ import Nutrition from 'backend/models/Nutrition';
 import Recipe from 'backend/models/Recipe';
 import RecipeCategory from 'backend/models/RecipeCategory';
 import RecipePart from 'backend/models/RecipePart';
+import RecipePhoto from 'backend/models/RecipePhoto';
 import { UserAttrs } from 'backend/models/User';
 import { ErrorTypes } from 'backend/types/errors';
 import { IncludeOptions, Op, UniqueConstraintError } from 'sequelize';
@@ -25,6 +26,10 @@ const includeArray: IncludeOptions[] = [
     {
         model: Nutrition,
         as: 'nutrition',
+    },
+    {
+        model: RecipePhoto,
+        as: 'photos',
     },
     {
         model: RecipePart,
