@@ -1,3 +1,4 @@
+import { decimalType } from 'backend/common/dbTypes';
 import db from 'backend/db';
 import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import Recipe from './Recipe';
@@ -26,6 +27,9 @@ class Ingridient extends Model<IngridientAttrs, InferCreationAttributes<Ingridie
 
 export const MAX_INGRIDIENT_TEXT_LENGTH = 100;
 
+const ingridientUnitValues = Object.values(IngridientUnits);
+const ingirientDecimalType = decimalType<Ingridient>;
+
 Ingridient.init(
     {
         id: {
@@ -34,12 +38,19 @@ Ingridient.init(
             autoIncrement: true,
         },
         amount: {
-            type: DataTypes.NUMBER,
+            ...ingirientDecimalType('amount'),
             allowNull: false,
         },
         unit: {
-            type: DataTypes.ENUM(...Object.values(IngridientUnits)),
+            type: DataTypes.STRING(10),
             allowNull: false,
+            validate: {
+                checkUnits(value: IngridientUnits) {
+                    if (!ingridientUnitValues.includes(value)) {
+                        throw new Error('Invalid ingridient unit type');
+                    }
+                },
+            },
         },
         text: {
             type: DataTypes.STRING(MAX_INGRIDIENT_TEXT_LENGTH),

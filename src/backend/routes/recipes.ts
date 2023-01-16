@@ -1,5 +1,5 @@
 import RecipesController from 'backend/controllers/recipes';
-import checkUserPermissionsForOperationsWithRecipe from 'backend/controllers/recipes/permissions';
+import { checkUserPermissionsForOperationsWithRecipe } from 'backend/controllers/recipes/permissions';
 import {
     addCategoryToRecipeSchema,
     createRecipeSchema,

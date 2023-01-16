@@ -1,8 +1,10 @@
 import Category, { CategoryAttrs } from 'backend/models/Category';
+import Ingridient from 'backend/models/Ingridient';
 import Instruction from 'backend/models/Instruction';
 import Nutrition from 'backend/models/Nutrition';
 import Recipe from 'backend/models/Recipe';
 import RecipeCategory from 'backend/models/RecipeCategory';
+import RecipePart from 'backend/models/RecipePart';
 import { UserAttrs } from 'backend/models/User';
 import { ErrorTypes } from 'backend/types/errors';
 import { IncludeOptions, Op, UniqueConstraintError } from 'sequelize';
@@ -23,6 +25,16 @@ const includeArray: IncludeOptions[] = [
     {
         model: Nutrition,
         as: 'nutrition',
+    },
+    {
+        model: RecipePart,
+        as: 'parts',
+        include: [
+            {
+                model: Ingridient,
+                as: 'ingridients',
+            },
+        ],
     },
 ];
 const includeArrayRequired = includeArray.map((o) => ({ ...o, required: true }));

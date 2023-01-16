@@ -1,3 +1,5 @@
 {
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "clockify.tracking.workspaceId": "63c502b50bd863656c32bc4e",
+    "clockify.tracking.projectId": "63c50326d6bbe005e2b885be"
 }

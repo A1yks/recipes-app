@@ -10,6 +10,9 @@ import recipesRouter from './routes/recipes';
 import categoriesRouter from './routes/categories';
 import instructionsRouter from './routes/instructions';
 import nutritionRouter from './routes/nutrition';
+import recipePartsRouter from './routes/recipeParts';
+import ingridientsRouter from './routes/ingridients';
+import createSpecialIndexes from './db/createSpecialIndexes';
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -22,6 +25,7 @@ const port = process.env.PORT || 3000;
         buildRelations();
 
         await db.sync({ logging: false, alter: true });
+        await createSpecialIndexes();
         logger.log('All models were synchronized successfully');
 
         const nextApp = next({ dev });
@@ -39,6 +43,8 @@ const port = process.env.PORT || 3000;
             app.use('/api/categories', categoriesRouter);
             app.use('/api/instructions', instructionsRouter);
             app.use('/api/nutrition', nutritionRouter);
+            app.use('/api/recipe-parts', recipePartsRouter);
+            app.use('/api/ingridients', ingridientsRouter);
 
             app.all('*', (req, res) => {
                 return handle(req, res);

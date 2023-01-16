@@ -131,6 +131,7 @@ function buildRelations() {
     RecipePart.hasMany(Ingridient, {
         foreignKey: 'partId',
         sourceKey: 'id',
+        onDelete: 'CASCADE',
         as: 'ingridients',
     });
 

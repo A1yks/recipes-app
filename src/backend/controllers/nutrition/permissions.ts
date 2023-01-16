@@ -1,15 +1,12 @@
-import { UserAttrs } from 'backend/models/User';
 import NutritionService from 'backend/services/nutrition';
+import checkRecipePermissionHelper from 'backend/utils/checkRecipePermissionsHelper';
 import { EditNutritionReq } from './types';
 
-async function checkUserPermissionsForOperationsWithNutrition(
-    userId: UserAttrs['id'],
-    req: Server.Request<EditNutritionReq>
-) {
+async function checkNutritionPermissions(req: Server.Request<EditNutritionReq>) {
     const { nutritionId, recipeId } = req.body;
     const nutrition = await NutritionService.getNutrition({ id: nutritionId, recipeId });
 
     return nutrition !== null;
 }
 
-export default checkUserPermissionsForOperationsWithNutrition;
+export const checkUserPermissionsForOperationsWithNutrition = checkRecipePermissionHelper(checkNutritionPermissions);

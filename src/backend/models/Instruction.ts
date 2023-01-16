@@ -52,6 +52,4 @@ Instruction.init(
     }
 );
 
-createUniqueDeferrable(Instruction, ['recipeId', 'stepNumber']);
-
 export default Instruction;

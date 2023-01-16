@@ -20,6 +20,7 @@ namespace RecipesController {
 
             recipeJson.categories = [];
             recipeJson.instructions = [];
+            recipeJson.parts = [];
             recipeJson.nutrition = null;
 
             res.status(201).json({ data: recipeJson });

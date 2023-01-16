@@ -3,9 +3,9 @@ import RecipesService from 'backend/services/recipes';
 import { ErrorTypes } from 'backend/types/errors';
 import { DeleteRecipeReq, EditRecipeReq } from './types';
 
-async function checkUserPermissionsForOperationsWithRecipe(
-    userId: UserAttrs['id'],
-    req: Server.Request<DeleteRecipeReq | EditRecipeReq>
+export async function checkUserPermissionsForOperationsWithRecipe(
+    req: Server.Request<DeleteRecipeReq | EditRecipeReq>,
+    userId: UserAttrs['id']
 ) {
     const { recipeId } = req.body;
     const recipe = await RecipesService.getRecipe(recipeId);
@@ -16,5 +16,3 @@ async function checkUserPermissionsForOperationsWithRecipe(
 
     return recipe.authorId === userId;
 }
-
-export default checkUserPermissionsForOperationsWithRecipe;

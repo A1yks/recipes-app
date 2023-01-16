@@ -1,3 +1,4 @@
+import { decimalType } from 'backend/common/dbTypes';
 import db from 'backend/db';
 import {
     CreationOptional,
@@ -29,19 +30,7 @@ class Nutrition extends Model<NutritionAttrs, InferCreationAttributes<Nutrition>
     declare getRecipe: HasOneGetAssociationMixin<Recipe>;
 }
 
-// Decimal values are returned as strings. Here strings are converted to numbers.
-const decimalType = (key: keyof NutritionAttrs): ModelAttributeColumnOptions<Nutrition> => ({
-    type: DataTypes.DECIMAL(8, 2),
-    get() {
-        const value = this.getDataValue(key);
-
-        if (typeof value === 'string') {
-            return parseFloat(value);
-        }
-
-        return value;
-    },
-});
+const nutritionDecimalType = decimalType<Nutrition>;
 
 Nutrition.init(
     {
@@ -51,17 +40,17 @@ Nutrition.init(
             autoIncrement: true,
         },
         calories: {
-            ...decimalType('calories'),
+            ...nutritionDecimalType('calories'),
             allowNull: false,
         },
-        totalFat: decimalType('totalFat'),
-        saturatedFat: decimalType('saturatedFat'),
-        cholesterol: decimalType('cholesterol'),
-        sodium: decimalType('sodium'),
-        potassium: decimalType('potassium'),
-        totalCarbohydrate: decimalType('totalCarbohydrate'),
-        sugars: decimalType('sugars'),
-        protein: decimalType('protein'),
+        totalFat: nutritionDecimalType('totalFat'),
+        saturatedFat: nutritionDecimalType('saturatedFat'),
+        cholesterol: nutritionDecimalType('cholesterol'),
+        sodium: nutritionDecimalType('sodium'),
+        potassium: nutritionDecimalType('potassium'),
+        totalCarbohydrate: nutritionDecimalType('totalCarbohydrate'),
+        sugars: nutritionDecimalType('sugars'),
+        protein: nutritionDecimalType('protein'),
         recipeId: {
             type: DataTypes.INTEGER,
             allowNull: false,

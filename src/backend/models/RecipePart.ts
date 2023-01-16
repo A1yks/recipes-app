@@ -1,5 +1,14 @@
 import db from 'backend/db';
-import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
+import {
+    CreationOptional,
+    DataTypes,
+    ForeignKey,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+    NonAttribute,
+} from 'sequelize';
+import { IngridientAttrs } from './Ingridient';
 import Recipe from './Recipe';
 
 export type RecipePartAttrs = InferAttributes<RecipePart>;
@@ -8,6 +17,7 @@ class RecipePart extends Model<RecipePartAttrs, InferCreationAttributes<RecipePa
     declare id: CreationOptional<number>;
     declare partName: CreationOptional<string | null>;
     declare recipeId: ForeignKey<Recipe['id']>;
+    declare ingridients?: NonAttribute<IngridientAttrs[]>;
 }
 
 export const MAX_PART_NAME_LENGTH = 30;

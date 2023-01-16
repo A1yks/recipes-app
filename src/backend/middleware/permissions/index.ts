@@ -4,8 +4,8 @@ import errorsHandler from 'backend/utils/errorsHander';
 import { NextFunction } from 'express';
 
 export type PermissionsValidationCallback = (
-    userId: UserAttrs['id'],
-    req: Server.Request
+    req: Server.Request,
+    userId: UserAttrs['id']
 ) => boolean | Promise<boolean>;
 
 namespace PermissionsMiddleware {
@@ -19,12 +19,12 @@ namespace PermissionsMiddleware {
                 }
 
                 try {
-                    const result = await callback(userId, req);
+                    const result = await callback(req, userId);
 
                     if (result) {
                         next();
                     } else {
-                        res.status(403).json({ error: "You don't have permissions do perform this operation" });
+                        res.status(403).json({ error: "You don't have permissions to perform this operation" });
                     }
                 } catch (err) {
                     errorsHandler(err, {

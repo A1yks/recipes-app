@@ -16,9 +16,10 @@ import {
     Model,
     NonAttribute,
 } from 'sequelize';
-import Category from './Category';
-import Instruction from './Instruction';
-import Nutrition from './Nutrition';
+import Category, { CategoryAttrs } from './Category';
+import Instruction, { InstructionAttrs } from './Instruction';
+import Nutrition, { NutritionAttrs } from './Nutrition';
+import { RecipePartAttrs } from './RecipePart';
 import User from './User';
 
 export type RecipeAttrs = InferAttributes<Recipe>;
@@ -32,9 +33,10 @@ class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare prepTime: CreationOptional<number | null>;
     declare servings: CreationOptional<number | null>;
     declare authorId: ForeignKey<User['id']>;
-    declare categories?: NonAttribute<Category[]>;
-    declare instructions?: NonAttribute<Instruction[]>;
-    declare nutrition?: NonAttribute<Nutrition | null>;
+    declare categories?: NonAttribute<CategoryAttrs[]>;
+    declare instructions?: NonAttribute<InstructionAttrs[]>;
+    declare nutrition?: NonAttribute<NutritionAttrs | null>;
+    declare parts?: NonAttribute<RecipePartAttrs[]>;
 
     declare getCategories: BelongsToManyGetAssociationsMixin<Category>;
     declare getInstructions: HasManyGetAssociationsMixin<Instruction>;
