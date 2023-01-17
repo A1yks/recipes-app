@@ -2,8 +2,8 @@ import Category from 'backend/models/Category';
 import { Op } from 'sequelize';
 
 namespace CategoriesService {
-    export async function createCategory(categoryName: string) {
-        return await Category.create({ name: categoryName });
+    export async function createCategory(categoryName: string, photoName?: string) {
+        return await Category.create({ name: categoryName, photoName });
     }
 
     export async function getCategory(categoryId: Category['id']) {

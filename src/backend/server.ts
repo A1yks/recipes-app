@@ -15,6 +15,7 @@ import nutritionRouter from './routes/nutrition';
 import ingridientsRouter from './routes/ingridients';
 import recipePartsRouter from './routes/recipeParts';
 import recipePhotosRouter from './routes/recipePhotos';
+import { RECIPE_IMAGES_FOLDER_PATH } from './controllers/recipePhotos';
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -39,7 +40,7 @@ const port = process.env.PORT || 3000;
             app.use(express.json());
             app.use(cookieParser());
 
-            app.use('/static/images', express.static(path.resolve('./images')));
+            app.use('/static/images/recipes', express.static(RECIPE_IMAGES_FOLDER_PATH));
 
             app.use('/api/auth', authRouter);
             app.use('/api/tokens', tokensRouter);

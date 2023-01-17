@@ -1,8 +1,9 @@
+import { RECIPE_IMAGES_FOLDER_PATH } from 'backend/controllers/recipePhotos';
 import { RecipeAttrs } from 'backend/models/Recipe';
 import RecipePhoto, { RecipePhotoAttrs } from 'backend/models/RecipePhoto';
 import { ErrorTypes } from 'backend/types/errors';
 import path from 'path';
-import { deleteFileFromDisk, IMAGES_FOLDER_PATH } from './multer';
+import FileUploaderService from '../fileUploader';
 
 namespace RecipePhotosService {
     export async function addPhotos(fileNames: string[], recipeId: RecipeAttrs['id']) {
@@ -24,7 +25,7 @@ namespace RecipePhotosService {
         }
 
         await photo.destroy();
-        await deleteFileFromDisk(path.join(IMAGES_FOLDER_PATH, photo.fileName));
+        await FileUploaderService.deleteFileFromDisk(path.join(RECIPE_IMAGES_FOLDER_PATH, photo.fileName));
     }
 }
 

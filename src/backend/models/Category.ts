@@ -14,6 +14,7 @@ export type CategoryAttrs = InferAttributes<Category>;
 class Category extends Model<CategoryAttrs, InferCreationAttributes<Category>> {
     declare id: CreationOptional<number>;
     declare name: string;
+    declare photoName: CreationOptional<string | null>;
 
     declare addRecipe: BelongsToManyAddAssociationMixin<Recipe, Recipe['id']>;
 }
@@ -30,6 +31,7 @@ Category.init(
             allowNull: false,
             unique: true,
         },
+        photoName: DataTypes.TEXT,
     },
     {
         sequelize: db,

@@ -4,11 +4,24 @@ import { DeleteRecipePhotoReq, UploadRecipePhotoReq } from './types';
 import errorsHandler from 'backend/utils/errorsHander';
 import RecipePhotosService from 'backend/services/recipePhotos';
 import { uploadRecipePhotosSchema } from './validation';
-import { upload, deleteFilesFromDisk } from '../../services/recipePhotos/multer';
 import { checkUserPermissionsForOperationsWithRecipe } from '../recipes/permissions';
 import { ErrorTypes } from 'backend/types/errors';
+import FileUploaderService from 'backend/services/fileUploader';
+import path from 'path';
+
+export const RECIPE_IMAGES_FOLDER_PATH = path.resolve('./images/recipes');
 
 namespace RecipePhotosController {
+    const upload = FileUploaderService.createUploader({
+        destination: RECIPE_IMAGES_FOLDER_PATH,
+        fieldName: 'photos',
+        fileFilter: isValidMimeType,
+        maxFiles: 20,
+        limits: {
+            fileSize: 20 * 1024 * 1024,
+        },
+    });
+
     export async function uploadPhotos(req: Server.Request<UploadRecipePhotoReq>, res: Server.Response) {
         const errorStr = 'An unexpected error occured while uploading file(s) to the server';
 
@@ -32,7 +45,7 @@ namespace RecipePhotosController {
                 }
             } catch (err) {
                 if (files !== undefined) {
-                    await deleteFilesFromDisk(files);
+                    await FileUploaderService.deleteFilesFromDisk(files);
                 }
 
                 errorsHandler(err, {
@@ -60,6 +73,10 @@ namespace RecipePhotosController {
                 unexpectedErrMsg: 'An unexpected error occured while deleting the image',
             });
         }
+    }
+
+    function isValidMimeType(file: Express.Multer.File) {
+        return /^image\/.+$/.test(file.mimetype);
     }
 
     async function checkPermissions(req: Server.Request<UploadRecipePhotoReq>) {
