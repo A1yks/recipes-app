@@ -39,6 +39,7 @@ class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare nutrition?: NonAttribute<NutritionAttrs | null>;
     declare parts?: NonAttribute<RecipePartAttrs[]>;
     declare photos?: NonAttribute<RecipePhotoAttrs[]>;
+    declare rating?: NonAttribute<number>;
 
     declare getCategories: BelongsToManyGetAssociationsMixin<Category>;
     declare getInstructions: HasManyGetAssociationsMixin<Instruction>;

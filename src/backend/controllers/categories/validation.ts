@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { idSchema } from 'backend/common/schemas';
+import { idArrayStringPattern, idSchema } from 'backend/common/schemas';
 import { CreateCategoryReq, DeleteCategoryReq, EditCategoryReq, GetCategoriesReq, SearchCategoriesReq } from './types';
 
 const categoryNameSchema = Joi.string().min(2).max(20).required();
@@ -9,7 +9,7 @@ export const createCategorySchema = Joi.object<CreateCategoryReq>().keys({
 });
 
 export const getCategoriesSchema = Joi.object<GetCategoriesReq>().keys({
-    categoryIds: Joi.string().pattern(/(\d+,)*?(\d+)$/),
+    categoryIds: idArrayStringPattern,
 });
 
 export const searchCategoriesSchema: Joi.ObjectSchema<SearchCategoriesReq> = createCategorySchema;

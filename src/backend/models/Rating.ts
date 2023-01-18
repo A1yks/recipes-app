@@ -23,6 +23,9 @@ class Rating extends Model<RatingAttrs, InferCreationAttributes<Rating>> {
     declare getRecipe: HasOneGetAssociationMixin<Recipe>;
 }
 
+export const MIN_RATING_VALUE = 1;
+export const MAX_RATING_VALUE = 10;
+
 Rating.init(
     {
         id: {
@@ -35,8 +38,8 @@ Rating.init(
             defaultValue: 0,
             allowNull: false,
             validate: {
-                min: 1,
-                max: 10,
+                min: MIN_RATING_VALUE,
+                max: MAX_RATING_VALUE,
             },
         },
         userId: {

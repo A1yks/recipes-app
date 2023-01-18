@@ -2,6 +2,7 @@ import RecipesService from 'backend/services/recipes';
 import { ErrorTypes } from 'backend/types/errors';
 import errorsHandler from 'backend/utils/errorsHander';
 import logger from 'backend/utils/logger';
+import queryParamToArray from 'backend/utils/queryParamToArray';
 import {
     AddCategoryToRecipeReq,
     CreateRecipeReq,
@@ -47,12 +48,13 @@ namespace RecipesController {
     }
 
     export async function getRecipes(req: Server.Request<never, never, GetRecipesReq>, res: Server.Response) {
-        const { limit, offset } = req.query;
+        const { limit, offset, categoryIds: categoryIdsString } = req.query;
 
         try {
-            const recipes = await RecipesService.getRecipes(limit, offset);
+            const categoryIds = queryParamToArray(categoryIdsString);
+            const results = await RecipesService.getCompletedRecipes(limit, offset, categoryIds);
 
-            res.status(200).json({ data: recipes });
+            res.status(200).json({ data: results });
         } catch (err) {
             errorsHandler(err, {
                 res,

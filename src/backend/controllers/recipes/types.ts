@@ -10,6 +10,7 @@ export type GetRecipeReq = {
 export type GetRecipesReq = {
     limit?: number;
     offset?: number;
+    categoryIds?: string;
 };
 
 export type DeleteRecipeReq = GetRecipeReq;

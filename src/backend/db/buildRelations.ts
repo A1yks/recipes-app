@@ -1,4 +1,5 @@
 import Category from 'backend/models/Category';
+import Comment from 'backend/models/Comment';
 import Ingridient from 'backend/models/Ingridient';
 import Instruction from 'backend/models/Instruction';
 import Nutrition from 'backend/models/Nutrition';
@@ -46,6 +47,7 @@ function buildRelations() {
         through: RecipeCategory,
         foreignKey: 'categoryId',
         otherKey: 'recipeId',
+        as: 'recipes',
     });
 
     Recipe.hasMany(Instruction, {
@@ -69,7 +71,7 @@ function buildRelations() {
         foreignKey: 'recipeId',
         sourceKey: 'id',
         onDelete: 'CASCADE',
-        as: 'rating',
+        as: 'ratings',
     });
 
     Rating.belongsTo(User, {
@@ -78,7 +80,7 @@ function buildRelations() {
     });
 
     Rating.belongsTo(Recipe, {
-        foreignKey: 'ratingId',
+        foreignKey: 'recipeId',
         targetKey: 'id',
     });
 
@@ -138,6 +140,51 @@ function buildRelations() {
     Ingridient.belongsTo(RecipePart, {
         foreignKey: 'partId',
         targetKey: 'id',
+    });
+
+    Recipe.hasMany(Ingridient, {
+        foreignKey: 'recipeId',
+        sourceKey: 'id',
+    });
+
+    Ingridient.belongsTo(Recipe, {
+        foreignKey: 'recipeId',
+        targetKey: 'id',
+    });
+
+    Recipe.hasMany(Comment, {
+        foreignKey: 'recipeId',
+        sourceKey: 'id',
+        onDelete: 'CASCADE',
+        as: 'comments',
+    });
+
+    Comment.belongsTo(Recipe, {
+        foreignKey: 'recipeId',
+        targetKey: 'id',
+    });
+
+    User.hasMany(Comment, {
+        foreignKey: 'userId',
+        sourceKey: 'id',
+    });
+
+    Comment.belongsTo(User, {
+        foreignKey: 'userId',
+        targetKey: 'id',
+        as: 'author',
+    });
+
+    Comment.hasMany(Comment, {
+        foreignKey: 'parentId',
+        sourceKey: 'id',
+        as: 'replies',
+    });
+
+    Comment.belongsTo(Comment, {
+        foreignKey: 'parentId',
+        targetKey: 'id',
+        as: 'parent',
     });
 }
 

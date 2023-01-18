@@ -1,49 +1,12 @@
 import Category, { CategoryAttrs } from 'backend/models/Category';
-import Ingridient from 'backend/models/Ingridient';
-import Instruction from 'backend/models/Instruction';
-import Nutrition from 'backend/models/Nutrition';
-import Recipe from 'backend/models/Recipe';
+import Recipe, { RecipeAttrs } from 'backend/models/Recipe';
 import RecipeCategory from 'backend/models/RecipeCategory';
-import RecipePart from 'backend/models/RecipePart';
-import RecipePhoto from 'backend/models/RecipePhoto';
 import { UserAttrs } from 'backend/models/User';
 import { ErrorTypes } from 'backend/types/errors';
-import { IncludeOptions, Op, UniqueConstraintError } from 'sequelize';
+import { Op, UniqueConstraintError, WhereOptions } from 'sequelize';
 import CategoriesService from '../categories';
+import { attributes, includeArray, group, includeArrayRequired } from './searchOptions';
 import { RecipeData } from './types';
-
-const includeArray: IncludeOptions[] = [
-    {
-        model: Category,
-        as: 'categories',
-    },
-    {
-        model: Instruction,
-        as: 'instructions',
-        separate: true,
-        order: [['stepNumber', 'ASC']],
-    },
-    {
-        model: Nutrition,
-        as: 'nutrition',
-    },
-    {
-        model: RecipePhoto,
-        as: 'photos',
-        order: [['createdAt', 'ASC']],
-    },
-    {
-        model: RecipePart,
-        as: 'parts',
-        include: [
-            {
-                model: Ingridient,
-                as: 'ingridients',
-            },
-        ],
-    },
-];
-const includeArrayRequired = includeArray.map((o) => ({ ...o, required: true }));
 
 namespace RecipesService {
     export async function createRecipe(recipeData: RecipeData, authorId: UserAttrs['id']) {
@@ -52,37 +15,63 @@ namespace RecipesService {
 
     export async function getRecipe(recipeId: Recipe['id']) {
         return await Recipe.findByPk(recipeId, {
+            attributes,
             include: includeArray,
+            group,
         });
     }
 
-    export async function getRecipes(limit?: number, offset?: number, findCompletedRecipes = true) {
-        if (findCompletedRecipes) {
-            return await Recipe.findAll({
-                where: {
-                    description: {
-                        [Op.not]: null,
-                    },
-                    pictureUrl: {
-                        [Op.not]: null,
-                    },
-                    prepTime: {
-                        [Op.not]: null,
-                    },
-                    servings: {
-                        [Op.not]: null,
-                    },
-                },
-                offset,
-                limit,
-                include: includeArrayRequired,
-            });
+    export async function getCompletedRecipes(limit?: number, offset?: number, categoryIds?: CategoryAttrs['id'][]) {
+        const whereOptions: WhereOptions<RecipeAttrs> = {
+            description: {
+                [Op.not]: null,
+            },
+            pictureUrl: {
+                [Op.not]: null,
+            },
+            prepTime: {
+                [Op.not]: null,
+            },
+            servings: {
+                [Op.not]: null,
+            },
+        };
+
+        if (categoryIds !== undefined) {
+            whereOptions['$categories.id$'] = categoryIds;
         }
 
+        const [count, results] = await Promise.all([
+            Recipe.count({
+                where: whereOptions,
+                include: {
+                    model: Category,
+                    as: 'categories',
+                },
+            }),
+            Recipe.findAll({
+                where: whereOptions,
+                offset,
+                limit,
+                attributes: {
+                    include: attributes.include,
+                    exclude: ['createdAt', 'updatedAt'],
+                },
+                include: includeArrayRequired,
+                group,
+            }),
+        ]);
+
+        return { count, results };
+    }
+
+    export async function getAllRecipes(limit?: number, offset?: number) {
         return await Recipe.findAll({
             offset,
             limit,
+            attributes,
             include: includeArray,
+            group,
         });
     }
 

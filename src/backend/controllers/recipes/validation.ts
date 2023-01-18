@@ -1,4 +1,4 @@
-import { idSchema } from 'backend/common/schemas';
+import { idArrayStringPattern, idSchema } from 'backend/common/schemas';
 import { MAX_TITLE_LENGTH, MIN_PREP_TIME, MIN_SERVINGS } from 'backend/models/Recipe';
 import Joi from 'joi';
 import { AddCategoryToRecipeReq, CreateRecipeReq, EditRecipeReq, GetRecipeReq, GetRecipesReq } from './types';
@@ -20,6 +20,7 @@ export const getRecipeSchema = Joi.object<GetRecipeReq>().keys({
 export const getRecipesSchema = Joi.object<GetRecipesReq>().keys({
     limit: Joi.number().min(1),
     offset: Joi.number().min(0),
+    categoryIds: idArrayStringPattern,
 });
 
 export const deleteRecipeSchema = getRecipeSchema;
