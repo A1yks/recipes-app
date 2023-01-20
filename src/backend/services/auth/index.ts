@@ -1,8 +1,9 @@
 import UserService from '../user';
 import bcrypt from 'bcrypt';
 import TokensService from '../tokens';
-import User, { UserAttrs } from 'backend/models/User';
+import User from 'backend/models/User';
 import db from 'backend/db';
+import { UserCreationData } from './types';
 
 namespace AuthService {
     /**
@@ -26,7 +27,7 @@ namespace AuthService {
      * @param userData User registration data
      * @returns The new user, access and refresh tokens, or null if the user already exists
      */
-    export async function register(userData: UserAttrs) {
+    export async function register(userData: UserCreationData) {
         const userExists = await UserService.userExists(userData.login);
 
         if (userExists) {

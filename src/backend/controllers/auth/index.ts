@@ -24,7 +24,7 @@ namespace AuthController {
             const userInfo = await UserService.getUserInfo({ userId: user.id });
 
             setRefreshTokenCookie(res, tokens.refreshToken);
-            res.status(200).json({ data: { user: userInfo, accessToken: tokens.accessToken } });
+            res.status(200).json({ data: { user: { login, ...userInfo?.toJSON() }, accessToken: tokens.accessToken } });
         } catch (err) {
             res.status(500).json({ error: 'An unexpected error occurred while trying to logging into account' });
         }
@@ -32,6 +32,7 @@ namespace AuthController {
 
     export async function register(req: Server.Request<RegisterReq>, res: Server.Response) {
         try {
+            const { login } = req.body;
             const data = await AuthService.register(req.body);
 
             if (data === null) {
@@ -41,7 +42,7 @@ namespace AuthController {
             const { user, tokens } = data;
 
             setRefreshTokenCookie(res, tokens.refreshToken);
-            res.status(200).json({ data: { user, accessToken: tokens.accessToken } });
+            res.status(200).json({ data: { user: { login, ...user?.toJSON() }, accessToken: tokens.accessToken } });
         } catch (err) {
             logger.error(err);
             res.status(500).json({ error: 'An unexpected error occured while creating a new user' });

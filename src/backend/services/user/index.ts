@@ -1,5 +1,7 @@
 import User, { UserAttrs } from 'backend/models/User';
 import UserInfo, { UserInfoAttrs } from 'backend/models/UserInfo';
+import { WhereOptions } from 'sequelize';
+import { UserCreationData } from '../auth/types';
 
 namespace UserService {
     export async function userExists(login: string) {
@@ -8,7 +10,7 @@ namespace UserService {
         return user !== null;
     }
 
-    export async function createUser(userData: UserAttrs & Partial<UserInfoAttrs>) {
+    export async function createUser(userData: UserCreationData & Partial<UserInfoAttrs>) {
         const { login, password, ...userInfoData } = userData;
         const user = await User.create({ login, password });
 
@@ -22,12 +24,19 @@ namespace UserService {
     }
 
     export async function getUserInfo(userInfoDataOrUserInstance: User | Partial<UserInfoAttrs>, include = false) {
+        let whereOptions: WhereOptions<UserInfo> = {};
+
         if (userInfoDataOrUserInstance instanceof User) {
-            return await userInfoDataOrUserInstance.getInfo();
+            whereOptions.id = userInfoDataOrUserInstance.id;
+        } else {
+            whereOptions = userInfoDataOrUserInstance;
         }
 
         return await UserInfo.findOne({
-            where: userInfoDataOrUserInstance,
+            where: whereOptions,
+            attributes: {
+                exclude: ['userId'],
+            },
             include: include ? { model: User, as: 'user' } : undefined,
         });
     }
