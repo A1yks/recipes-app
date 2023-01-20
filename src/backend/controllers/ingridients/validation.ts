@@ -1,6 +1,6 @@
-import { idSchema } from 'backend/common/schemas';
-import { IngridientUnits, MAX_INGRIDIENT_TEXT_LENGTH } from 'backend/models/Ingridient';
-import { IngridientEditingData } from 'backend/services/ingridients/types';
+import { idSchema } from '@backend/common/schemas';
+import { IngridientUnits, MAX_INGRIDIENT_TEXT_LENGTH } from '@backend/models/Ingridient';
+import { IngridientEditingData } from '@backend/services/ingridients/types';
 import Joi from 'joi';
 import { CreateIngridientReq, DeleteIngridientReq, EditIngridientReq, GetIngridientsReq } from './types';
 

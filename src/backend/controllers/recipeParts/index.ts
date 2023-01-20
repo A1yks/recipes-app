@@ -1,6 +1,6 @@
-import RecipePartsService from 'backend/services/recipeParts';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
+import RecipePartsService from '@backend/services/recipeParts';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
 import { CreateRecipePartReq, DeleteRecipePartReq, EditRecipePartNameReq, GetRecipePartsReq } from './types';
 
 namespace RecipePartsController {

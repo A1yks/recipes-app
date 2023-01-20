@@ -1,8 +1,8 @@
-import Category, { CategoryAttrs } from 'backend/models/Category';
-import Recipe, { RecipeAttrs } from 'backend/models/Recipe';
-import RecipeCategory from 'backend/models/RecipeCategory';
-import { UserAttrs } from 'backend/models/User';
-import { ErrorTypes } from 'backend/types/errors';
+import Category, { CategoryAttrs } from '@backend/models/Category';
+import Recipe, { RecipeAttrs } from '@backend/models/Recipe';
+import RecipeCategory from '@backend/models/RecipeCategory';
+import { UserAttrs } from '@backend/models/User';
+import { ErrorTypes } from '@backend/types/errors';
 import { Op, UniqueConstraintError, WhereOptions } from 'sequelize';
 import CategoriesService from '../categories';
 import { attributes, includeArray, group, includeArrayRequired } from './searchOptions';

@@ -1,17 +1,17 @@
-import IngridientsController from 'backend/controllers/ingridients';
+import IngridientsController from '@backend/controllers/ingridients';
 import {
     checkUserPermissionsForCreateIngridientOperation,
     checkUserPermissionsForOperationsWithIngridients,
-} from 'backend/controllers/ingridients/permissions';
+} from '@backend/controllers/ingridients/permissions';
 import {
     createIngridientSchema,
     deleteIngridientSchema,
     editIngridientSchema,
     getIngridientsSchema,
-} from 'backend/controllers/ingridients/validation';
-import PermissionsMiddleware from 'backend/middleware/permissions';
-import ValidationMiddleware from 'backend/middleware/schema-validation';
-import TokensMiddleware from 'backend/middleware/tokens';
+} from '@backend/controllers/ingridients/validation';
+import PermissionsMiddleware from '@backend/middleware/permissions';
+import ValidationMiddleware from '@backend/middleware/schema-validation';
+import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 
 const router = Router();

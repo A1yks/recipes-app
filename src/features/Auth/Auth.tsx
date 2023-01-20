@@ -1,6 +1,6 @@
 import { LoadingButton } from '@mui/lab';
 import { Box, Grid, TextField, Typography, Link } from '@mui/material';
-import FullHeightContainer from 'components/FullHeightContainer';
+import FullHeightContainer from 'src/components/FullHeightContainer';
 import Image from 'next/image';
 import { AuthProps } from './Auth.types';
 import useAuth from './hooks/useAuth';

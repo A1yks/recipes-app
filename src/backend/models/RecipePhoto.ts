@@ -1,4 +1,4 @@
-import db from 'backend/db';
+import db from '@backend/db';
 import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import Recipe from './Recipe';
 

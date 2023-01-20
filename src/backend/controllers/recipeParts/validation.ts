@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import { idSchema } from 'backend/common/schemas';
-import { MAX_PART_NAME_LENGTH } from 'backend/models/RecipePart';
+import { idSchema } from '@backend/common/schemas';
+import { MAX_PART_NAME_LENGTH } from '@backend/models/RecipePart';
 import { CreateRecipePartReq, DeleteRecipePartReq, EditRecipePartNameReq, GetRecipePartsReq } from './types';
 
 const partNameSchema = Joi.string().min(3).max(MAX_PART_NAME_LENGTH).required();

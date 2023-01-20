@@ -1,6 +1,6 @@
-import IngridientsService from 'backend/services/ingridients';
-import RecipePartsService from 'backend/services/recipeParts';
-import checkRecipePermissionHelper from 'backend/utils/checkRecipePermissionsHelper';
+import IngridientsService from '@backend/services/ingridients';
+import RecipePartsService from '@backend/services/recipeParts';
+import checkRecipePermissionHelper from '@backend/utils/checkRecipePermissionsHelper';
 import { CreateIngridientReq, DeleteIngridientReq, EditIngridientReq } from './types';
 
 async function checkIngridientsCreatePermissions(req: Server.Request<CreateIngridientReq>) {

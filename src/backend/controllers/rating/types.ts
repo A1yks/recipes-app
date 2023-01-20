@@ -1,4 +1,4 @@
-import { RatingAttrs } from 'backend/models/Rating';
+import { RatingAttrs } from '@backend/models/Rating';
 
 export type RateRecipeReq = Omit<RatingAttrs, 'id' | 'userId'>;
 

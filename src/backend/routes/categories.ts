@@ -1,13 +1,13 @@
-import CategoriesController from 'backend/controllers/categories';
+import CategoriesController from '@backend/controllers/categories';
 import {
     createCategorySchema,
     deleteCategorySchema,
     editCategorySchema,
     getCategoriesSchema,
     searchCategoriesSchema,
-} from 'backend/controllers/categories/validation';
-import ValidationMiddleware from 'backend/middleware/schema-validation';
-import TokensMiddleware from 'backend/middleware/tokens';
+} from '@backend/controllers/categories/validation';
+import ValidationMiddleware from '@backend/middleware/schema-validation';
+import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 
 const router = Router();

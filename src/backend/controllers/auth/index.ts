@@ -1,7 +1,7 @@
-import AuthService from 'backend/services/auth';
-import UserService from 'backend/services/user';
-import logger from 'backend/utils/logger';
-import setRefreshTokenCookie from 'backend/utils/setRefreshTokenCookie';
+import AuthService from '@backend/services/auth';
+import UserService from '@backend/services/user';
+import logger from '@backend/utils/logger';
+import setRefreshTokenCookie from '@backend/utils/setRefreshTokenCookie';
 import { LoginReq, RegisterReq } from './types';
 
 namespace AuthController {

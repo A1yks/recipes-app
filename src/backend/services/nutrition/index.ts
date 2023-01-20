@@ -1,5 +1,5 @@
-import Nutrition, { NutritionAttrs } from 'backend/models/Nutrition';
-import { RecipeAttrs } from 'backend/models/Recipe';
+import Nutrition, { NutritionAttrs } from '@backend/models/Nutrition';
+import { RecipeAttrs } from '@backend/models/Recipe';
 import { NutritionData } from './types';
 
 namespace NutritionService {

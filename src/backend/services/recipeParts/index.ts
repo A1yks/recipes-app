@@ -1,7 +1,7 @@
-import Ingridient from 'backend/models/Ingridient';
-import { RecipeAttrs } from 'backend/models/Recipe';
-import RecipePart, { RecipePartAttrs } from 'backend/models/RecipePart';
-import { ErrorTypes } from 'backend/types/errors';
+import Ingridient from '@backend/models/Ingridient';
+import { RecipeAttrs } from '@backend/models/Recipe';
+import RecipePart, { RecipePartAttrs } from '@backend/models/RecipePart';
+import { ErrorTypes } from '@backend/types/errors';
 
 namespace RecipePartsService {
     export async function createPart(partName: RecipePart['partName'], recipeId: RecipeAttrs['id']) {

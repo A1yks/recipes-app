@@ -1,6 +1,6 @@
-import { IngridientAttrs } from 'backend/models/Ingridient';
-import { RecipeAttrs } from 'backend/models/Recipe';
-import { RecipePartAttrs } from 'backend/models/RecipePart';
+import { IngridientAttrs } from '@backend/models/Ingridient';
+import { RecipeAttrs } from '@backend/models/Recipe';
+import { RecipePartAttrs } from '@backend/models/RecipePart';
 
 export type CreateIngridientReq = {
     recipePartId: RecipePartAttrs['id'];

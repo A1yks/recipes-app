@@ -1,10 +1,10 @@
-import Category from 'backend/models/Category';
-import Ingridient from 'backend/models/Ingridient';
-import Instruction from 'backend/models/Instruction';
-import Nutrition from 'backend/models/Nutrition';
-import Rating from 'backend/models/Rating';
-import RecipePart from 'backend/models/RecipePart';
-import RecipePhoto from 'backend/models/RecipePhoto';
+import Category from '@backend/models/Category';
+import Ingridient from '@backend/models/Ingridient';
+import Instruction from '@backend/models/Instruction';
+import Nutrition from '@backend/models/Nutrition';
+import Rating from '@backend/models/Rating';
+import RecipePart from '@backend/models/RecipePart';
+import RecipePhoto from '@backend/models/RecipePhoto';
 import { IncludeOptions, Sequelize, FindAttributeOptions, GroupOption } from 'sequelize';
 
 export const includeArray: IncludeOptions[] = [

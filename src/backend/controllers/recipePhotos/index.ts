@@ -1,12 +1,12 @@
 import { MulterError } from 'multer';
 import { ValidationError } from 'joi';
 import { DeleteRecipePhotoReq, UploadRecipePhotoReq } from './types';
-import errorsHandler from 'backend/utils/errorsHander';
-import RecipePhotosService from 'backend/services/recipePhotos';
+import errorsHandler from '@backend/utils/errorsHander';
+import RecipePhotosService from '@backend/services/recipePhotos';
 import { uploadRecipePhotosSchema } from './validation';
 import { checkUserPermissionsForOperationsWithRecipe } from '../recipes/permissions';
-import { ErrorTypes } from 'backend/types/errors';
-import FileUploaderService from 'backend/services/fileUploader';
+import { ErrorTypes } from '@backend/types/errors';
+import FileUploaderService from '@backend/services/fileUploader';
 import path from 'path';
 
 export const RECIPE_IMAGES_FOLDER_PATH = path.resolve('./images/recipes');

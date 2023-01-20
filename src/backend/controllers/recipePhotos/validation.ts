@@ -1,4 +1,4 @@
-import { idSchema } from 'backend/common/schemas';
+import { idSchema } from '@backend/common/schemas';
 import Joi from 'joi';
 import { DeleteRecipePhotoReq, UploadRecipePhotoReq } from './types';
 

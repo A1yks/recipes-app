@@ -1,5 +1,5 @@
-import { RecipeAttrs } from 'backend/models/Recipe';
-import { RecipePartAttrs } from 'backend/models/RecipePart';
+import { RecipeAttrs } from '@backend/models/Recipe';
+import { RecipePartAttrs } from '@backend/models/RecipePart';
 
 export type CreateRecipePartReq = {
     recipeId: RecipeAttrs['id'];

@@ -1,5 +1,5 @@
-import RefreshToken, { RefreshTokenAttrs } from 'backend/models/RefreshToken';
-import User, { UserAttrs } from 'backend/models/User';
+import RefreshToken, { RefreshTokenAttrs } from '@backend/models/RefreshToken';
+import User, { UserAttrs } from '@backend/models/User';
 import jwt from 'jsonwebtoken';
 
 namespace TokensService {

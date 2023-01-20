@@ -1,8 +1,8 @@
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
-import { wrapper } from 'store';
+import { wrapper } from 'src/store';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { createEmotionCache, theme } from 'config';
+import { createEmotionCache, theme } from 'src/config';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 
 interface CustomAppProps extends AppProps {

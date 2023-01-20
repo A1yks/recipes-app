@@ -1,5 +1,5 @@
-import { CategoryAttrs } from 'backend/models/Category';
-import { RecipeAttrs, RecipeCreationAttrs } from 'backend/models/Recipe';
+import { CategoryAttrs } from '@backend/models/Category';
+import { RecipeAttrs, RecipeCreationAttrs } from '@backend/models/Recipe';
 
 export type CreateRecipeReq = Omit<RecipeCreationAttrs, 'id' | 'authorId'>;
 

@@ -15,7 +15,10 @@
         "jsx": "preserve",
         "incremental": true,
         "experimentalDecorators": true,
-        "baseUrl": "./src"
+        "baseUrl": "./",
+        "paths": {
+            "@backend/*": ["src/backend/*"]
+        }
     },
     "ts-node": {
         "files": true,

@@ -1,5 +1,5 @@
-import { UserAttrs } from 'backend/models/User';
-import { UserInfoAttrs } from 'backend/models/UserInfo';
+import { UserAttrs } from '@backend/models/User';
+import { UserInfoAttrs } from '@backend/models/UserInfo';
 
 export type LoginReq = Pick<UserAttrs, 'login' | 'password'>;
 

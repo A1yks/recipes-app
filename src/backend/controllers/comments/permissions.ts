@@ -1,5 +1,5 @@
-import { UserAttrs } from 'backend/models/User';
-import CommentsService from 'backend/services/comments';
+import { UserAttrs } from '@backend/models/User';
+import CommentsService from '@backend/services/comments';
 import { DeleteCommentReq, EditCommentReq } from './types';
 
 export async function checkUserPermissionsForOperationsWithComment(

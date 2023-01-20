@@ -1,6 +1,6 @@
-import InstructionsService from 'backend/services/instructions';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
+import InstructionsService from '@backend/services/instructions';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
 import { CreateInstructionReq, DeleteInstructionReq, EditInstructionReq, GetInstructionsReq } from './types';
 
 namespace InstructionsController {

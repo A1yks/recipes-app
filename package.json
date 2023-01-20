@@ -4,10 +4,10 @@
     "private": true,
     "scripts": {
         "dev": "cross-env NODE_OPTIONS='--inspect' nodemon --exec \"ts-node --project ./src/backend/tsconfig.json src/backend/index.ts\"",
-        "build:server": "tsc --project ./src/backend/tsconfig.json && tsc-alias -p ./tsconfig.base.json --debug",
+        "build:server": "tsc --project ./src/backend/tsconfig.json && tsc-alias -p ./src/backend/tsconfig.json",
         "build:next": "next build",
         "build": "npm run build:next && npm run build:server",
-        "start": "cross-env NODE_ENV=production node .next/production-server/server.js",
+        "start": "cross-env NODE_ENV=production node .next/production-server/index.js",
         "lint": "next lint"
     },
     "dependencies": {

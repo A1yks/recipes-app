@@ -1,6 +1,6 @@
-import RatingService from 'backend/services/rating';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
+import RatingService from '@backend/services/rating';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
 import { DeleteRatingReq, EditRatingReq, RateRecipeReq } from './types';
 
 namespace RatingController {

@@ -1,5 +1,5 @@
-import { LoginReq, RegisterReq } from 'backend/controllers/auth/types';
-import { UserInfoAttrs } from 'backend/models/UserInfo';
+import { LoginReq, RegisterReq } from '@backend/controllers/auth/types';
+import { UserInfoAttrs } from '@backend/models/UserInfo';
 
 type LoginData = { type: 'login' } & LoginReq;
 type RegisterData = { type: 'register' } & RegisterReq;

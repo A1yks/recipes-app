@@ -3,7 +3,7 @@ import path from 'path';
 import { FileUploaderConfiguration } from './types';
 import { v4 as uuid } from 'uuid';
 import fs from 'fs/promises';
-import logger from 'backend/utils/logger';
+import logger from '@backend/utils/logger';
 
 namespace FileUploaderService {
     export async function deleteFilesFromDisk(files: Express.Multer.File[]) {

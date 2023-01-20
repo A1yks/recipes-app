@@ -1,5 +1,5 @@
-import { idSchema } from 'backend/common/schemas';
-import { MAX_RATING_VALUE, MIN_RATING_VALUE } from 'backend/models/Rating';
+import { idSchema } from '@backend/common/schemas';
+import { MAX_RATING_VALUE, MIN_RATING_VALUE } from '@backend/models/Rating';
 import Joi from 'joi';
 import { DeleteRatingReq, EditRatingReq, RateRecipeReq } from './types';
 

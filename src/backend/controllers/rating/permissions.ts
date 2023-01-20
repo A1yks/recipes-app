@@ -1,5 +1,5 @@
-import { UserAttrs } from 'backend/models/User';
-import RatingService from 'backend/services/rating';
+import { UserAttrs } from '@backend/models/User';
+import RatingService from '@backend/services/rating';
 import { DeleteRatingReq, EditRatingReq } from './types';
 
 export async function checkUserPermissionsForOperationsWithRating(

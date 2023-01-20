@@ -1,8 +1,8 @@
-import RecipesService from 'backend/services/recipes';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
-import logger from 'backend/utils/logger';
-import queryParamToArray from 'backend/utils/queryParamToArray';
+import RecipesService from '@backend/services/recipes';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
+import logger from '@backend/utils/logger';
+import queryParamToArray from '@backend/utils/queryParamToArray';
 import {
     AddCategoryToRecipeReq,
     CreateRecipeReq,

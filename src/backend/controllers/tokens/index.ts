@@ -1,5 +1,5 @@
-import TokensService from 'backend/services/tokens';
-import setRefreshTokenCookie from 'backend/utils/setRefreshTokenCookie';
+import TokensService from '@backend/services/tokens';
+import setRefreshTokenCookie from '@backend/utils/setRefreshTokenCookie';
 
 namespace TokensController {
     export function sendVerifiedResponse(req: Server.Request, res: Server.Response) {

@@ -1,6 +1,6 @@
-import CommentsService from 'backend/services/comments';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
+import CommentsService from '@backend/services/comments';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
 import { CreateCommentReq, DeleteCommentReq, EditCommentReq, GetCommentsReq } from './types';
 
 namespace CommentsController {

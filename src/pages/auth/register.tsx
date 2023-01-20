@@ -1,4 +1,4 @@
-import Auth from 'features/Auth';
+import Auth from 'src/features/Auth';
 import Head from 'next/head';
 
 function Register() {

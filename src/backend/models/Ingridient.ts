@@ -1,5 +1,5 @@
-import { decimalType } from 'backend/common/dbTypes';
-import db from 'backend/db';
+import { decimalType } from '@backend/common/dbTypes';
+import db from '@backend/db';
 import { CreationOptional, DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import Recipe from './Recipe';
 import RecipePart from './RecipePart';

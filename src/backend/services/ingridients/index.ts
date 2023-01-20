@@ -1,5 +1,5 @@
-import Ingridient, { IngridientAttrs } from 'backend/models/Ingridient';
-import { ErrorTypes } from 'backend/types/errors';
+import Ingridient, { IngridientAttrs } from '@backend/models/Ingridient';
+import { ErrorTypes } from '@backend/types/errors';
 import { IngridientCreationData, IngridientEditingData } from './types';
 
 namespace IngridientsService {

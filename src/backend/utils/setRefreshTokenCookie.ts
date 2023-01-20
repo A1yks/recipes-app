@@ -1,4 +1,4 @@
-import RefreshToken from 'backend/models/RefreshToken';
+import RefreshToken from '@backend/models/RefreshToken';
 
 function setRefreshTokenCookie(res: Server.Response, refreshToken: string) {
     res.cookie('refreshToken', refreshToken, {

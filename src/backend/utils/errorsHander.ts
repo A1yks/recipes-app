@@ -1,4 +1,4 @@
-import { ErrorTypes } from 'backend/types/errors';
+import { ErrorTypes } from '@backend/types/errors';
 import logger from './logger';
 
 type ErrorConstructor = Partial<typeof Error> & {

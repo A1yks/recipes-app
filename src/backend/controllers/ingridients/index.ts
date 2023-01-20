@@ -1,6 +1,6 @@
-import IngridientsService from 'backend/services/ingridients';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
+import IngridientsService from '@backend/services/ingridients';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
 import { CreateIngridientReq, DeleteIngridientReq, EditIngridientReq, GetIngridientsReq } from './types';
 
 namespace IngridientsController {

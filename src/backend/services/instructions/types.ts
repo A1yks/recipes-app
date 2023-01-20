@@ -1,4 +1,4 @@
-import { InstructionAttrs } from 'backend/models/Instruction';
+import { InstructionAttrs } from '@backend/models/Instruction';
 
 export type EditInstructionData = {
     text?: InstructionAttrs['text'];

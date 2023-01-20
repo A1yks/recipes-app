@@ -1,6 +1,6 @@
-import { UserAttrs } from 'backend/models/User';
-import RecipesService from 'backend/services/recipes';
-import { ErrorTypes } from 'backend/types/errors';
+import { UserAttrs } from '@backend/models/User';
+import RecipesService from '@backend/services/recipes';
+import { ErrorTypes } from '@backend/types/errors';
 import { DeleteRecipeReq, EditRecipeReq } from './types';
 
 export async function checkUserPermissionsForOperationsWithRecipe(

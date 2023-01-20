@@ -1,9 +1,9 @@
-import RatingController from 'backend/controllers/rating';
-import { checkUserPermissionsForOperationsWithRating } from 'backend/controllers/rating/permissions';
-import { deleteRatingSchema, editRatingSchema, rateRecipeSchema } from 'backend/controllers/rating/validation';
-import PermissionsMiddleware from 'backend/middleware/permissions';
-import ValidationMiddleware from 'backend/middleware/schema-validation';
-import TokensMiddleware from 'backend/middleware/tokens';
+import RatingController from '@backend/controllers/rating';
+import { checkUserPermissionsForOperationsWithRating } from '@backend/controllers/rating/permissions';
+import { deleteRatingSchema, editRatingSchema, rateRecipeSchema } from '@backend/controllers/rating/validation';
+import PermissionsMiddleware from '@backend/middleware/permissions';
+import ValidationMiddleware from '@backend/middleware/schema-validation';
+import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 
 const router = Router();

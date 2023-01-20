@@ -1,7 +1,7 @@
-import db from 'backend/db';
-import Instruction, { InstructionAttrs } from 'backend/models/Instruction';
-import { RecipeAttrs } from 'backend/models/Recipe';
-import { ErrorTypes } from 'backend/types/errors';
+import db from '@backend/db';
+import Instruction, { InstructionAttrs } from '@backend/models/Instruction';
+import { RecipeAttrs } from '@backend/models/Recipe';
+import { ErrorTypes } from '@backend/types/errors';
 import { Deferrable, Op } from 'sequelize';
 import { EditInstructionData } from './types';
 

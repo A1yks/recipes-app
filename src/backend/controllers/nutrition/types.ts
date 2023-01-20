@@ -1,5 +1,5 @@
-import { NutritionAttrs } from 'backend/models/Nutrition';
-import { RecipeAttrs } from 'backend/models/Recipe';
+import { NutritionAttrs } from '@backend/models/Nutrition';
+import { RecipeAttrs } from '@backend/models/Recipe';
 
 export type CreateNutritionReq = {
     recipeId: RecipeAttrs['id'];

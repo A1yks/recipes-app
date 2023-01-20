@@ -1,4 +1,4 @@
-import db from 'backend/db';
+import db from '@backend/db';
 import { DataTypes, ForeignKey, InferAttributes, InferCreationAttributes, Model } from 'sequelize';
 import Category from './Category';
 import Recipe from './Recipe';

@@ -1,14 +1,14 @@
-import CommentsController from 'backend/controllers/comments';
-import { checkUserPermissionsForOperationsWithComment } from 'backend/controllers/comments/permissions';
+import CommentsController from '@backend/controllers/comments';
+import { checkUserPermissionsForOperationsWithComment } from '@backend/controllers/comments/permissions';
 import {
     createCommentSchema,
     deleteCommentSchema,
     editCommentSchema,
     getCommentsSchema,
-} from 'backend/controllers/comments/validation';
-import PermissionsMiddleware from 'backend/middleware/permissions';
-import ValidationMiddleware from 'backend/middleware/schema-validation';
-import TokensMiddleware from 'backend/middleware/tokens';
+} from '@backend/controllers/comments/validation';
+import PermissionsMiddleware from '@backend/middleware/permissions';
+import ValidationMiddleware from '@backend/middleware/schema-validation';
+import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 
 const router = Router();

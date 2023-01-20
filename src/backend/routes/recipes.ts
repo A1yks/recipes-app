@@ -1,5 +1,5 @@
-import RecipesController from 'backend/controllers/recipes';
-import { checkUserPermissionsForOperationsWithRecipe } from 'backend/controllers/recipes/permissions';
+import RecipesController from '@backend/controllers/recipes';
+import { checkUserPermissionsForOperationsWithRecipe } from '@backend/controllers/recipes/permissions';
 import {
     addCategoryToRecipeSchema,
     createRecipeSchema,
@@ -8,10 +8,10 @@ import {
     editRecipeSchema,
     getRecipeSchema,
     getRecipesSchema,
-} from 'backend/controllers/recipes/validation';
-import PermissionsMiddleware from 'backend/middleware/permissions';
-import ValidationMiddleware from 'backend/middleware/schema-validation';
-import TokensMiddleware from 'backend/middleware/tokens';
+} from '@backend/controllers/recipes/validation';
+import PermissionsMiddleware from '@backend/middleware/permissions';
+import ValidationMiddleware from '@backend/middleware/schema-validation';
+import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 import recipePhotosRouter from './recipePhotos';
 import recipePartsRouter from './recipeParts';

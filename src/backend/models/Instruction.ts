@@ -1,5 +1,5 @@
-import db from 'backend/db';
-import createUniqueDeferrable from 'backend/utils/createUniqueDeferrable';
+import db from '@backend/db';
+import createUniqueDeferrable from '@backend/utils/createUniqueDeferrable';
 import {
     CreationOptional,
     DataTypes,

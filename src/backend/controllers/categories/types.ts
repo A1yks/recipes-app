@@ -1,4 +1,4 @@
-import { CategoryAttrs } from 'backend/models/Category';
+import { CategoryAttrs } from '@backend/models/Category';
 
 export type CreateCategoryReq = {
     categoryName: CategoryAttrs['name'];

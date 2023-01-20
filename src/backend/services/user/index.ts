@@ -1,5 +1,5 @@
-import User, { UserAttrs } from 'backend/models/User';
-import UserInfo, { UserInfoAttrs } from 'backend/models/UserInfo';
+import User, { UserAttrs } from '@backend/models/User';
+import UserInfo, { UserInfoAttrs } from '@backend/models/UserInfo';
 import { WhereOptions } from 'sequelize';
 import { UserCreationData } from '../auth/types';
 

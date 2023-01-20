@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
-import { authAPI } from 'services/auth';
+import { authAPI } from 'src/services/auth';
 import authReducer from './reducers/auth';
 
 const makeStore = () =>

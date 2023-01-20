@@ -8,7 +8,7 @@ import {
     HasOneGetAssociationMixin,
 } from 'sequelize';
 import User from './User';
-import db from 'backend/db';
+import db from '@backend/db';
 
 export type RefreshTokenAttrs = InferAttributes<RefreshToken>;
 

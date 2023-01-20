@@ -1,7 +1,7 @@
-import { RECIPE_IMAGES_FOLDER_PATH } from 'backend/controllers/recipePhotos';
-import { RecipeAttrs } from 'backend/models/Recipe';
-import RecipePhoto, { RecipePhotoAttrs } from 'backend/models/RecipePhoto';
-import { ErrorTypes } from 'backend/types/errors';
+import { RECIPE_IMAGES_FOLDER_PATH } from '@backend/controllers/recipePhotos';
+import { RecipeAttrs } from '@backend/models/Recipe';
+import RecipePhoto, { RecipePhotoAttrs } from '@backend/models/RecipePhoto';
+import { ErrorTypes } from '@backend/types/errors';
 import path from 'path';
 import FileUploaderService from '../fileUploader';
 

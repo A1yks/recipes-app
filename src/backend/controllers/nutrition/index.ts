@@ -1,6 +1,6 @@
-import NutritionService from 'backend/services/nutrition';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
+import NutritionService from '@backend/services/nutrition';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
 import { CreateNutritionReq, EditNutritionReq, GetNutritionReq } from './types';
 
 namespace NutritionController {

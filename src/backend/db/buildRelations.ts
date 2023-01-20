@@ -1,16 +1,16 @@
-import Category from 'backend/models/Category';
-import Comment from 'backend/models/Comment';
-import Ingridient from 'backend/models/Ingridient';
-import Instruction from 'backend/models/Instruction';
-import Nutrition from 'backend/models/Nutrition';
-import Rating from 'backend/models/Rating';
-import Recipe from 'backend/models/Recipe';
-import RecipeCategory from 'backend/models/RecipeCategory';
-import RecipePart from 'backend/models/RecipePart';
-import RecipePhoto from 'backend/models/RecipePhoto';
-import RefreshToken from 'backend/models/RefreshToken';
-import User from 'backend/models/User';
-import UserInfo from 'backend/models/UserInfo';
+import Category from '@backend/models/Category';
+import Comment from '@backend/models/Comment';
+import Ingridient from '@backend/models/Ingridient';
+import Instruction from '@backend/models/Instruction';
+import Nutrition from '@backend/models/Nutrition';
+import Rating from '@backend/models/Rating';
+import Recipe from '@backend/models/Recipe';
+import RecipeCategory from '@backend/models/RecipeCategory';
+import RecipePart from '@backend/models/RecipePart';
+import RecipePhoto from '@backend/models/RecipePhoto';
+import RefreshToken from '@backend/models/RefreshToken';
+import User from '@backend/models/User';
+import UserInfo from '@backend/models/UserInfo';
 
 function buildRelations() {
     User.hasOne(RefreshToken, {

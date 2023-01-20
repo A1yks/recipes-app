@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { idSchema } from 'backend/common/schemas';
+import { idSchema } from '@backend/common/schemas';
 import { CreateInstructionReq, DeleteInstructionReq, EditInstructionReq, GetInstructionsReq } from './types';
 
 const instructionTextSchema = Joi.string().min(6).max(1000);

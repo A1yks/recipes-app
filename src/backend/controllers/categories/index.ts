@@ -1,7 +1,7 @@
-import CategoriesService from 'backend/services/categories';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
-import queryParamToArray from 'backend/utils/queryParamToArray';
+import CategoriesService from '@backend/services/categories';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
+import queryParamToArray from '@backend/utils/queryParamToArray';
 import { CreateCategoryReq, DeleteCategoryReq, EditCategoryReq, GetCategoriesReq, SearchCategoriesReq } from './types';
 
 namespace CategoriesController {

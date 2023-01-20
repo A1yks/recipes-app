@@ -1,5 +1,5 @@
-import Rating, { RatingAttrs } from 'backend/models/Rating';
-import { ErrorTypes } from 'backend/types/errors';
+import Rating, { RatingAttrs } from '@backend/models/Rating';
+import { ErrorTypes } from '@backend/types/errors';
 import { UniqueConstraintError } from 'sequelize';
 import { RatingCreationData } from './types';
 

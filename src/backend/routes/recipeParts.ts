@@ -1,15 +1,15 @@
-import RecipePartsController from 'backend/controllers/recipeParts';
-import { checkUserPermissionsForOperationsWithRecipePart } from 'backend/controllers/recipeParts/permissions';
+import RecipePartsController from '@backend/controllers/recipeParts';
+import { checkUserPermissionsForOperationsWithRecipePart } from '@backend/controllers/recipeParts/permissions';
 import {
     createRecipePartSchema,
     deleteRecipePartSchema,
     editRecipePartNameSchema,
     getRecipePartsSchema,
-} from 'backend/controllers/recipeParts/validation';
-import { checkUserPermissionsForOperationsWithRecipe } from 'backend/controllers/recipes/permissions';
-import PermissionsMiddleware from 'backend/middleware/permissions';
-import ValidationMiddleware from 'backend/middleware/schema-validation';
-import TokensMiddleware from 'backend/middleware/tokens';
+} from '@backend/controllers/recipeParts/validation';
+import { checkUserPermissionsForOperationsWithRecipe } from '@backend/controllers/recipes/permissions';
+import PermissionsMiddleware from '@backend/middleware/permissions';
+import ValidationMiddleware from '@backend/middleware/schema-validation';
+import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 
 const router = Router();

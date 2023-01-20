@@ -1,5 +1,5 @@
-import { InstructionAttrs } from 'backend/models/Instruction';
-import { RecipeAttrs } from 'backend/models/Recipe';
+import { InstructionAttrs } from '@backend/models/Instruction';
+import { RecipeAttrs } from '@backend/models/Recipe';
 
 export type CreateInstructionReq = {
     recipeId: RecipeAttrs['id'];

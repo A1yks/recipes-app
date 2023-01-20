@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAuthMutation } from 'services/auth';
+import { useAuthMutation } from 'src/services/auth';
 import { AuthProps, FormState } from '../Auth.types';
 
 function useAuth(props: AuthProps) {

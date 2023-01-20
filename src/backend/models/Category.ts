@@ -1,4 +1,4 @@
-import db from 'backend/db';
+import db from '@backend/db';
 import {
     BelongsToManyAddAssociationMixin,
     CreationOptional,

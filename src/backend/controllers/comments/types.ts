@@ -1,5 +1,5 @@
-import { CommentAttrs } from 'backend/models/Comment';
-import { RecipeAttrs } from 'backend/models/Recipe';
+import { CommentAttrs } from '@backend/models/Comment';
+import { RecipeAttrs } from '@backend/models/Recipe';
 
 export type CreateCommentReq = Omit<CommentAttrs, 'id' | 'userId' | 'createdAt' | 'updatedAt'>;
 

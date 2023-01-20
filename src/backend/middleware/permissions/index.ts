@@ -1,6 +1,6 @@
-import { UserAttrs } from 'backend/models/User';
-import { ErrorTypes } from 'backend/types/errors';
-import errorsHandler from 'backend/utils/errorsHander';
+import { UserAttrs } from '@backend/models/User';
+import { ErrorTypes } from '@backend/types/errors';
+import errorsHandler from '@backend/utils/errorsHander';
 import { NextFunction } from 'express';
 
 export type PermissionsValidationCallback = (

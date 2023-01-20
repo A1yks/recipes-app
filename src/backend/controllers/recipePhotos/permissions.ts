@@ -1,5 +1,5 @@
-import RecipePhotosService from 'backend/services/recipePhotos';
-import checkRecipePermissionHelper from 'backend/utils/checkRecipePermissionsHelper';
+import RecipePhotosService from '@backend/services/recipePhotos';
+import checkRecipePermissionHelper from '@backend/utils/checkRecipePermissionsHelper';
 import { DeleteRecipePhotoReq, UploadRecipePhotoReq } from './types';
 
 async function checkRecipePhotosPermissions(req: Server.Request<DeleteRecipePhotoReq>) {

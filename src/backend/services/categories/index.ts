@@ -1,4 +1,4 @@
-import Category from 'backend/models/Category';
+import Category from '@backend/models/Category';
 import { Op } from 'sequelize';
 
 namespace CategoriesService {

@@ -1,6 +1,6 @@
-import Comment, { CommentAttrs } from 'backend/models/Comment';
-import { ErrorTypes } from 'backend/types/errors';
-import getHierarchy from 'backend/utils/getHierarchy';
+import Comment, { CommentAttrs } from '@backend/models/Comment';
+import { ErrorTypes } from '@backend/types/errors';
+import getHierarchy from '@backend/utils/getHierarchy';
 import { CommentCreationData } from './type';
 
 namespace CommentsService {

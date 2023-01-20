@@ -1,6 +1,6 @@
 import { FetchBaseQueryArgs } from '@reduxjs/toolkit/dist/query/fetchBaseQuery';
-import { AppState } from 'store';
-import { AuthState } from 'store/reducers/auth';
+import { AppState } from 'src/store';
+import { AuthState } from 'src/store/reducers/auth';
 
 type PrepareHeadersType = NonNullable<FetchBaseQueryArgs['prepareHeaders']>;
 type ApiType = Parameters<PrepareHeadersType>[1];
