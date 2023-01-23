@@ -1,10 +1,8 @@
 import { Avatar, Box, Button, Menu, MenuItem, Link, useTheme, IconButton, useMediaQuery } from '@mui/material';
 import useProfileMenu from './hooks/useProfileMenu';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import SettingsIcon from '@mui/icons-material/Settings';
-import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import { profileNavigationMenu } from 'src/constants/navigation';
 
 function ProfileMenu(props: Props.WithSx) {
     const {
@@ -16,10 +14,13 @@ function ProfileMenu(props: Props.WithSx) {
         loginFirstLetter,
         openMenuHandler,
         closeMenuHandler,
+        openLinkHandler,
+        logoutHandler,
     } = useProfileMenu();
     const theme = useTheme();
     const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
     const avatarSize = matchesSm ? 30 : 40;
+    const buttonSize = matchesSm ? 'small' : 'medium';
 
     if (!isAuthorized) {
         return (
@@ -34,7 +35,7 @@ function ProfileMenu(props: Props.WithSx) {
             >
                 <Button
                     variant="outlined"
-                    size={matchesSm ? 'small' : 'medium'}
+                    size={buttonSize}
                     sx={{
                         color: '#000',
                         borderColor: '#000',
@@ -49,7 +50,7 @@ function ProfileMenu(props: Props.WithSx) {
 
     return (
         <Box sx={props.sx}>
-            <IconButton onClick={openMenuHandler} size={matchesSm ? 'small' : 'medium'}>
+            <IconButton onClick={openMenuHandler} size={buttonSize}>
                 <Avatar
                     src={avatarUrl}
                     sx={{
@@ -64,25 +65,15 @@ function ProfileMenu(props: Props.WithSx) {
                 </Avatar>
             </IconButton>
             <Menu anchorEl={menuAnchorEl} open={isMenuOpened} onClose={closeMenuHandler}>
-                <MenuItem onClick={closeMenuHandler}>
-                    <ListItemIcon>
-                        <PersonIcon fontSize="small" />
-                    </ListItemIcon>
-                    Profile
-                </MenuItem>
-                <MenuItem onClick={closeMenuHandler}>
-                    <ListItemIcon>
-                        <MenuBookIcon fontSize="small" />
-                    </ListItemIcon>
-                    My recipes
-                </MenuItem>
-                <MenuItem onClick={closeMenuHandler}>
-                    <ListItemIcon>
-                        <SettingsIcon fontSize="small" />
-                    </ListItemIcon>
-                    Settings
-                </MenuItem>
-                <MenuItem onClick={closeMenuHandler}>
+                {profileNavigationMenu.map(({ title, href, icon: Icon }) => (
+                    <MenuItem key={title} onClick={openLinkHandler(href)}>
+                        <ListItemIcon>
+                            <Icon fontSize="small" />
+                        </ListItemIcon>
+                        {title}
+                    </MenuItem>
+                ))}
+                <MenuItem onClick={logoutHandler}>
                     <ListItemIcon>
                         <LogoutIcon fontSize="small" />
                     </ListItemIcon>

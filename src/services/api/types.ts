@@ -1,5 +1,5 @@
 import { LoginReq, RegisterReq } from '@backend/controllers/auth/types';
-import { UserInfoAttrs } from '@backend/models/UserInfo';
+import { UserAttrs } from '@backend/models/User';
 
 type LoginData = { type: 'login' } & LoginReq;
 type RegisterData = { type: 'register' } & RegisterReq;
@@ -7,6 +7,7 @@ type RegisterData = { type: 'register' } & RegisterReq;
 export type AuthReq = LoginData | RegisterData;
 
 export type AuthRes = {
-    user: Omit<UserInfoAttrs, 'userId'> & { login: string };
+    user: Omit<UserAttrs, 'password'>;
     accessToken: string;
+    cookie?: string;
 };

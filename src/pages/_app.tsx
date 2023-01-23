@@ -9,6 +9,7 @@ import Head from 'next/head';
 import { SnackbarProvider } from 'notistack';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
 import 'src/styles/globals.scss';
+import { getAccessToken, getRunningQueriesThunk } from 'src/services/api';
 
 interface CustomAppProps extends AppProps {
     emotionCache?: EmotionCache;
@@ -46,9 +47,16 @@ MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (appContext)
 
     if (ctx.req !== undefined) {
         try {
-            const componentProps = await App.getInitialProps(appContext);
+            const {
+                data: { cookie },
+            } = await store.dispatch(getAccessToken.initiate(ctx.req.headers.cookie || '')).unwrap();
 
-            console.log(componentProps);
+            if (cookie !== undefined) {
+                ctx.res?.setHeader('set-cookie', cookie);
+            }
+
+            await Promise.all(store.dispatch(getRunningQueriesThunk()));
+            const componentProps = await App.getInitialProps(appContext);
 
             return {
                 pageProps: {

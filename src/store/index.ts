@@ -1,16 +1,24 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { createWrapper } from 'next-redux-wrapper';
-import { authAPI } from 'src/services/auth';
+import { AnyAction, combineReducers, configureStore } from '@reduxjs/toolkit';
+import { createWrapper, HYDRATE } from 'next-redux-wrapper';
+import { api } from 'src/services/api';
 import authReducer from './reducers/auth';
+
+const combineReducer = combineReducers({
+    auth: authReducer,
+    [api.reducerPath]: api.reducer,
+});
 
 const makeStore = () =>
     configureStore({
-        reducer: {
-            auth: authReducer,
-            [authAPI.reducerPath]: authAPI.reducer,
+        reducer(state, action) {
+            if (action.type === HYDRATE) {
+                return { ...state, ...action.payload };
+            }
+
+            return combineReducer(state, action);
         },
         middleware(getDefaultMiddleware) {
-            return getDefaultMiddleware().concat(authAPI.middleware);
+            return getDefaultMiddleware().concat(api.middleware);
         },
         devTools: true,
     });

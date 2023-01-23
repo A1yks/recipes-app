@@ -6,7 +6,7 @@ import {
     getCategoriesSchema,
     searchCategoriesSchema,
 } from '@backend/controllers/categories/validation';
-import ValidationMiddleware from '@backend/middleware/schema-validation';
+import ValidationMiddleware from '@backend/middleware/schemaValidation';
 import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 

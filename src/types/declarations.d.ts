@@ -16,6 +16,13 @@ declare global {
             sx?: SxProps;
         };
     }
+
+    declare namespace Pages {
+        interface InitialPropsResult {
+            protected?: boolean;
+            [x: string]: unknown;
+        }
+    }
 }
 
 export {};

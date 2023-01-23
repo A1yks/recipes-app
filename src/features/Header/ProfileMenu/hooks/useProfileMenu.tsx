@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useLogoutMutation } from 'src/services/api';
 import { useAppSelector } from 'src/store/hooks';
 import { User } from 'src/store/reducers/auth';
+import useErrorsHandler from 'src/utils/errorsHandler';
 
 function stringToColor(str: string) {
     let hash = 0;
@@ -31,6 +33,8 @@ function getAvatarData(user: User | null) {
 }
 
 function useProfileMenu() {
+    const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
+    const router = useRouter();
     const user = useAppSelector((state) => state.auth.user);
     const isAuthorized = user !== null;
     const { avatarColor, avatarUrl } = getAvatarData(user);
@@ -42,15 +46,30 @@ function useProfileMenu() {
 
     const closeMenuHandler = () => setMenuAnchorEl(null);
 
+    const logoutHandler = useErrorsHandler(async () => {
+        closeMenuHandler();
+        await logout(undefined).unwrap();
+    });
+
+    function openLinkHandler(href: string) {
+        return () => {
+            closeMenuHandler();
+            router.push(href);
+        };
+    }
+
     return {
         isAuthorized,
         isMenuOpened,
+        isLoggingOut,
         loginFirstLetter,
         menuAnchorEl,
         avatarUrl,
         avatarColor,
         openMenuHandler,
         closeMenuHandler,
+        openLinkHandler,
+        logoutHandler,
     };
 }
 

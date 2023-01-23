@@ -1,9 +1,10 @@
 import UserService from '../user';
 import bcrypt from 'bcrypt';
 import TokensService from '../tokens';
-import User from '@backend/models/User';
+import User, { UserAttrs } from '@backend/models/User';
 import db from '@backend/db';
 import { UserCreationData } from '../user/types';
+import { ErrorTypes } from '@backend/types/errors';
 
 namespace AuthService {
     /**
@@ -12,11 +13,11 @@ namespace AuthService {
      * @param plaintextPassword The plaintext password to check
      * @returns An object containing access and refresh tokens, or `null` if the login failed.
      */
-    export async function login(user: User, plaintextPassword: string) {
+    export async function login(user: User, plaintextPassword: string, refreshTokenStr?: string) {
         const passwordsMatch = await bcrypt.compare(plaintextPassword, user.password);
 
         if (passwordsMatch) {
-            return await TokensService.issueTokens(user.id);
+            return await TokensService.issueTokens(user.id, refreshTokenStr);
         }
 
         return null;
@@ -42,10 +43,14 @@ namespace AuthService {
         return await db.transaction(async () => {
             const user = await UserService.createUser(userData);
             const tokens = await TokensService.issueTokens(user.id);
-            const userInfo = await UserService.getUserInfo(user);
+            const userInfo = await UserService.getUser({ id: user.id });
 
             return { user: userInfo, tokens };
         });
+    }
+
+    export async function logout(userId: UserAttrs['id']) {
+        await TokensService.deleteRefreshToken({ userId });
     }
 }
 

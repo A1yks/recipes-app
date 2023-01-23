@@ -22,7 +22,7 @@ class RefreshToken extends Model<RefreshTokenAttrs, InferCreationAttributes<Refr
 
     static expiresIn = 60 * 60 * 24 * 7; // 7 days (in seconds)
 
-    static async issueToken(userId: User['id']) {
+    static async issueToken(userId: User['id'], oldTokenStr?: string) {
         const expireAt = new Date();
 
         expireAt.setSeconds(expireAt.getSeconds() + this.expiresIn);
@@ -31,14 +31,14 @@ class RefreshToken extends Model<RefreshTokenAttrs, InferCreationAttributes<Refr
             userId,
             expirityDate: expireAt,
         });
-        const oldToken = await this.findOne({ where: { userId } });
+        const oldToken = oldTokenStr === undefined ? null : await this.findOne({ where: { token: oldTokenStr } });
 
         if (oldToken === null) {
             await refreshToken.save();
         } else {
             await this.update(
                 { token: refreshToken.token, expirityDate: refreshToken.expirityDate },
-                { where: { userId } }
+                { where: { token: oldTokenStr } }
             );
         }
 

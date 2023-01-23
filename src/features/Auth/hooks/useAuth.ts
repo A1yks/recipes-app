@@ -3,16 +3,15 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuthMutation } from 'src/services/auth';
-import { AuthReq } from 'src/services/auth/types';
-import { extractError } from 'src/utils/extractError';
+import { useAuthMutation } from 'src/services/api';
+import { AuthReq } from 'src/services/api/types';
 import { AuthProps, FormState } from '../Auth.types';
-import { useSnackbar } from 'notistack';
+import useErrorsHandler from 'src/utils/errorsHandler';
 
 function useAuth(props: AuthProps) {
     const router = useRouter();
-    const { enqueueSnackbar } = useSnackbar();
-    const [auth, { isLoading, error: authError }] = useAuthMutation();
+    const [auth, { isLoading }] = useAuthMutation();
+
     const { control, handleSubmit } = useForm({
         mode: 'onSubmit',
         resolver: joiResolver(props.type === 'login' ? loginSchema : registrationSchema, {
@@ -20,12 +19,21 @@ function useAuth(props: AuthProps) {
             abortEarly: false,
         }),
     });
+
     const [formState, setFormState] = useState<FormState>({
         login: '',
         password: '',
         name: '',
         surname: '',
     });
+
+    const authHandler = useErrorsHandler(async () => {
+        const body = getReqBody();
+
+        await auth(body).unwrap();
+        router.push('/');
+    });
+
     const isLoginForm = props.type === 'login';
     const formText = isLoginForm ? 'Sign in' : 'Sign up';
     const autoComplete = isLoginForm ? 'on' : 'new-password';
@@ -49,18 +57,6 @@ function useAuth(props: AuthProps) {
                   };
 
         return reqBody;
-    }
-
-    async function authHandler() {
-        const body = getReqBody();
-
-        try {
-            await auth(body).unwrap();
-            router.push('/');
-        } catch (err) {
-            console.error(err);
-            enqueueSnackbar(extractError(err), { variant: 'error' });
-        }
     }
 
     function changeHandler(field: keyof FormState) {

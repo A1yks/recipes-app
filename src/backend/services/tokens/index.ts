@@ -1,5 +1,6 @@
 import RefreshToken, { RefreshTokenAttrs } from '@backend/models/RefreshToken';
 import User, { UserAttrs } from '@backend/models/User';
+import { ErrorTypes } from '@backend/types/errors';
 import jwt from 'jsonwebtoken';
 
 namespace TokensService {
@@ -19,9 +20,9 @@ namespace TokensService {
         });
     }
 
-    export async function issueTokens(userId: UserAttrs['id']) {
+    export async function issueTokens(userId: UserAttrs['id'], refreshTokenStr?: string) {
         const accessTokenPromise = issueAccessToken(userId);
-        const refreshTokenPromise = RefreshToken.issueToken(userId);
+        const refreshTokenPromise = RefreshToken.issueToken(userId, refreshTokenStr);
 
         const [accessToken, refreshToken] = await Promise.all([accessTokenPromise, refreshTokenPromise]);
 
@@ -40,7 +41,7 @@ namespace TokensService {
         });
     }
 
-    export async function getRefreshToken(refreshTokenString: RefreshTokenAttrs['token']) {
+    export async function getRefreshToken(refreshTokenString: RefreshToken['token']) {
         return await RefreshToken.findOne({ where: { token: refreshTokenString } });
     }
 
@@ -50,6 +51,22 @@ namespace TokensService {
 
     export function verifyRefreshToken(refreshToken: RefreshToken) {
         return RefreshToken.verifyToken(refreshToken);
+    }
+
+    export async function deleteRefreshToken(refreshTokenDataOrInstance: RefreshToken | Partial<RefreshTokenAttrs>) {
+        let refreshToken: RefreshToken | null = null;
+
+        if (refreshTokenDataOrInstance instanceof RefreshToken) {
+            refreshToken = refreshTokenDataOrInstance;
+        } else {
+            refreshToken = await RefreshToken.findOne({ where: refreshTokenDataOrInstance });
+        }
+
+        if (refreshToken === null) {
+            throw new Error('Provided refresh token does not exist', { cause: ErrorTypes.NOT_FOUND });
+        }
+
+        await refreshToken.destroy();
     }
 }
 

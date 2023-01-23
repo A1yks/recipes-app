@@ -2,7 +2,7 @@ import RecipePhotosController from '@backend/controllers/recipePhotos';
 import { checkUserPermissionsForOperationsWithRecipePhotos } from '@backend/controllers/recipePhotos/permissions';
 import { deleteRecipePhotoSchema } from '@backend/controllers/recipePhotos/validation';
 import PermissionsMiddleware from '@backend/middleware/permissions';
-import ValidationMiddleware from '@backend/middleware/schema-validation';
+import ValidationMiddleware from '@backend/middleware/schemaValidation';
 import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 

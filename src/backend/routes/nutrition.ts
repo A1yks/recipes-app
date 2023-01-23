@@ -7,7 +7,7 @@ import {
 } from '@backend/controllers/nutrition/validation';
 import { checkUserPermissionsForOperationsWithRecipe } from '@backend/controllers/recipes/permissions';
 import PermissionsMiddleware from '@backend/middleware/permissions';
-import ValidationMiddleware from '@backend/middleware/schema-validation';
+import ValidationMiddleware from '@backend/middleware/schemaValidation';
 import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 

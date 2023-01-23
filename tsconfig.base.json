@@ -18,7 +18,8 @@
         "baseUrl": "./",
         "paths": {
             "@backend/*": ["src/backend/*"]
-        }
+        },
+        "sourceMap": true
     },
     "ts-node": {
         "files": true,

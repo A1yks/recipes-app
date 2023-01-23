@@ -3,15 +3,12 @@ import {
     CreationOptional,
     DataTypes,
     HasManyGetAssociationsMixin,
-    HasOneCreateAssociationMixin,
-    HasOneGetAssociationMixin,
     InferAttributes,
     InferCreationAttributes,
     Model,
 } from 'sequelize';
 import Recipe from './Recipe';
 import RefreshToken from './RefreshToken';
-import UserInfo from './UserInfo';
 
 export type UserAttrs = InferAttributes<User>;
 
@@ -19,10 +16,11 @@ class User extends Model<UserAttrs, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
     declare login: string;
     declare password: string;
+    declare name: string;
+    declare surname: string;
+    declare avatar: CreationOptional<string | null>;
 
-    declare getRefreshToken: HasOneGetAssociationMixin<RefreshToken>;
-    declare getInfo: HasOneGetAssociationMixin<UserInfo>;
-    declare createInfo: HasOneCreateAssociationMixin<UserInfo>;
+    declare getRefreshTokens: HasManyGetAssociationsMixin<RefreshToken>;
     declare getRecipes: HasManyGetAssociationsMixin<Recipe>;
 }
 
@@ -42,11 +40,26 @@ User.init(
             type: DataTypes.STRING(72),
             allowNull: false,
         },
+        name: DataTypes.STRING(30),
+        surname: DataTypes.STRING(30),
+        avatar: DataTypes.TEXT,
     },
     {
         sequelize: db,
         tableName: 'users',
         timestamps: true,
+        defaultScope: {
+            attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt'],
+            },
+        },
+        scopes: {
+            withPassword: {
+                attributes: {
+                    include: ['password'],
+                },
+            },
+        },
     }
 );
 

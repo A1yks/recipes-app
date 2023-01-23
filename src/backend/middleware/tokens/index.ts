@@ -4,6 +4,9 @@ import { TokenPayload } from '../../types/tokens';
 import logger from '../../utils/logger';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokenCookies } from './types';
+import errorsHandler from '@backend/utils/errorsHander';
+import { ErrorTypes } from '@backend/types/errors';
+import setRefreshTokenCookie from '@backend/utils/setRefreshTokenCookie';
 
 namespace TokensMiddleware {
     function extractAcessToken(req: Server.Request) {
@@ -31,29 +34,8 @@ namespace TokensMiddleware {
         return payload;
     }
 
-    async function errorsHandler(
-        req: Server.Request,
-        res: Server.Response,
-        callback: (req: Server.Request, res: Server.Response) => Promise<unknown>
-    ) {
+    export async function verifyAcessToken(req: Server.Request, res: Server.Response, next: NextFunction) {
         try {
-            await callback(req, res);
-        } catch (err) {
-            if (err instanceof TokenExpiredError) {
-                return res.status(401).json({ error: 'Token has expired' });
-            }
-
-            if (err instanceof JsonWebTokenError) {
-                return res.status(400).json({ error: err.message });
-            }
-
-            logger.error(err);
-            res.status(500).json({ error: 'An unexpected error occurred while validating the token' });
-        }
-    }
-
-    export function verifyAcessToken(req: Server.Request, res: Server.Response, next: NextFunction) {
-        errorsHandler(req, res, async () => {
             const payload = await verifyToken(req, res);
 
             if (payload === null) {
@@ -63,47 +45,59 @@ namespace TokensMiddleware {
             req.userId = payload.userId;
 
             next();
-        });
+        } catch (err) {
+            errorsHandler(err, {
+                res,
+                unexpectedErrMsg: 'An unexpected error occurred while validating the token',
+                expectedErrors: [
+                    [TokenExpiredError, 401],
+                    [JsonWebTokenError, 400],
+                ],
+            });
+        }
     }
 
-    export function verifyRefreshToken(req: Server.Request, res: Server.Response, next: NextFunction) {
-        async function handler() {
-            try {
-                const cookies = req.cookies as RefreshTokenCookies;
-                const refreshTokenString = cookies.refreshToken;
+    export async function verifyRefreshToken(req: Server.Request, res: Server.Response, next: NextFunction) {
+        try {
+            const cookies = req.cookies as RefreshTokenCookies;
+            const refreshTokenString = cookies.refreshToken;
+            console.log(refreshTokenString);
 
-                if (!refreshTokenString) {
-                    return res.status(400).json({ error: "Refresh token was't provided" });
-                }
-
-                const refreshToken = await TokensService.getRefreshToken(refreshTokenString);
-
-                if (refreshToken === null) {
-                    return res.status(400).json({ error: 'Invalid token' });
-                }
-
-                const isTokenValid = TokensService.verifyRefreshToken(refreshToken);
-
-                if (!isTokenValid) {
-                    return res.status(400).json({ error: 'Token has expired' });
-                }
-
-                const user = await TokensService.getRefreshTokenOwner(refreshToken);
-
-                if (!user) {
-                    return res.status(404).json({ error: 'The user who owns the token was not found' });
-                }
-
-                req.userId = user.id;
-
-                next();
-            } catch (err) {
-                logger.log(err);
-                res.status(500).json({ error: 'An unexpected error occurred while validating the token' });
+            if (!refreshTokenString) {
+                return res.status(400).json({ error: "Refresh token was't provided" });
             }
-        }
 
-        handler();
+            const refreshToken = await TokensService.getRefreshToken(refreshTokenString);
+
+            if (refreshToken === null) {
+                return res.status(400).json({ error: 'Invalid token' });
+            }
+
+            const isTokenValid = TokensService.verifyRefreshToken(refreshToken);
+
+            if (!isTokenValid) {
+                await TokensService.deleteRefreshToken(refreshToken);
+                setRefreshTokenCookie(res, refreshTokenString, true);
+
+                return res.status(400).json({ error: 'Token has expired' });
+            }
+
+            const user = await TokensService.getRefreshTokenOwner(refreshToken);
+
+            if (!user) {
+                return res.status(404).json({ error: 'The user who owns the token was not found' });
+            }
+
+            req.userId = user.id;
+
+            next();
+        } catch (err) {
+            errorsHandler(err, {
+                res,
+                unexpectedErrMsg: 'An unexpected error occurred while validating the token',
+                expectedErrors: [[ErrorTypes.NOT_FOUND, 404]],
+            });
+        }
     }
 }
 

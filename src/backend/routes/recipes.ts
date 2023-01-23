@@ -10,7 +10,7 @@ import {
     getRecipesSchema,
 } from '@backend/controllers/recipes/validation';
 import PermissionsMiddleware from '@backend/middleware/permissions';
-import ValidationMiddleware from '@backend/middleware/schema-validation';
+import ValidationMiddleware from '@backend/middleware/schemaValidation';
 import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
 import recipePhotosRouter from './recipePhotos';

@@ -7,11 +7,12 @@ function Search(props: Props.WithSx) {
     const { isSearchOpened, openSearchHandler, closeSearchHandler } = useSearch();
     const theme = useTheme();
     const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
+    const fontSize = matchesSm ? 'medium' : 'large';
 
     return (
         <>
             <SearchIcon
-                fontSize={matchesSm ? 'medium' : 'large'}
+                fontSize={fontSize}
                 className="hover-color-primary"
                 sx={{ cursor: 'pointer', ...props.sx }}
                 onClick={openSearchHandler}
@@ -38,7 +39,7 @@ function Search(props: Props.WithSx) {
                         />
                         <CloseIcon
                             onClick={closeSearchHandler}
-                            fontSize={matchesSm ? 'medium' : 'large'}
+                            fontSize={fontSize}
                             sx={{
                                 cursor: 'pointer',
                                 position: 'absolute',

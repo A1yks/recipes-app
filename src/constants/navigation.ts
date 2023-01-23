@@ -2,6 +2,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import CategoryIcon from '@mui/icons-material/Category';
 import InfoIcon from '@mui/icons-material/Info';
+import PersonIcon from '@mui/icons-material/Person';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material';
 
@@ -31,5 +33,18 @@ export const navigationMenu: Readonly<NavigationMenu[]> = [
         title: 'About',
         href: '/about',
         icon: InfoIcon,
+    },
+];
+
+export const profileNavigationMenu: Readonly<NavigationMenu[]> = [
+    {
+        title: 'Profile',
+        href: '/profile',
+        icon: PersonIcon,
+    },
+    {
+        title: 'My recipes',
+        href: '/profile/recipes',
+        icon: MenuBookIcon,
     },
 ];
