@@ -1,0 +1,10 @@
+@import '~src/styles/mixins.scss';
+
+.link {
+    @include hover-color-primary {
+        text-decoration: none;
+    }
+
+    color: #000;
+    font-size: 1.2rem;
+}

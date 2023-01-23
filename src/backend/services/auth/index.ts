@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import TokensService from '../tokens';
 import User from '@backend/models/User';
 import db from '@backend/db';
-import { UserCreationData } from './types';
+import { UserCreationData } from '../user/types';
 
 namespace AuthService {
     /**

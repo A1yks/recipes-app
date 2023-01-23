@@ -14,9 +14,9 @@ export type UserInfoAttrs = InferAttributes<UserInfo>;
 
 class UserInfo extends Model<UserInfoAttrs, InferCreationAttributes<UserInfo>> {
     declare id: CreationOptional<number>;
-    declare name: CreationOptional<string>;
-    declare surname: CreationOptional<string>;
-    declare avatar: CreationOptional<string>;
+    declare name: string;
+    declare surname: string;
+    declare avatar: CreationOptional<string | null>;
     declare userId: ForeignKey<User['id']>;
 
     declare getUser: HasOneGetAssociationMixin<User>;

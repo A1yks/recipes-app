@@ -1,5 +1,12 @@
+import MainContent from 'src/features/MainContent';
+import PageLayout from 'src/layouts/PageLayout';
+
 function Main() {
-    return <div>Main page</div>;
+    return (
+        <PageLayout>
+            <MainContent />
+        </PageLayout>
+    );
 }
 
 export default Main;

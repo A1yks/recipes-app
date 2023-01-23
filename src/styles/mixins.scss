@@ -1,0 +1,8 @@
+@mixin hover-color-primary {
+    transition: color 0.25s ease;
+
+    &:hover {
+        color: var(--mui-palette-primary-main);
+        @content;
+    }
+}

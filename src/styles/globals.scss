@@ -1,0 +1,10 @@
+@import './mixins.scss';
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.hover-color-primary {
+    @include hover-color-primary;
+}

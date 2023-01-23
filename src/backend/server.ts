@@ -41,7 +41,7 @@ const port = process.env.PORT || 3000;
             app.use(express.json());
             app.use(cookieParser());
 
-            // app.use('/static/images/users', express.static(RECIPE_IMAGES_FOLDER_PATH));
+            // app.use('/static/images/avatars', express.static(RECIPE_IMAGES_FOLDER_PATH));
             app.use('/static/images/recipes', express.static(RECIPE_IMAGES_FOLDER_PATH));
             // app.use('/static/images/categories', express.static(RECIPE_IMAGES_FOLDER_PATH));
 

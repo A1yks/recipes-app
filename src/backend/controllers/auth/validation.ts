@@ -7,6 +7,6 @@ export const loginSchema = Joi.object<LoginReq>().keys({
 });
 
 export const registrationSchema = loginSchema.append<RegisterReq>({
-    name: Joi.string().min(2).max(30),
-    surname: Joi.string().min(2).max(30),
+    name: Joi.string().min(2).max(30).required(),
+    surname: Joi.string().min(2).max(30).required(),
 });

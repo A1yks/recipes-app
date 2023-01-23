@@ -1,7 +1,7 @@
 import User, { UserAttrs } from '@backend/models/User';
 import UserInfo, { UserInfoAttrs } from '@backend/models/UserInfo';
 import { WhereOptions } from 'sequelize';
-import { UserCreationData } from '../auth/types';
+import { UserCreationData } from './types';
 
 namespace UserService {
     export async function userExists(login: string) {
@@ -10,7 +10,7 @@ namespace UserService {
         return user !== null;
     }
 
-    export async function createUser(userData: UserCreationData & Partial<UserInfoAttrs>) {
+    export async function createUser(userData: UserCreationData) {
         const { login, password, ...userInfoData } = userData;
         const user = await User.create({ login, password });
 

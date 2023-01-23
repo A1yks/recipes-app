@@ -3,4 +3,4 @@ import { UserInfoAttrs } from '@backend/models/UserInfo';
 
 export type LoginReq = Pick<UserAttrs, 'login' | 'password'>;
 
-export type RegisterReq = LoginReq & Partial<Pick<UserInfoAttrs, 'name' | 'surname'>>;
+export type RegisterReq = LoginReq & Pick<UserInfoAttrs, 'name' | 'surname'>;

@@ -1,3 +1,5 @@
+import { SxProps } from '@mui/material';
+
 declare global {
     declare namespace API {
         type Response<T = unknown> = {
@@ -6,6 +8,12 @@ declare global {
 
         type ErrorResponse = {
             error: string;
+        };
+    }
+
+    declare namespace Props {
+        type WithSx = {
+            sx?: SxProps;
         };
     }
 }

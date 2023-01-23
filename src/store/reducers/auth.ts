@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { UserAttrs } from '@backend/models/User';
 import { UserInfoAttrs } from '@backend/models/UserInfo';
 import { authAPI } from 'src/services/auth';
 
-type User = Omit<UserAttrs, 'password'> & Omit<UserInfoAttrs, 'id' | 'userId'>;
+export type User = Omit<UserAttrs, 'password'> & Omit<UserInfoAttrs, 'id' | 'userId'>;
 
 export interface AuthState {
     user: User | null;
