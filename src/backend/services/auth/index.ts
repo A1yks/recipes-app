@@ -4,7 +4,6 @@ import TokensService from '../tokens';
 import User, { UserAttrs } from '@backend/models/User';
 import db from '@backend/db';
 import { UserCreationData } from '../user/types';
-import { ErrorTypes } from '@backend/types/errors';
 
 namespace AuthService {
     /**
@@ -14,7 +13,7 @@ namespace AuthService {
      * @returns An object containing access and refresh tokens, or `null` if the login failed.
      */
     export async function login(user: User, plaintextPassword: string, refreshTokenStr?: string) {
-        const passwordsMatch = await bcrypt.compare(plaintextPassword, user.password);
+        const passwordsMatch = await UserService.checkUserPassword(user, plaintextPassword);
 
         if (passwordsMatch) {
             return await TokensService.issueTokens(user.id, refreshTokenStr);
@@ -35,8 +34,7 @@ namespace AuthService {
             return null;
         }
 
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(userData.password, saltRounds);
+        const hashedPassword = await hashPassword(userData.password);
 
         userData.password = hashedPassword;
 
@@ -51,6 +49,13 @@ namespace AuthService {
 
     export async function logout(userId: UserAttrs['id']) {
         await TokensService.deleteRefreshToken({ userId });
+    }
+
+    export async function hashPassword(password: string) {
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        return hashedPassword;
     }
 }
 

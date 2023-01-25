@@ -1,6 +1,8 @@
 import { SxProps } from '@mui/material';
 
 declare global {
+    type MaybePromise<T> = T | Promise<T>;
+
     declare namespace API {
         type Response<T = unknown> = {
             data: T;
@@ -15,13 +17,6 @@ declare global {
         type WithSx = {
             sx?: SxProps;
         };
-    }
-
-    declare namespace Pages {
-        interface InitialPropsResult {
-            protected?: boolean;
-            [x: string]: unknown;
-        }
     }
 }
 

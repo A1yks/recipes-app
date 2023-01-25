@@ -51,13 +51,19 @@ namespace FileUploaderService {
             },
         });
 
-        return multer({
+        const uploader = multer({
             storage,
             fileFilter,
             limits: config.limits || {
                 fileSize: 20 * 1024 * 1024,
             },
-        }).array(config.fieldName, config.maxFiles || 20);
+        });
+
+        if (config.maxFiles === 1) {
+            return uploader.single(config.fieldName);
+        } else {
+            return uploader.array(config.fieldName, config.maxFiles || 20);
+        }
     }
 }
 

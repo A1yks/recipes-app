@@ -8,11 +8,13 @@ export type User = Omit<UserAttrs, 'password'>;
 export interface AuthState {
     user: User | null;
     token: string | null;
+    isLoggedOut: boolean;
 }
 
-const getInitialState = (): AuthState => ({
+const getInitialState = (isLoggedOut = false): AuthState => ({
     user: null,
     token: null,
+    isLoggedOut,
 });
 
 const authSlice = createSlice({
@@ -27,10 +29,28 @@ const authSlice = createSlice({
             state.token = accessToken;
         }
 
+        function setUserDataReducer(state: AuthState, action: PayloadAction<API.Response<User>>) {
+            const user = action.payload.data;
+
+            state.user = user;
+        }
+
         return builder
             .addMatcher(api.endpoints.auth.matchFulfilled, setAuthInfoReducer)
             .addMatcher(api.endpoints.getAccessToken.matchFulfilled, setAuthInfoReducer)
-            .addMatcher(api.endpoints.logout.matchFulfilled, getInitialState);
+            .addMatcher(api.endpoints.logout.matchFulfilled, () => getInitialState(true))
+            .addMatcher(api.endpoints.deleteAccount.matchFulfilled, () => getInitialState(true))
+            .addMatcher(api.endpoints.uploadAvatar.matchFulfilled, setUserDataReducer)
+            .addMatcher(api.endpoints.editAccountData.matchFulfilled, (state, action) => {
+                const updatedUserData = action.payload.data;
+
+                state.user = { ...updatedUserData };
+            })
+            .addMatcher(api.endpoints.deleteAvatar.matchFulfilled, (state) => {
+                if (state.user !== null) {
+                    state.user.avatar = null;
+                }
+            });
     },
 });
 

@@ -11,17 +11,22 @@ import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/s
 import 'src/styles/globals.scss';
 import { getAccessToken, getRunningQueriesThunk } from 'src/services/api';
 
-interface CustomAppProps extends AppProps {
+export type CustomPageProps = {
     emotionCache?: EmotionCache;
-}
+};
+
+export type CustomAppProps = AppProps<CustomPageProps>;
 
 type WrapperResult = Omit<ReturnType<typeof wrapper['useWrappedStore']>, 'props'> & { props: CustomAppProps };
 
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({ Component, ...rest }: CustomAppProps) {
-    const { store, props } = wrapper.useWrappedStore(rest) as WrapperResult;
-    const { emotionCache = clientSideEmotionCache } = props;
+    const {
+        store,
+        props: { pageProps },
+    } = wrapper.useWrappedStore(rest) as WrapperResult;
+    const { emotionCache = clientSideEmotionCache, ...restPageProps } = pageProps;
 
     return (
         <Provider store={store}>
@@ -33,7 +38,7 @@ function MyApp({ Component, ...rest }: CustomAppProps) {
                                 <meta name="viewport" content="initial-scale=1, width=device-width" />
                             </Head>
                             <CssBaseline />
-                            <Component {...props.pageProps} />
+                            <Component {...restPageProps} />
                         </SnackbarProvider>
                     </CssVarsProvider>
                 </ThemeProvider>
@@ -47,15 +52,20 @@ MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (appContext)
 
     if (ctx.req !== undefined) {
         try {
-            const {
-                data: { cookie },
-            } = await store.dispatch(getAccessToken.initiate(ctx.req.headers.cookie || '')).unwrap();
+            const { data: response } = await store.dispatch(getAccessToken.initiate(ctx.req.headers.cookie || ''));
 
-            if (cookie !== undefined) {
-                ctx.res?.setHeader('set-cookie', cookie);
+            if (response !== undefined) {
+                const {
+                    data: { cookie },
+                } = response;
+
+                if (cookie !== undefined) {
+                    ctx.res?.setHeader('set-cookie', cookie);
+                }
             }
 
             await Promise.all(store.dispatch(getRunningQueriesThunk()));
+
             const componentProps = await App.getInitialProps(appContext);
 
             return {

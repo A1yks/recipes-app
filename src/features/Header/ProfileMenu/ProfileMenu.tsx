@@ -1,17 +1,16 @@
-import { Avatar, Box, Button, Menu, MenuItem, Link, useTheme, IconButton, useMediaQuery } from '@mui/material';
+import { Box, Button, Menu, MenuItem, Link, useTheme, IconButton, useMediaQuery } from '@mui/material';
 import useProfileMenu from './hooks/useProfileMenu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { profileNavigationMenu } from 'src/constants/navigation';
+import UserAvatar from 'src/components/UserAvatar';
 
 function ProfileMenu(props: Props.WithSx) {
     const {
         isAuthorized,
         isMenuOpened,
+        isLoggingOut,
         menuAnchorEl,
-        avatarUrl,
-        avatarColor,
-        loginFirstLetter,
         openMenuHandler,
         closeMenuHandler,
         openLinkHandler,
@@ -33,15 +32,7 @@ function ProfileMenu(props: Props.WithSx) {
                     ...props.sx,
                 }}
             >
-                <Button
-                    variant="outlined"
-                    size={buttonSize}
-                    sx={{
-                        color: '#000',
-                        borderColor: '#000',
-                        '&:hover': { color: theme.palette.primary.main },
-                    }}
-                >
+                <Button variant="black" size={buttonSize}>
                     Login
                 </Button>
             </Link>
@@ -51,18 +42,14 @@ function ProfileMenu(props: Props.WithSx) {
     return (
         <Box sx={props.sx}>
             <IconButton onClick={openMenuHandler} size={buttonSize}>
-                <Avatar
-                    src={avatarUrl}
+                <UserAvatar
                     sx={{
-                        bgcolor: avatarColor,
                         cursor: 'pointer',
                         width: avatarSize,
                         height: avatarSize,
                         fontSize: avatarSize / 2,
                     }}
-                >
-                    {loginFirstLetter}
-                </Avatar>
+                />
             </IconButton>
             <Menu anchorEl={menuAnchorEl} open={isMenuOpened} onClose={closeMenuHandler}>
                 {profileNavigationMenu.map(({ title, href, icon: Icon }) => (
@@ -73,7 +60,7 @@ function ProfileMenu(props: Props.WithSx) {
                         {title}
                     </MenuItem>
                 ))}
-                <MenuItem onClick={logoutHandler}>
+                <MenuItem onClick={logoutHandler} disabled={isLoggingOut}>
                     <ListItemIcon>
                         <LogoutIcon fontSize="small" />
                     </ListItemIcon>

@@ -8,6 +8,7 @@ import { checkUserPermissionsForOperationsWithRecipe } from '../recipes/permissi
 import { ErrorTypes } from '@backend/types/errors';
 import FileUploaderService from '@backend/services/fileUploader';
 import path from 'path';
+import isValidMimeType from '@backend/utils/isValidMimeType';
 
 export const RECIPE_IMAGES_FOLDER_PATH = path.resolve('./images/recipes');
 
@@ -73,10 +74,6 @@ namespace RecipePhotosController {
                 unexpectedErrMsg: 'An unexpected error occured while deleting the image',
             });
         }
-    }
-
-    function isValidMimeType(file: Express.Multer.File) {
-        return /^image\/.+$/.test(file.mimetype);
     }
 
     async function checkPermissions(req: Server.Request<UploadRecipePhotoReq>) {

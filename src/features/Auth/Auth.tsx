@@ -1,4 +1,3 @@
-import { LoadingButton } from '@mui/lab';
 import { Box, Grid, Typography, Link } from '@mui/material';
 import FullHeightContainer from 'src/components/FullHeightContainer';
 import Image from 'next/image';
@@ -6,6 +5,7 @@ import { AuthProps } from './Auth.types';
 import useAuth from './hooks/useAuth';
 import ControlledInput from 'src/components/ControlledInput';
 import styles from './Auth.module.scss';
+import LoadingButton from 'src/components/LoadingButton';
 
 function Auth(props: AuthProps) {
     const { isLoading, isLoginForm, formText, autoComplete, formState, control, submitHandler, changeHandler } =
@@ -32,7 +32,7 @@ function Auth(props: AuthProps) {
                                     name="login"
                                     control={control}
                                     autoComplete={autoComplete}
-                                    placeholder="Login"
+                                    label="Login"
                                     fullWidth
                                     value={formState.login}
                                     onChange={changeHandler('login')}
@@ -43,7 +43,7 @@ function Auth(props: AuthProps) {
                                     name="password"
                                     control={control}
                                     autoComplete={autoComplete}
-                                    placeholder="Password"
+                                    label="Password"
                                     type="password"
                                     fullWidth
                                     value={formState.password}
@@ -57,7 +57,7 @@ function Auth(props: AuthProps) {
                                             name="name"
                                             control={control}
                                             fullWidth
-                                            placeholder="Name"
+                                            label="Name"
                                             value={formState.name}
                                             onChange={changeHandler('name')}
                                         />
@@ -67,7 +67,7 @@ function Auth(props: AuthProps) {
                                             name="surname"
                                             control={control}
                                             fullWidth
-                                            placeholder="Surname"
+                                            label="Surname"
                                             value={formState.surname}
                                             onChange={changeHandler('surname')}
                                         />

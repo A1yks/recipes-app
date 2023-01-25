@@ -61,7 +61,6 @@ namespace TokensMiddleware {
         try {
             const cookies = req.cookies as RefreshTokenCookies;
             const refreshTokenString = cookies.refreshToken;
-            console.log(refreshTokenString);
 
             if (!refreshTokenString) {
                 return res.status(400).json({ error: "Refresh token was't provided" });

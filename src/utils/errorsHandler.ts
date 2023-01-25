@@ -1,14 +1,16 @@
 import { useSnackbar } from 'notistack';
 import { extractError } from './extractError';
 
+type CallbackType = (...args: any[]) => MaybePromise<void>;
+
 const isDev = process.env.NODE_ENV !== 'production';
 
-function useErrorsHandler(callback: () => void | Promise<void>, log = isDev) {
+function useErrorsHandler<T extends CallbackType>(callback: T, log = isDev) {
     const { enqueueSnackbar } = useSnackbar();
 
-    return async () => {
+    return (async (...args: any[]) => {
         try {
-            await callback();
+            await callback(...args);
         } catch (err) {
             if (log) {
                 console.error(err);
@@ -16,7 +18,7 @@ function useErrorsHandler(callback: () => void | Promise<void>, log = isDev) {
 
             enqueueSnackbar(extractError(err), { variant: 'error' });
         }
-    };
+    }) as T;
 }
 
 export default useErrorsHandler;

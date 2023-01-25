@@ -64,7 +64,10 @@ function errorsHandler(err: unknown, configuration: Configuration) {
 
         if (config.expectedErrors !== undefined) {
             for (const [type, statusCode = config.statusCode, errMsg = err.message] of config.expectedErrors) {
-                if (type === (err.cause as ErrorTypes) || err instanceof (type as typeof Error)) {
+                if (
+                    type === (err.cause as ErrorTypes) ||
+                    (typeof type === 'object' && err instanceof (type as typeof Error))
+                ) {
                     config.res.status(statusCode).json({ error: errMsg });
                     return;
                 }

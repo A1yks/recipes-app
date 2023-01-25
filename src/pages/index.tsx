@@ -3,7 +3,7 @@ import PageLayout from 'src/layouts/PageLayout';
 
 function Main() {
     return (
-        <PageLayout>
+        <PageLayout title="Home">
             <MainContent />
         </PageLayout>
     );

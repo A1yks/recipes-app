@@ -5,7 +5,7 @@ function Register() {
     return (
         <>
             <Head>
-                <title>Tastebite | Registration</title>
+                <title>Registration | Tastebite</title>
             </Head>
             <Auth type="register" />
         </>

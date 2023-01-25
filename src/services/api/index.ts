@@ -1,7 +1,8 @@
+import { EditUserReq } from '@backend/controllers/user/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 import setAuthHeaders from 'src/utils/setAuthHeaders';
-import { AuthReq, AuthRes } from './types';
+import { AuthReq, AuthRes, EditAccountDataRes } from './types';
 
 export const api = createApi({
     reducerPath: 'api',
@@ -22,7 +23,7 @@ export const api = createApi({
                 body: bodyData,
             }),
         }),
-        logout: build.mutation({
+        logout: build.mutation<void, void>({
             query: () => ({
                 url: '/auth/logout',
                 method: 'POST',
@@ -35,7 +36,7 @@ export const api = createApi({
                     cookie,
                 },
             }),
-            transformResponse(response: API.Response<AuthRes>, meta, arg) {
+            transformResponse(response: API.Response<AuthRes>, meta) {
                 const cookie = meta?.response?.headers.get('set-cookie');
 
                 if (typeof cookie === 'string') {
@@ -45,6 +46,35 @@ export const api = createApi({
                 return response;
             },
         }),
+        deleteAccount: build.mutation<void, string>({
+            query: (password) => ({
+                url: '/user/delete',
+                method: 'DELETE',
+                body: {
+                    password,
+                },
+            }),
+        }),
+        editAccountData: build.mutation<API.Response<EditAccountDataRes>, EditUserReq>({
+            query: (data) => ({
+                url: '/user/edit',
+                method: 'PATCH',
+                body: data,
+            }),
+        }),
+        uploadAvatar: build.mutation<API.Response<EditAccountDataRes>, FormData>({
+            query: (data) => ({
+                url: '/user/avatar/upload',
+                method: 'POST',
+                body: data,
+            }),
+        }),
+        deleteAvatar: build.mutation<void, void>({
+            query: () => ({
+                url: '/user/avatar/delete',
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
@@ -52,5 +82,10 @@ export const { getAccessToken } = api.endpoints;
 export const {
     useAuthMutation,
     useLogoutMutation,
+    useDeleteAccountMutation,
+    useDeleteAvatarMutation,
+    useEditAccountDataMutation,
+    useGetAccessTokenQuery,
+    useUploadAvatarMutation,
     util: { getRunningQueriesThunk },
 } = api;

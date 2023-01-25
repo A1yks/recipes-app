@@ -17,6 +17,8 @@ import recipePartsRouter from './routes/recipeParts';
 import recipePhotosRouter from './routes/recipePhotos';
 import commentsRouter from './routes/comments';
 import ratingRouter from './routes/rating';
+import userRouter from './routes/user';
+import { USER_AVATARS_FOLDER_PATH } from './controllers/user';
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000;
@@ -41,7 +43,7 @@ const port = process.env.PORT || 3000;
             app.use(express.json());
             app.use(cookieParser());
 
-            // app.use('/static/images/avatars', express.static(RECIPE_IMAGES_FOLDER_PATH));
+            app.use('/static/images/avatars', express.static(USER_AVATARS_FOLDER_PATH));
             app.use('/static/images/recipes', express.static(RECIPE_IMAGES_FOLDER_PATH));
             // app.use('/static/images/categories', express.static(RECIPE_IMAGES_FOLDER_PATH));
 
@@ -53,6 +55,7 @@ const port = process.env.PORT || 3000;
             app.use('/api/nutrition', nutritionRouter);
             app.use('/api/ingridients', ingridientsRouter);
             app.use('/api/comments', commentsRouter);
+            app.use('/api/user', userRouter);
             recipesRouter.use('/parts', recipePartsRouter);
             recipesRouter.use('/photos', recipePhotosRouter);
             recipesRouter.use('/rating', ratingRouter);

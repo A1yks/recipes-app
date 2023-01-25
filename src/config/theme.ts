@@ -54,6 +54,38 @@ let theme = extendTheme({
                 },
             },
         },
+        MuiButton: {
+            variants: [
+                {
+                    props: { variant: 'black' },
+                    style: {
+                        color: '#000',
+                        border: '1px solid #000',
+                        '&:hover': {
+                            color: primaryMain,
+                            borderColor: primaryMain,
+                        },
+                    },
+                },
+            ],
+        },
+        MuiFormHelperText: {
+            defaultProps: {
+                sx: {
+                    '&::first-letter': {
+                        textTransform: 'uppercase',
+                    },
+                },
+            },
+        },
+        MuiInputBase: {
+            styleOverrides: {
+                root: {
+                    '@keyframes mui-auto-fill': { from: { display: 'block' } },
+                    '@keyframes mui-auto-fill-cancel': { from: { display: 'block' } },
+                },
+            },
+        },
     },
 });
 

@@ -5,7 +5,7 @@ function Login() {
     return (
         <>
             <Head>
-                <title>Tastebite | Login</title>
+                <title>Login | Tastebite</title>
             </Head>
             <Auth type="login" />
         </>
