@@ -1,27 +1,25 @@
-import { Grid, SxProps, useMediaQuery, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import Image from 'next/image';
-import { theme } from 'src/config';
 
-function Logo(props: SxProps) {
+function Logo(props: Props.WithSx) {
     const theme = useTheme();
     const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
-        <Grid
-            item
+        <Box
             sx={{
                 position: 'relative',
                 height: matchesSm ? 35 : 60,
                 maxWidth: matchesSm ? '6.875rem' : '10rem',
                 width: '100%',
-                ...props,
+                ...props.sx,
             }}
         >
             <Link href="/">
                 <Image src="/images/logo.svg" fill alt="" />
             </Link>
-        </Grid>
+        </Box>
     );
 }
 

@@ -16,8 +16,10 @@ function Header() {
         <Box component="header" sx={{ height: headerHeight, position: 'relative' }}>
             <Container sx={{ height: '100%' }}>
                 <Grid container alignItems="center" justifyContent="space-between" height="100%" component="nav">
-                    <Logo />
-                    {!matchesMd && <Navigation ml={3} />}
+                    <Grid item flex={1}>
+                        <Logo />
+                    </Grid>
+                    {!matchesMd && <Navigation ml={3} flex={1.5} />}
                     <Grid container item width="auto" ml={ml} alignItems="center">
                         <Search />
                         <ProfileMenu sx={{ ml }} />

@@ -23,15 +23,24 @@ function AccountActions(props: Props.WithSx) {
     } = useAccountActions();
 
     return (
-        <Grid container sx={props.sx} justifyContent="space-between">
-            <Grid item>
-                <Button variant="text" sx={{ color: 'black' }} onClick={openSignOutDialogHandler}>
+        <Grid container sx={props.sx} justifyContent="space-between" gap={3}>
+            <Grid item xs={12} sm="auto">
+                <Button
+                    variant="text"
+                    sx={{ color: 'black', width: { xs: '100%', sm: 'auto' } }}
+                    onClick={openSignOutDialogHandler}
+                >
                     <LogoutIcon sx={{ mr: 1 }} />
                     Sign out
                 </Button>
             </Grid>
-            <Grid item ml={3}>
-                <Button variant="text" color="error" onClick={openDeleteAccountDialogHandler}>
+            <Grid item xs={12} sm="auto">
+                <Button
+                    variant="text"
+                    color="error"
+                    sx={{ width: { xs: '100%', sm: 'auto' } }}
+                    onClick={openDeleteAccountDialogHandler}
+                >
                     Delete account
                 </Button>
             </Grid>

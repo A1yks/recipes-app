@@ -28,6 +28,7 @@ let theme = extendTheme({
                 sx: {
                     transition: 'color 0.25s ease',
                     textDecoration: 'none',
+                    color: 'inherit',
                     '&:hover': {
                         textDecoration: 'none',
                         color: primaryMain,

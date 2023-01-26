@@ -1,8 +1,9 @@
+import { Grid } from '@mui/material';
 import Head from 'next/head';
+import Footer from 'src/features/Footer';
 import Header from 'src/features/Header';
 import { PageLayoutProps } from './PageLayout.types';
 
-// TODO add footer
 function PageLayout(props: PageLayoutProps) {
     const title = `${props.title} | Tastebite`;
 
@@ -13,8 +14,15 @@ function PageLayout(props: PageLayoutProps) {
                     <title>{title}</title>
                 </Head>
             )}
-            <Header />
-            {props.children}
+            <Grid container direction="column" minHeight="100vh">
+                <Grid item>
+                    <Header />
+                </Grid>
+                <Grid item>{props.children}</Grid>
+                <Grid item mt="auto">
+                    <Footer />
+                </Grid>
+            </Grid>
         </>
     );
 }

@@ -8,18 +8,19 @@ function ProfileContent() {
         <Container>
             <Typography variant="h4">Profile</Typography>
             <Divider sx={{ mt: 3 }} />
-            <Box sx={{ width: '70%', mt: 8 }}>
-                <Grid container direction="column">
+            <Grid container md={8} sm sx={{ mt: { md: 8, xs: 4 } }}>
+                <Grid container item direction="column">
                     <Grid item>
                         <AvatarSettings />
                     </Grid>
                     <Grid item>
                         <FieldsSettings />
                     </Grid>
+                    <Divider sx={{ mt: 6 }} />
                 </Grid>
-                <Divider sx={{ mt: 6 }} />
+
                 <AccountActions sx={{ mt: 4, pb: 4 }} />
-            </Box>
+            </Grid>
         </Container>
     );
 }
