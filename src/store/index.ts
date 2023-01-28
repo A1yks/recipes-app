@@ -2,15 +2,21 @@ import { combineReducers, configureStore, Reducer, AnyAction } from '@reduxjs/to
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import { api } from 'src/services/api';
 import authReducer from './reducers/auth';
+import userRecipesReducer from './reducers/userRecipes';
 
 const combineReducer = combineReducers({
     auth: authReducer,
+    userRecipes: userRecipesReducer,
     [api.reducerPath]: api.reducer,
 });
 
 const reducer: Reducer<ReturnType<typeof combineReducer>, AnyAction> = (state, action) => {
     if (action.type === HYDRATE) {
         return { ...state, ...action.payload };
+    }
+
+    if (api.endpoints.logout.matchFulfilled(action) || api.endpoints.deleteAccount.matchFulfilled(action)) {
+        state = undefined;
     }
 
     return combineReducer(state, action);

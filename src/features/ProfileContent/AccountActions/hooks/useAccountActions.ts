@@ -15,7 +15,7 @@ function useAccountActions() {
     const [isDeleteAccountDialogOpened, setIsDeleteAccountDialogOpened] = useState(false);
     const [isSignOutDialogOpened, setIsSignOutDialogOpened] = useState(false);
     const [password, setPassword] = useState('');
-    const { control, handleSubmit } = useForm({
+    const { control, handleSubmit, setValue } = useForm({
         mode: 'onSubmit',
         resolver: joiResolver(
             Joi.object({
@@ -29,6 +29,7 @@ function useAccountActions() {
     const closeDeleteAccountDialogHandler = () => {
         setIsDeleteAccountDialogOpened(false);
         setPassword('');
+        setValue('password', '');
     };
 
     const openSignOutDialogHandler = () => setIsSignOutDialogOpened(true);

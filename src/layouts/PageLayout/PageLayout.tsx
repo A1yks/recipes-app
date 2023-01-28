@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import Head from 'next/head';
-import Footer from 'src/features/Footer';
-import Header from 'src/features/Header';
+import Footer from 'src/components/Footer';
+import Header from 'src/components/Header';
 import { PageLayoutProps } from './PageLayout.types';
 
 function PageLayout(props: PageLayoutProps) {
@@ -14,11 +14,13 @@ function PageLayout(props: PageLayoutProps) {
                     <title>{title}</title>
                 </Head>
             )}
-            <Grid container direction="column" minHeight="100vh">
+            <Grid container direction="column" minHeight="100vh" height="0px" flexWrap="nowrap">
                 <Grid item>
                     <Header />
                 </Grid>
-                <Grid item>{props.children}</Grid>
+                <Grid item flex={1}>
+                    {props.children}
+                </Grid>
                 <Grid item mt="auto">
                     <Footer />
                 </Grid>

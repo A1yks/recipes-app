@@ -1,10 +1,15 @@
 import { idArrayStringPattern, idSchema } from '@backend/common/schemas';
-import { MAX_TITLE_LENGTH, MIN_PREP_TIME, MIN_SERVINGS } from '@backend/models/Recipe';
 import Joi from 'joi';
 import { AddCategoryToRecipeReq, CreateRecipeReq, EditRecipeReq, GetRecipeReq, GetRecipesReq } from './types';
 
+export const MAX_TITLE_LENGTH = 72;
+export const MIN_PREP_TIME = 1;
+export const MIN_SERVINGS = 1;
+
+export const recipeTitleFieldSchema = Joi.string().min(3).max(MAX_TITLE_LENGTH);
+
 export const createRecipeSchema = Joi.object<CreateRecipeReq>().keys({
-    title: Joi.string().min(3).max(MAX_TITLE_LENGTH),
+    title: recipeTitleFieldSchema,
     prepTime: Joi.number()
         .min(MIN_PREP_TIME)
         .max(7 * 24 * 60),
@@ -18,8 +23,7 @@ export const getRecipeSchema = Joi.object<GetRecipeReq>().keys({
 });
 
 export const getRecipesSchema = Joi.object<GetRecipesReq>().keys({
-    limit: Joi.number().min(1),
-    offset: Joi.number().min(0),
+    page: Joi.number().min(1),
     categoryIds: idArrayStringPattern,
 });
 

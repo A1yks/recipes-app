@@ -24,4 +24,6 @@ router.delete(
     UserController.deleteAccount
 );
 
+router.get('/recipes', TokensMiddleware.verifyAcessToken, UserController.getUserRecipes);
+
 export default router;

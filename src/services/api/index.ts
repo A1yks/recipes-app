@@ -1,11 +1,14 @@
 import { EditUserReq } from '@backend/controllers/user/types';
+import { RecipeAttrs } from '@backend/models/Recipe';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
+import { ClientRecipe } from 'src/store/reducers/userRecipes';
 import setAuthHeaders from 'src/utils/setAuthHeaders';
-import { AuthReq, AuthRes, EditAccountDataRes } from './types';
+import { AuthReq, AuthRes, EditAccountDataRes, GetUserRecipesRes } from './types';
 
 export const api = createApi({
     reducerPath: 'api',
+    tagTypes: ['UserRecipes'],
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.NEXT_PUBLIC_API_URL,
         prepareHeaders: setAuthHeaders,
@@ -75,11 +78,41 @@ export const api = createApi({
                 method: 'DELETE',
             }),
         }),
+        getUserRecipes: build.query<API.Response<GetUserRecipesRes>, number>({
+            query: (page) => ({
+                url: '/user/recipes',
+                params: { page },
+            }),
+            providesTags: ['UserRecipes'],
+        }),
+        createRecipe: build.mutation<API.Response<ClientRecipe>, string>({
+            query: (title) => ({
+                url: '/recipes/create',
+                method: 'POST',
+                body: { title },
+            }),
+            invalidatesTags: ['UserRecipes'],
+        }),
+        deleteRecipe: build.mutation<void, RecipeAttrs['id']>({
+            query: (recipeId) => ({
+                url: '/recipes/delete',
+                method: 'DELETE',
+                body: { recipeId },
+            }),
+            invalidatesTags: ['UserRecipes'],
+        }),
+        getRecipe: build.query<API.Response<ClientRecipe>, RecipeAttrs['id']>({
+            query: (recipeId) => ({
+                url: '/recipes',
+                params: { recipeId },
+            }),
+        }),
     }),
 });
 
 export const { getAccessToken } = api.endpoints;
 export const {
+    util: { getRunningQueriesThunk },
     useAuthMutation,
     useLogoutMutation,
     useDeleteAccountMutation,
@@ -87,5 +120,8 @@ export const {
     useEditAccountDataMutation,
     useGetAccessTokenQuery,
     useUploadAvatarMutation,
-    util: { getRunningQueriesThunk },
+    useGetUserRecipesQuery,
+    useCreateRecipeMutation,
+    useDeleteRecipeMutation,
+    useGetRecipeQuery,
 } = api;

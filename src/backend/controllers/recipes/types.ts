@@ -8,8 +8,7 @@ export type GetRecipeReq = {
 };
 
 export type GetRecipesReq = {
-    limit?: number;
-    offset?: number;
+    page?: number;
     categoryIds?: string;
 };
 

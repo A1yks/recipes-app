@@ -4,7 +4,7 @@ import { useController } from 'react-hook-form';
 import { InputProps } from './ControlledInput.types';
 
 function ControlledInput(props: InputProps) {
-    const { control, name, rules, defaultValue, shouldUnregister, ...restProps } = props;
+    const { control, name, rules, defaultValue, value, shouldUnregister, ...restProps } = props;
     const {
         field,
         fieldState: { error, invalid },
@@ -25,7 +25,7 @@ function ControlledInput(props: InputProps) {
             {...restProps}
             onChange={changeHandler}
             onBlur={blurHandler}
-            value={props.value}
+            value={value}
             name={field.name}
             inputRef={field.ref}
             error={invalid}

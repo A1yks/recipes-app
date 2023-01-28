@@ -8,7 +8,7 @@ export async function checkUserPermissionsForOperationsWithRecipe(
     userId: UserAttrs['id']
 ) {
     const { recipeId } = req.body;
-    const recipe = await RecipesService.getRecipe(recipeId);
+    const recipe = await RecipesService.getRecipe({ id: recipeId });
 
     if (recipe === null) {
         throw new Error('Recipe with provided id does not exist', { cause: ErrorTypes.NOT_FOUND });

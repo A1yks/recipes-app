@@ -65,7 +65,7 @@ namespace UserService {
             throw new Error('User does not have an avatar', { cause: ErrorTypes.NOT_FOUND });
         }
 
-        await editData({ avatar: null }, user);
+        await user.update({ avatar: null });
         await deleteAvatarFile(avatar);
     }
 

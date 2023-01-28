@@ -147,7 +147,7 @@ function Footer() {
                                     fill: theme.palette.primary.main,
                                 },
                             },
-                            '& a:not(:first-child)': {
+                            '& a:not(:first-of-type)': {
                                 ml: 2,
                             },
                             mt: {

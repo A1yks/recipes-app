@@ -1,4 +1,5 @@
 import { SxProps } from '@mui/material';
+import { ReactNode } from 'react';
 
 declare global {
     type MaybePromise<T> = T | Promise<T>;
@@ -16,6 +17,10 @@ declare global {
     declare namespace Props {
         type WithSx = {
             sx?: SxProps;
+        };
+
+        type WithChildren = {
+            children: ReactNode;
         };
     }
 }

@@ -8,18 +8,16 @@ export type User = Omit<UserAttrs, 'password'>;
 export interface AuthState {
     user: User | null;
     token: string | null;
-    isLoggedOut: boolean;
 }
 
-const getInitialState = (isLoggedOut = false): AuthState => ({
+const initialState: AuthState = {
     user: null,
     token: null,
-    isLoggedOut,
-});
+};
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
     name: 'auth',
-    initialState: getInitialState(),
+    initialState,
     reducers: {},
     extraReducers(builder) {
         function setAuthInfoReducer(state: AuthState, action: PayloadAction<API.Response<AuthRes>>) {
@@ -38,8 +36,6 @@ const authSlice = createSlice({
         return builder
             .addMatcher(api.endpoints.auth.matchFulfilled, setAuthInfoReducer)
             .addMatcher(api.endpoints.getAccessToken.matchFulfilled, setAuthInfoReducer)
-            .addMatcher(api.endpoints.logout.matchFulfilled, () => getInitialState(true))
-            .addMatcher(api.endpoints.deleteAccount.matchFulfilled, () => getInitialState(true))
             .addMatcher(api.endpoints.uploadAvatar.matchFulfilled, setUserDataReducer)
             .addMatcher(api.endpoints.editAccountData.matchFulfilled, (state, action) => {
                 const updatedUserData = action.payload.data;

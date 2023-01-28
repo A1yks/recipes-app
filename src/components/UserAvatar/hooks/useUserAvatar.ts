@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAppSelector } from 'src/store/hooks';
 import { User } from 'src/store/reducers/auth';
+import getImageUrl from 'src/utils/getImageUrl';
 
 function stringToColor(str: string) {
     let hash = 0;
@@ -20,10 +21,7 @@ function stringToColor(str: string) {
 }
 
 function getAvatarData(user: User | null) {
-    const avatarUrl =
-        typeof user?.avatar === 'string'
-            ? `${process.env.NEXT_PUBLIC_URL}/static/images/avatars/${user.avatar}`
-            : undefined;
+    const avatarUrl = typeof user?.avatar === 'string' ? getImageUrl(user.avatar, 'avatars') : undefined;
     const avatarColor = avatarUrl === undefined && user !== null ? stringToColor(user.login) : undefined;
 
     return { avatarUrl, avatarColor };

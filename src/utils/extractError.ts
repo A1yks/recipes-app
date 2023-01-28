@@ -24,5 +24,9 @@ export function extractError(err: unknown) {
         return err.error;
     }
 
+    if (err instanceof Error) {
+        return err.message;
+    }
+
     return '';
 }

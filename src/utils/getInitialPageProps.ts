@@ -1,9 +1,9 @@
 import { NextPageContext } from 'next';
 import { AppStore, wrapper } from 'src/store';
 
-type CallbackType = (store: AppStore, ctx: NextPageContext) => any;
+type CallbackType<T> = (store: AppStore, ctx: NextPageContext) => T;
 
-function getInitialPageProps(callback: CallbackType) {
+function getInitialPageProps<T>(callback: CallbackType<T>) {
     return wrapper.getInitialPageProps((store) => async (ctx) => {
         if (!ctx.req) {
             return {};
@@ -15,7 +15,7 @@ function getInitialPageProps(callback: CallbackType) {
             console.error(err);
             return {};
         }
-    });
+    }) as unknown as CallbackType<T>;
 }
 
 export default getInitialPageProps;

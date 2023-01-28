@@ -10,6 +10,7 @@ import { SnackbarProvider } from 'notistack';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
 import 'src/styles/globals.scss';
 import { getAccessToken, getRunningQueriesThunk } from 'src/services/api';
+import AuthChecker from 'src/layouts/AuthChecker';
 
 export type CustomPageProps = {
     emotionCache?: EmotionCache;
@@ -38,7 +39,9 @@ function MyApp({ Component, ...rest }: CustomAppProps) {
                                 <meta name="viewport" content="initial-scale=1, width=device-width" />
                             </Head>
                             <CssBaseline />
-                            <Component {...restPageProps} />
+                            <AuthChecker>
+                                <Component {...restPageProps} />
+                            </AuthChecker>
                         </SnackbarProvider>
                     </CssVarsProvider>
                 </ThemeProvider>

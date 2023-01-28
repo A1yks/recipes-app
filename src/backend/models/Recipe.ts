@@ -1,3 +1,4 @@
+import { MAX_TITLE_LENGTH, MIN_PREP_TIME, MIN_SERVINGS } from '@backend/controllers/recipes/validation';
 import db from '@backend/db';
 import {
     BelongsToManyAddAssociationMixin,
@@ -51,10 +52,6 @@ class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare removeCategory: BelongsToManyRemoveAssociationMixin<Category, Category['id']>;
     declare setCategories: BelongsToManySetAssociationsMixin<Category, Category['id']>;
 }
-
-export const MAX_TITLE_LENGTH = 72;
-export const MIN_PREP_TIME = 1;
-export const MIN_SERVINGS = 1;
 
 Recipe.init(
     {

@@ -36,7 +36,7 @@ namespace RecipesController {
         const { recipeId } = req.params;
 
         try {
-            const recipe = await RecipesService.getRecipe(recipeId);
+            const recipe = await RecipesService.getRecipe({ id: recipeId });
 
             res.status(200).json({ data: recipe });
         } catch (err) {
@@ -48,7 +48,9 @@ namespace RecipesController {
     }
 
     export async function getRecipes(req: Server.Request<never, never, GetRecipesReq>, res: Server.Response) {
-        const { limit, offset, categoryIds: categoryIdsString } = req.query;
+        const { page = 1, categoryIds: categoryIdsString } = req.query;
+        const limit = 30;
+        const offset = limit * (page - 1);
 
         try {
             const categoryIds = queryParamToArray(categoryIdsString);

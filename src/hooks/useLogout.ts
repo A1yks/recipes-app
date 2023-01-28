@@ -10,8 +10,8 @@ function useLogout(logoutCallback?: CallbackType) {
 
     const logoutHandler = useErrorsHandler(async () => {
         await logoutCallback?.();
-        await logout().unwrap();
         router.push('/');
+        await logout().unwrap();
     });
 
     return { isLoading, logoutHandler };

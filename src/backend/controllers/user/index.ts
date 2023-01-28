@@ -1,11 +1,12 @@
 import FileUploaderService from '@backend/services/fileUploader';
+import RecipesService from '@backend/services/recipes';
 import UserService from '@backend/services/user';
 import { ErrorTypes } from '@backend/types/errors';
 import errorsHandler from '@backend/utils/errorsHander';
 import isValidMimeType from '@backend/utils/isValidMimeType';
 import { MulterError } from 'multer';
 import path from 'path';
-import { DeleteUserReq, EditUserReq } from './types';
+import { DeleteUserReq, EditUserReq, GetUserRecipesReq } from './types';
 
 export const USER_AVATARS_FOLDER_PATH = path.resolve('./images/avatars');
 
@@ -95,6 +96,23 @@ namespace UserController {
                     [ErrorTypes.NOT_FOUND, 404],
                     [ErrorTypes.BAD_DATA, 400],
                 ],
+            });
+        }
+    }
+
+    export async function getUserRecipes(req: Server.Request<never, never, GetUserRecipesReq>, res: Server.Response) {
+        const { page = 1 } = req.query;
+        const limit = 12;
+        const offset = limit * (page - 1);
+
+        try {
+            const { count, recipes } = await RecipesService.getRecipes({ authorId: req.userId! }, limit, offset);
+
+            res.status(200).json({ data: { count, recipes } });
+        } catch (err) {
+            errorsHandler(err, {
+                res,
+                unexpectedErrMsg: 'An unexpected error occured while obtaining user recipes',
             });
         }
     }

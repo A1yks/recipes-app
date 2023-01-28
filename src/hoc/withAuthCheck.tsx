@@ -1,22 +1,19 @@
+import { bindActionCreators } from '@reduxjs/toolkit';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import useBrowserLayoutEffect from 'src/hooks/useBrowserLayoutEffect';
 import { useAppSelector } from 'src/store/hooks';
+import { authSlice } from 'src/store/reducers/auth';
 import getInitialPageProps from 'src/utils/getInitialPageProps';
 
 function withAuthCheck(Component: NextPage) {
     function WrapperComponent(props: {}) {
-        const router = useRouter();
-        const { user, isLoggedOut } = useAppSelector((state) => state.auth);
-
-        useBrowserLayoutEffect(() => {
-            if (user === null && !isLoggedOut) {
-                router.replace('/auth/login');
-            }
-        }, [user, router, isLoggedOut]);
-
         return <Component {...props} />;
     }
+
+    WrapperComponent.isProtectedRoute = true;
 
     WrapperComponent.getInitialProps = getInitialPageProps(async (store, ctx) => {
         try {

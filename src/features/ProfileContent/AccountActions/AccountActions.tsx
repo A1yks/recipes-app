@@ -76,6 +76,7 @@ function AccountActions(props: Props.WithSx) {
                             onChange={changePasswordHandler}
                             fullWidth
                             autoComplete="off"
+                            autoFocus
                             sx={{ mt: 1 }}
                         />
                     </form>

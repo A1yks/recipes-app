@@ -13,12 +13,31 @@ namespace RecipesService {
         return await Recipe.create({ ...recipeData, authorId });
     }
 
-    export async function getRecipe(recipeId: Recipe['id']) {
-        return await Recipe.findByPk(recipeId, {
+    export async function getRecipe(recipeData: Partial<RecipeAttrs>) {
+        return await Recipe.findOne({
+            where: recipeData,
             attributes,
             include: includeArray,
             group,
         });
+    }
+
+    export async function getRecipes(recipeData: Partial<RecipeAttrs>, limit?: number, offset?: number) {
+        const [count, recipes] = await Promise.all([
+            Recipe.count({ where: recipeData }),
+            Recipe.findAll({
+                where: recipeData,
+                attributes,
+                include: includeArray,
+                order: [['createdAt', 'ASC']],
+                group,
+                limit,
+                offset,
+                subQuery: false,
+            }),
+        ]);
+
+        return { count, recipes };
     }
 
     export async function getCompletedRecipes(limit?: number, offset?: number, categoryIds?: CategoryAttrs['id'][]) {
@@ -123,7 +142,7 @@ namespace RecipesService {
     }
 
     export async function recipeExists(recipeId: Recipe['id']) {
-        const recipe = await getRecipe(recipeId);
+        const recipe = await getRecipe({ id: recipeId });
 
         return recipe !== null;
     }
