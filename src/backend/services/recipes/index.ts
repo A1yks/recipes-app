@@ -1,15 +1,19 @@
 import Category, { CategoryAttrs } from '@backend/models/Category';
+import Rating from '@backend/models/Rating';
 import Recipe, { RecipeAttrs } from '@backend/models/Recipe';
 import RecipeCategory from '@backend/models/RecipeCategory';
 import { UserAttrs } from '@backend/models/User';
 import { ErrorTypes } from '@backend/types/errors';
-import { Op, UniqueConstraintError, WhereOptions } from 'sequelize';
+import { Op, Sequelize, UniqueConstraintError, WhereOptions } from 'sequelize';
 import CategoriesService from '../categories';
 import { attributes, includeArray, group, includeArrayRequired } from './searchOptions';
 import { RecipeData } from './types';
 
 namespace RecipesService {
     export async function createRecipe(recipeData: RecipeData, authorId: UserAttrs['id']) {
+        recipeData.title = recipeData.title.trim();
+        recipeData.description = recipeData.description?.trim();
+
         return await Recipe.create({ ...recipeData, authorId });
     }
 
@@ -29,7 +33,7 @@ namespace RecipesService {
                 where: recipeData,
                 attributes,
                 include: includeArray,
-                order: [['createdAt', 'ASC']],
+                order: [['createdAt', 'DESC']],
                 group,
                 limit,
                 offset,
@@ -145,6 +149,28 @@ namespace RecipesService {
         const recipe = await getRecipe({ id: recipeId });
 
         return recipe !== null;
+    }
+
+    export async function getRecipeRating(recipeId: Recipe['id']) {
+        const recipe = await Recipe.findOne({
+            where: {
+                id: recipeId,
+            },
+            attributes: [[Sequelize.cast(Sequelize.fn('AVG', Sequelize.col('ratings.value')), 'real'), 'rating']],
+            include: {
+                model: Rating,
+                as: 'ratings',
+                attributes: [],
+            },
+            group: ['Recipe.id'],
+            raw: true,
+        });
+
+        if (recipe === null) {
+            throw new Error('Recipe with provided id does not exist', { cause: ErrorTypes.NOT_FOUND });
+        }
+
+        return recipe.rating;
     }
 
     async function checkRecipeAndCategoryExist(categoryId: CategoryAttrs['id'], recipeId: Recipe['id']) {

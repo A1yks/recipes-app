@@ -1,13 +1,19 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import useDialogControl from 'src/hooks/useDialogControl';
+import clearInput from 'src/utils/clearInput';
 
 function useSearch() {
-    const [isSearchOpened, setIsSearchOpened] = useState(false);
+    const [isSearchOpened, openSearchHandler, closeSearch] = useDialogControl();
+    const [searchText, setSearchText] = useState('');
 
-    const openSearchHandler = () => setIsSearchOpened(true);
+    function closeSearchHandler() {
+        clearInput(setSearchText);
+        closeSearch();
+    }
 
-    const closeSearchHandler = () => setIsSearchOpened(false);
+    const searchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value);
 
-    return { isSearchOpened, openSearchHandler, closeSearchHandler };
+    return { searchText, isSearchOpened, searchInputHandler, openSearchHandler, closeSearchHandler };
 }
 
 export default useSearch;

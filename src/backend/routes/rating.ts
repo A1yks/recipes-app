@@ -1,5 +1,8 @@
 import RatingController from '@backend/controllers/rating';
-import { checkUserPermissionsForOperationsWithRating } from '@backend/controllers/rating/permissions';
+import {
+    checkUserPermissionsForOperationsWithRating,
+    checkUserPermissionsForRatingRecipe,
+} from '@backend/controllers/rating/permissions';
 import { deleteRatingSchema, editRatingSchema, rateRecipeSchema } from '@backend/controllers/rating/validation';
 import PermissionsMiddleware from '@backend/middleware/permissions';
 import ValidationMiddleware from '@backend/middleware/schemaValidation';
@@ -12,6 +15,7 @@ router.post(
     '/rate',
     TokensMiddleware.verifyAcessToken,
     ValidationMiddleware.validate(rateRecipeSchema),
+    PermissionsMiddleware.check(checkUserPermissionsForRatingRecipe),
     RatingController.rateRecipe
 );
 

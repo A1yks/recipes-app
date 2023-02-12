@@ -7,6 +7,7 @@ export const MIN_PREP_TIME = 1;
 export const MIN_SERVINGS = 1;
 
 export const recipeTitleFieldSchema = Joi.string().min(3).max(MAX_TITLE_LENGTH);
+export const descriptionFieldSchema = Joi.string().min(4).max(600);
 
 export const createRecipeSchema = Joi.object<CreateRecipeReq>().keys({
     title: recipeTitleFieldSchema,
@@ -14,7 +15,7 @@ export const createRecipeSchema = Joi.object<CreateRecipeReq>().keys({
         .min(MIN_PREP_TIME)
         .max(7 * 24 * 60),
     servings: Joi.number().min(MIN_SERVINGS).max(1000),
-    description: Joi.string().min(4),
+    description: descriptionFieldSchema,
     pictureUrl: Joi.string().uri(),
 });
 

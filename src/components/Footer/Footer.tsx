@@ -134,7 +134,7 @@ function Footer() {
                 >
                     <Grid item sx={{ textAlign: 'center' }}>
                         <Typography variant="caption" color="gray">
-                            © 2020 Tastebite - All rights reserved
+                            © 2023 Tastebite - All rights reserved
                         </Typography>
                     </Grid>
                     <Grid

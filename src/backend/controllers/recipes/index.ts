@@ -1,3 +1,4 @@
+import RatingService from '@backend/services/rating';
 import RecipesService from '@backend/services/recipes';
 import { ErrorTypes } from '@backend/types/errors';
 import errorsHandler from '@backend/utils/errorsHander';
@@ -36,9 +37,12 @@ namespace RecipesController {
         const { recipeId } = req.params;
 
         try {
-            const recipe = await RecipesService.getRecipe({ id: recipeId });
+            const [recipe, userRating] = await Promise.all([
+                RecipesService.getRecipe({ id: recipeId }),
+                req.userId !== undefined ? RatingService.getRating({ recipeId, userId: req.userId! }) : undefined,
+            ]);
 
-            res.status(200).json({ data: recipe });
+            res.status(200).json({ data: { recipe, userRating: userRating?.value } });
         } catch (err) {
             errorsHandler(err, {
                 res,

@@ -17,9 +17,9 @@ namespace RecipePhotosController {
         destination: RECIPE_IMAGES_FOLDER_PATH,
         fieldName: 'photos',
         fileFilter: isValidMimeType,
-        maxFiles: 20,
+        maxFiles: 10,
         limits: {
-            fileSize: 20 * 1024 * 1024,
+            fileSize: 10 * 1024 * 1024,
         },
     });
 
@@ -56,6 +56,7 @@ namespace RecipePhotosController {
                         [ValidationError, 400],
                         [MulterError, 400],
                         [ErrorTypes.NO_PERMISSIONS, 403],
+                        [ErrorTypes.LIMIT_EXCEEDED, 413],
                     ],
                 });
             }

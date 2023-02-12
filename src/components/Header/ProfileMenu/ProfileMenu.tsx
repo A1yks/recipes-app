@@ -42,14 +42,7 @@ function ProfileMenu(props: Props.WithSx) {
     return (
         <Box sx={props.sx}>
             <IconButton onClick={openMenuHandler} size={buttonSize}>
-                <UserAvatar
-                    sx={{
-                        cursor: 'pointer',
-                        width: avatarSize,
-                        height: avatarSize,
-                        fontSize: avatarSize / 2,
-                    }}
-                />
+                <UserAvatar size={avatarSize} sx={{ cursor: 'pointer' }} />
             </IconButton>
             <Menu anchorEl={menuAnchorEl} open={isMenuOpened} onClose={closeMenuHandler}>
                 {profileNavigationMenu.map(({ title, href, icon: Icon }) => (

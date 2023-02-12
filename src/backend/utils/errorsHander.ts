@@ -23,9 +23,9 @@ type Configuration = {
     statusCode?: number;
     /**
      * Arrays of expected errors. Each element of this array contains another array with following elements:
-     * 1. Error type or error class;
-     * 2. Status code. If not specified, `configuration.statusCode` is used;
-     * 3. Error message. If not specified, `err.message` is used.
+     * - Error type or error class;
+     * - Status code. If not specified, `configuration.statusCode` is used;
+     * - Error message. If not specified, `err.message` is used.
      */
     expectedErrors?: [type: ErrorTypes | ErrorConstructor, statusCode?: number, errMsg?: string][];
     /**
@@ -66,7 +66,7 @@ function errorsHandler(err: unknown, configuration: Configuration) {
             for (const [type, statusCode = config.statusCode, errMsg = err.message] of config.expectedErrors) {
                 if (
                     type === (err.cause as ErrorTypes) ||
-                    (typeof type === 'object' && err instanceof (type as typeof Error))
+                    (typeof type === 'function' && err instanceof (type as typeof Error))
                 ) {
                     config.res.status(statusCode).json({ error: errMsg });
                     return;

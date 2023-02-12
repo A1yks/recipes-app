@@ -13,8 +13,6 @@ import PermissionsMiddleware from '@backend/middleware/permissions';
 import ValidationMiddleware from '@backend/middleware/schemaValidation';
 import TokensMiddleware from '@backend/middleware/tokens';
 import { Router } from 'express';
-import recipePhotosRouter from './recipePhotos';
-import recipePartsRouter from './recipeParts';
 
 const router = Router();
 
@@ -28,6 +26,7 @@ router.post(
 router.get(
     '/:recipeId',
     ValidationMiddleware.validate(getRecipeSchema, { validateParams: true }),
+    TokensMiddleware.mapPayloadDataToRequest,
     RecipesController.getRecipe
 );
 

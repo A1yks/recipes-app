@@ -1,7 +1,6 @@
 import { NextFunction } from 'express';
 import TokensService from '../../services/tokens';
 import { TokenPayload } from '../../types/tokens';
-import logger from '../../utils/logger';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { RefreshTokenCookies } from './types';
 import errorsHandler from '@backend/utils/errorsHander';
@@ -9,8 +8,8 @@ import { ErrorTypes } from '@backend/types/errors';
 import setRefreshTokenCookie from '@backend/utils/setRefreshTokenCookie';
 
 namespace TokensMiddleware {
-    function extractAcessToken(req: Server.Request) {
-        const authHeader = req.headers.authorization;
+    function extractAcessToken(headers: Server.Request['headers']) {
+        const authHeader = headers.authorization;
         const matched = authHeader?.match(/Bearer\s+(.+)$/);
 
         if (!matched || !matched[1]) {
@@ -21,7 +20,7 @@ namespace TokensMiddleware {
     }
 
     async function verifyToken(req: Server.Request, res: Server.Response) {
-        const token = extractAcessToken(req);
+        const token = extractAcessToken(req.headers);
 
         if (token === null) {
             res.status(403).json({ error: 'Authorization token is missing' });
@@ -32,6 +31,20 @@ namespace TokensMiddleware {
         const payload = (await TokensService.verifyToken(token)) as TokenPayload;
 
         return payload;
+    }
+
+    export async function mapPayloadDataToRequest(req: Server.Request, res: Server.Response, next: NextFunction) {
+        const token = extractAcessToken(req.headers);
+
+        if (token !== null) {
+            try {
+                const payload = (await TokensService.verifyToken(token)) as TokenPayload;
+
+                req.userId = payload.userId;
+            } catch {}
+        }
+
+        next();
     }
 
     export async function verifyAcessToken(req: Server.Request, res: Server.Response, next: NextFunction) {

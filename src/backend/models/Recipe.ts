@@ -22,10 +22,11 @@ import Instruction, { InstructionAttrs } from './Instruction';
 import Nutrition, { NutritionAttrs } from './Nutrition';
 import { RecipePartAttrs } from './RecipePart';
 import { RecipePhotoAttrs } from './RecipePhoto';
-import User from './User';
+import User, { UserAttrs } from './User';
 
 export type RecipeAttrs = InferAttributes<Recipe>;
 export type RecipeCreationAttrs = InferCreationAttributes<Recipe>;
+export type RecipeAuthor = Pick<UserAttrs, 'id' | 'login' | 'name' | 'surname' | 'avatar'>;
 
 class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare id: CreationOptional<number>;
@@ -35,12 +36,15 @@ class Recipe extends Model<RecipeAttrs, RecipeCreationAttrs> {
     declare prepTime: CreationOptional<number | null>;
     declare servings: CreationOptional<number | null>;
     declare authorId: ForeignKey<User['id']>;
+    declare createdAt: CreationOptional<Date>;
+    declare updatedAt: CreationOptional<Date>;
+    declare author?: NonAttribute<RecipeAuthor>;
     declare categories?: NonAttribute<CategoryAttrs[]>;
     declare instructions?: NonAttribute<InstructionAttrs[]>;
     declare nutrition?: NonAttribute<NutritionAttrs | null>;
     declare parts?: NonAttribute<RecipePartAttrs[]>;
     declare photos?: NonAttribute<RecipePhotoAttrs[]>;
-    declare rating?: NonAttribute<number>;
+    declare rating?: NonAttribute<number | string>;
 
     declare getCategories: BelongsToManyGetAssociationsMixin<Category>;
     declare getInstructions: HasManyGetAssociationsMixin<Instruction>;
@@ -85,6 +89,8 @@ Recipe.init(
                 key: 'id',
             },
         },
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
     },
     {
         sequelize: db,

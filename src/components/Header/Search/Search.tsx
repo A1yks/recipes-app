@@ -4,7 +4,7 @@ import useSearch from './hooks/useSearch';
 import CloseIcon from '@mui/icons-material/Close';
 
 function Search(props: Props.WithSx) {
-    const { isSearchOpened, openSearchHandler, closeSearchHandler } = useSearch();
+    const { searchText, isSearchOpened, searchInputHandler, openSearchHandler, closeSearchHandler } = useSearch();
     const theme = useTheme();
     const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
     const fontSize = matchesSm ? 'medium' : 'large';
@@ -33,6 +33,8 @@ function Search(props: Props.WithSx) {
                         <TextField
                             placeholder="Recipe name"
                             variant="standard"
+                            value={searchText}
+                            onChange={searchInputHandler}
                             fullWidth
                             sx={{ height: '50%', marginY: 'auto' }}
                             InputProps={{ sx: { height: '100%' } }}

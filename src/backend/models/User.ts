@@ -7,7 +7,7 @@ import {
     InferCreationAttributes,
     Model,
 } from 'sequelize';
-import Recipe from './Recipe';
+import Recipe, { RecipeAuthor } from './Recipe';
 import RefreshToken from './RefreshToken';
 
 export type UserAttrs = InferAttributes<User>;
@@ -58,6 +58,9 @@ User.init(
                 attributes: {
                     include: ['password'],
                 },
+            },
+            recipeAuthor: {
+                attributes: ['id', 'login', 'name', 'surname', 'avatar'] as Array<keyof RecipeAuthor>,
             },
         },
     }

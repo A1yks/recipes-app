@@ -18,19 +18,23 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
-    extraReducers(builder) {
-        function setAuthInfoReducer(state: AuthState, action: PayloadAction<API.Response<AuthRes>>) {
+    reducers: {
+        setAuthInfo(state, action: PayloadAction<API.Response<AuthRes>>) {
             const { user, accessToken } = action.payload.data;
 
             state.user = user;
             state.token = accessToken;
-        }
-
+        },
+    },
+    extraReducers(builder) {
         function setUserDataReducer(state: AuthState, action: PayloadAction<API.Response<User>>) {
             const user = action.payload.data;
 
             state.user = user;
+        }
+
+        function setAuthInfoReducer(state: AuthState, action: PayloadAction<API.Response<AuthRes>>) {
+            authSlice.caseReducers.setAuthInfo(state, action);
         }
 
         return builder
@@ -50,4 +54,4 @@ export const authSlice = createSlice({
     },
 });
 
-export default authSlice.reducer;
+export default authSlice;

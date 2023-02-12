@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useBrowserLayoutEffect from 'src/hooks/useBrowserLayoutEffect';
 import { useAppSelector } from 'src/store/hooks';
 import { AuthCheckerProps } from './AuthChecker.type';
@@ -9,6 +9,17 @@ function AuthChecker(props: AuthCheckerProps) {
     const { user } = useAppSelector((state) => state.auth);
     const [isLoading, setIsLoading] = useState(true);
     const { isProtectedRoute } = props.children.type;
+    const lastHrefRef = useRef('');
+
+    useEffect(() => {
+        if (lastHrefRef.current !== router.asPath) {
+            if (lastHrefRef.current !== '') {
+                window.lastHref = lastHrefRef.current;
+            }
+
+            lastHrefRef.current = router.asPath;
+        }
+    }, [router.asPath]);
 
     useBrowserLayoutEffect(() => {
         const routeChangeStartHandler = () => setIsLoading(true);

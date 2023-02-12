@@ -1,12 +1,14 @@
 import { combineReducers, configureStore, Reducer, AnyAction } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import { api } from 'src/services/api';
-import authReducer from './reducers/auth';
-import userRecipesReducer from './reducers/userRecipes';
+import authSlice from './reducers/auth';
+import userRecipesSlice from './reducers/userRecipes';
+import recipesSlice from './reducers/recipes';
 
 const combineReducer = combineReducers({
-    auth: authReducer,
-    userRecipes: userRecipesReducer,
+    auth: authSlice.reducer,
+    recipes: recipesSlice.reducer,
+    userRecipes: userRecipesSlice.reducer,
     [api.reducerPath]: api.reducer,
 });
 
@@ -15,8 +17,13 @@ const reducer: Reducer<ReturnType<typeof combineReducer>, AnyAction> = (state, a
         return { ...state, ...action.payload };
     }
 
-    if (api.endpoints.logout.matchFulfilled(action) || api.endpoints.deleteAccount.matchFulfilled(action)) {
-        state = undefined;
+    if (
+        (action.type === 'logout' ||
+            api.endpoints.logout.matchFulfilled(action) ||
+            api.endpoints.deleteAccount.matchFulfilled(action)) &&
+        state !== undefined
+    ) {
+        state = { ...state, auth: authSlice.getInitialState(), userRecipes: userRecipesSlice.getInitialState() };
     }
 
     return combineReducer(state, action);

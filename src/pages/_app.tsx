@@ -1,4 +1,4 @@
-import type { AppContext, AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import { wrapper } from 'src/store';
 import { CssBaseline, ThemeProvider } from '@mui/material';
@@ -10,7 +10,7 @@ import { SnackbarProvider } from 'notistack';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
 import 'src/styles/globals.scss';
 import { getAccessToken, getRunningQueriesThunk } from 'src/services/api';
-import AuthChecker from 'src/layouts/AuthChecker';
+import AuthChecker from 'src/features/AuthChecker';
 
 export type CustomPageProps = {
     emotionCache?: EmotionCache;

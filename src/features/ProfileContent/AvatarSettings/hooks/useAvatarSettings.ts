@@ -1,5 +1,6 @@
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import useSelectImages from 'src/hooks/useSelectImages';
 import { useDeleteAvatarMutation, useUploadAvatarMutation } from 'src/services/api';
 import { useAppSelector } from 'src/store/hooks';
 import useErrorsHandler from 'src/utils/errorsHandler';
@@ -35,27 +36,11 @@ function useAvatarSettings() {
         return formData;
     }
 
-    function chooseAvatarHandler() {
-        const inp = document.createElement('input');
+    const chooseAvatarHandler = useSelectImages((files) => {
+        const formData = createFormData(files[0]);
 
-        inp.type = 'file';
-        inp.accept = 'image/*';
-
-        inp.addEventListener('change', async () => {
-            const file = inp.files?.item(0);
-
-            if (!file) {
-                enqueueSnackbar('You have not choosen any file');
-                return;
-            }
-
-            const formData = createFormData(file);
-
-            uploadAvatar(formData);
-        });
-
-        inp.click();
-    }
+        uploadAvatar(formData);
+    });
 
     return {
         isAvatarUploaded,

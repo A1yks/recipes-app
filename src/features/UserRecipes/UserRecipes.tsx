@@ -1,5 +1,4 @@
-import { Box, Link, PaginationItem, Typography } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import useUserRecipes from './hooks/useUserRecipes';
 import ContentLayout from 'src/layouts/ContentLayout';
@@ -12,6 +11,7 @@ import useResponsive from './hooks/useResponsive';
 import ConfirmationDialog from 'src/components/ConfirmationDialog';
 import useUserRecipesPagination from './hooks/useUserRecipesPagination';
 import Pagination from 'src/components/Pagination';
+import PageLoader from 'src/components/PageLoader';
 
 const pageTitle = 'My recipes';
 
@@ -33,16 +33,12 @@ function UserRecipes() {
         deleteRecipeHandler,
     } = useUserRecipes();
 
-    const { cols, matchesMd, paginationSize } = useResponsive();
+    const { cols, matchesMd } = useResponsive();
 
     if (showLoader) {
         return (
             <ContentLayout title={pageTitle}>
-                <Grid container justifyContent="center" alignItems="center" height="100%">
-                    <Grid item>
-                        <CircularProgress />
-                    </Grid>
-                </Grid>
+                <PageLoader />
             </ContentLayout>
         );
     }

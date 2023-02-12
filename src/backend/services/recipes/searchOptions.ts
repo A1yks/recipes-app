@@ -5,6 +5,7 @@ import Nutrition from '@backend/models/Nutrition';
 import Rating from '@backend/models/Rating';
 import RecipePart from '@backend/models/RecipePart';
 import RecipePhoto from '@backend/models/RecipePhoto';
+import User from '@backend/models/User';
 import { IncludeOptions, Sequelize, FindAttributeOptions, GroupOption } from 'sequelize';
 
 export const includeArray: IncludeOptions[] = [
@@ -28,6 +29,7 @@ export const includeArray: IncludeOptions[] = [
     {
         model: RecipePhoto,
         as: 'photos',
+        separate: true,
         order: [['createdAt', 'ASC']],
     },
     {
@@ -45,6 +47,10 @@ export const includeArray: IncludeOptions[] = [
         as: 'ratings',
         attributes: [],
     },
+    {
+        model: User.scope('recipeAuthor'),
+        as: 'author',
+    },
 ];
 
 export const includeArrayRequired: IncludeOptions[] = [
@@ -58,6 +64,7 @@ export const includeArrayRequired: IncludeOptions[] = [
         model: Instruction,
         as: 'instructions',
         attributes: [],
+        order: [['stepNumber', 'ASC']],
         required: true,
     },
     {
@@ -70,6 +77,7 @@ export const includeArrayRequired: IncludeOptions[] = [
         model: RecipePhoto,
         as: 'photos',
         attributes: [],
+        order: [['createdAt', 'ASC']],
     },
     {
         model: RecipePart,
@@ -102,7 +110,7 @@ export const group: GroupOption = [
     'categories->RecipeCategory.recipeId',
     'categories->RecipeCategory.categoryId',
     'nutrition.id',
-    'photos.id',
     'parts.id',
     'parts->ingridients.id',
+    'author.id',
 ];

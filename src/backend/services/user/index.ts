@@ -16,6 +16,9 @@ namespace UserService {
     }
 
     export async function createUser(userData: UserCreationData) {
+        userData.name = userData.name.trim();
+        userData.surname = userData.surname.trim();
+
         return await User.create(userData);
     }
 

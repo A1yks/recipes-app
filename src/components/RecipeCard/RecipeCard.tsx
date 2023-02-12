@@ -20,7 +20,7 @@ function RecipeCard(props: RecipeCardProps) {
                     {...cardContentProps}
                     sx={{ overflow: 'hidden', textOverflow: 'ellipsis', ...cardContentProps?.sx }}
                 >
-                    <Link href={`/recipes/${(authorView ? 'edit/' : '') + recipe.id}`} noWrap>
+                    <Link href={`/recipes/${recipe.id}`} noWrap>
                         {recipe.title}
                     </Link>
                 </Grid>

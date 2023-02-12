@@ -14,7 +14,12 @@ function useAuth(props: AuthProps) {
         const body = getReqBody();
 
         await auth(body).unwrap();
-        router.push('/');
+
+        if (props.type === 'login') {
+            router.push(window.lastHref || '/');
+        } else {
+            router.push('/');
+        }
     });
 
     const { control, formState, changeHandler, submitHandler } = useUserDataValidation(

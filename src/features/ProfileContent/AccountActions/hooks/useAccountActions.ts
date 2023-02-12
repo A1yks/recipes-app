@@ -10,7 +10,7 @@ import joiResolver from 'src/utils/joiResolver';
 
 function useAccountActions() {
     const router = useRouter();
-    const { isLoading: isLoggingOut, logoutHandler } = useLogout();
+    const { isLoading: isLoggingOut, logoutHandler } = useLogout(() => router.push('/'));
     const [deleteAccountMutation, { isLoading: isDeletingAccount }] = useDeleteAccountMutation();
     const [isDeleteAccountDialogOpened, setIsDeleteAccountDialogOpened] = useState(false);
     const [isSignOutDialogOpened, setIsSignOutDialogOpened] = useState(false);

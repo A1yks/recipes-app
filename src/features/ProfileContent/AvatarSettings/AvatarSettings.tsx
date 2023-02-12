@@ -40,7 +40,7 @@ function AvatarSettings(props: Props.WithSx) {
                 width="auto"
                 sx={{
                     mt: { xs: 3, sm: 0 },
-                    '& button': {
+                    '& button:not(:disabled)': {
                         width: {
                             xs: '10rem',
                             sm: 'auto',
@@ -59,7 +59,6 @@ function AvatarSettings(props: Props.WithSx) {
                         onClick={chooseAvatarHandler}
                         loading={isUploading}
                         disabled={isDisabled}
-                        sx={{ width: '10rem' }}
                     >
                         {isAvatarUploaded ? 'Change photo' : 'Upload photo'}
                     </LoadingButton>

@@ -1,24 +1,29 @@
 import { ParsedUrlQuery } from 'querystring';
 import RecipeContent from 'src/features/RecipeContent';
 import PageLayout from 'src/layouts/PageLayout';
+import { getRecipe, getRunningQueriesThunk } from 'src/services/api';
+import { useAppSelector } from 'src/store/hooks';
 import getInitialPageProps from 'src/utils/getInitialPageProps';
 
 export type RecipePageQueryParams = ParsedUrlQuery & {
     id: number;
 };
 
-function Recipe(props: ReturnType<typeof Recipe['getInitialProps']>) {
+function Recipe() {
+    const title = useAppSelector((state) => state.recipes.openedRecipeData.recipe?.title);
+
     return (
-        <PageLayout>
-            <RecipeContent recipeId={props.id} />
+        <PageLayout title={title}>
+            <RecipeContent />
         </PageLayout>
     );
 }
 
-Recipe.getInitialProps = getInitialPageProps((store, ctx) => {
+Recipe.getInitialProps = getInitialPageProps(async (store, ctx) => {
     const { id } = ctx.query as RecipePageQueryParams;
 
-    return { id };
+    store.dispatch(getRecipe.initiate(id));
+    await Promise.all(store.dispatch(getRunningQueriesThunk()));
 });
 
 export default Recipe;

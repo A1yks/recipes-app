@@ -27,10 +27,10 @@ function getAvatarData(user: User | null) {
     return { avatarUrl, avatarColor };
 }
 
-function useUserAvatar() {
-    const user = useAppSelector((state) => state.auth.user);
-    const { avatarColor, avatarUrl } = getAvatarData(user);
-    const loginFirstLetter = user?.login[0];
+function useUserAvatar(user?: User) {
+    const finalUser = useAppSelector((state) => (user === undefined ? state.auth.user : user));
+    const { avatarColor, avatarUrl } = getAvatarData(finalUser);
+    const loginFirstLetter = finalUser?.login[0];
 
     return { avatarColor, avatarUrl, loginFirstLetter };
 }
